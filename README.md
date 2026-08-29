@@ -2,14 +2,21 @@
 
 ## Descripción
 
-*Pendiente: en 2-3 líneas, explica qué hace tu software educativo, a quién va dirigido (¿estudiantes? ¿docentes? ¿qué nivel/edad?) y qué problema resuelve en el ámbito educativo. Esto normalmente sale de tu Documento de Definición de Proyecto (Fase 1).*
+**Software Educativo** es una solución pensada para ser incorporada en pantallas interactivas de uso docente, integrando la información y los lineamientos curriculares solicitados por el MINEDUC. Su objetivo es facilitar y simplificar el uso de estas tecnologías por parte de los y las docentes en el aula, reduciendo la barrera técnica que suele dificultar su adopción.
+
+Con esto, el proyecto busca contribuir a **nivelar el acceso a educación de calidad**, apoyando a los docentes en la implementación efectiva de herramientas tecnológicas interactivas dentro de sus prácticas pedagógicas.
 
 ## Tecnologías utilizadas
 
-- **Frontend:** React / Angular / Vue *(pendiente definir cuál usarás)*
-- **Backend:** Node.js / Java / Python / .NET *(pendiente definir cuál usarás)*
-- **Base de datos:** SQL (PostgreSQL/MySQL) o MongoDB *(pendiente definir cuál usarás)*
-- **Despliegue:** Docker
+El proyecto está pensado para funcionar tanto como **aplicación web** como **APK para Android** (ya que la mayoría de las pantallas interactivas del contexto educativo funcionan con este sistema operativo). Por eso se evaluará un enfoque híbrido que permita mantener una sola base de código para ambas plataformas:
+
+- **Frontend / App híbrida:** React + Capacitor, o Flutter *(pendiente decidir cuál se ajusta mejor al proyecto — ambos permiten generar la app web y el APK Android desde un mismo código base)*
+- **Backend:** Node.js / Java / Python / .NET *(pendiente definir)*
+- **Base de datos:** SQL (PostgreSQL/MySQL) o MongoDB *(pendiente definir)*
+- **Empaquetado Android:** Android Studio / Gradle (generación del APK)
+- **Despliegue:** Docker (para backend y base de datos)
+
+> **Nota técnica:** Capacitor permite tomar una app web (React, Vue, Angular) y empaquetarla directamente como APK Android sin reescribir código. Flutter, en cambio, usa un lenguaje propio (Dart) pero ofrece mejor rendimiento nativo. Vale la pena definir esto pronto ya que condiciona el resto de la arquitectura.
 
 ## Instrucciones para ejecutar el proyecto localmente
 
