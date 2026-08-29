@@ -16,11 +16,6 @@ El proyecto está pensado para funcionar tanto como **aplicación web** como **A
 - **Empaquetado Android:** Android Studio / Gradle (generación del APK)
 - **Despliegue:** Docker (para backend y base de datos)
 
-> **Nota técnica:** Capacitor permite tomar una app web (React, Vue, Angular) y empaquetarla directamente como APK Android sin reescribir código. Flutter, en cambio, usa un lenguaje propio (Dart) pero ofrece mejor rendimiento nativo. Vale la pena definir esto pronto ya que condiciona el resto de la arquitectura.
-
-## Instrucciones para ejecutar el proyecto localmente
-
-*Pendiente: se completará en Fase 2, cuando exista código funcionando. Por ahora el proyecto está en etapa de definición.*
 
 ## Integrante y rol
 
