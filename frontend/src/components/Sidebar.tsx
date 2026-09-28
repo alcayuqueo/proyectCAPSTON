@@ -60,7 +60,7 @@ export default function Sidebar() {
       <div className="border-t border-ink-300/20 px-5 py-4">
         <div className="flex items-center gap-2 text-xs text-ink-500">
           <span className="h-2 w-2 rounded-full bg-amber-500" />
-          Fase 1 · MVP en desarrollo
+          Fase 2 · Desarrollo del proyecto
         </div>
       </div>
     </aside>

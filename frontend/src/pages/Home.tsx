@@ -40,7 +40,7 @@ export default function Home() {
       {/* Hero */}
       <section className="rounded-card border border-ink-300/20 bg-white p-10 shadow-sm">
         <span className="inline-block rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-ink-700">
-          Fase 1 · MVP
+           Fase 2 · Desarrollo
         </span>
 
         <h1 className="mt-4 text-4xl font-bold leading-tight text-ink-900">
