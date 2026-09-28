@@ -16,5 +16,18 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/software_educativo?schema=public"
+      JWT_SECRET: "cambia-esto-por-un-secreto-largo-y-aleatorio"
+      PORT: 3000
+    ports:
+      - "3000:3000"
+
 volumes:
   db_data:

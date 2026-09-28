@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RolUsuario {
+  DOCENTE
+  ADMIN
+}
+
+model Usuario {
+  id            String     @id @default(uuid())
+  nombre        String
+  email         String     @unique
+  passwordHash  String
+  rol           RolUsuario @default(DOCENTE)
+  createdAt     DateTime   @default(now())
+  planes        Plan[]
+}
+
+model Asignatura {
+  id         String       @id @default(uuid())
+  nombre     String
+  nivel      String // ej: "5° básico"
+  objetivos  Objetivo[]
+  recursos   Recurso[]
+  actividades Actividad[]
+}
+
+model Objetivo {
+  id           String     @id @default(uuid())
+  codigo       String // ej: "OA05"
+  descripcion  String
+  asignatura   Asignatura @relation(fields: [asignaturaId], references: [id])
+  asignaturaId String
+  planes       Plan[]
+
+  @@unique([asignaturaId, codigo])
+}
+
+enum TipoRecurso {
+  VIDEO
+  DOCUMENTO
+  IMAGEN
+}
+
+model Recurso {
+  id           String      @id @default(uuid())
+  titulo       String
+  tipo         TipoRecurso
+  url          String?
+  unidad       String
+  asignatura   Asignatura  @relation(fields: [asignaturaId], references: [id])
+  asignaturaId String
+  createdAt    DateTime    @default(now())
+}
+
+model Actividad {
+  id              String     @id @default(uuid())
+  titulo          String
+  descripcion     String
+  duracionMinutos Int
+  asignatura      Asignatura @relation(fields: [asignaturaId], references: [id])
+  asignaturaId    String
+  createdAt       DateTime   @default(now())
+}
+
+model Plan {
+  id           String     @id @default(uuid())
+  fecha        DateTime
+  notas        String?
+  docente      Usuario    @relation(fields: [docenteId], references: [id])
+  docenteId    String
+  objetivo     Objetivo   @relation(fields: [objetivoId], references: [id])
+  objetivoId   String
+  createdAt    DateTime   @default(now())
+}
