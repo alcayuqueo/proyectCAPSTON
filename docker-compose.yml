@@ -24,6 +24,7 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@db:5432/software_educativo?schema=public"
+      DIRECT_URL: "postgresql://postgres:postgres@db:5432/software_educativo?schema=public"
       JWT_SECRET: "cambia-esto-por-un-secreto-largo-y-aleatorio"
       PORT: 3000
     ports:

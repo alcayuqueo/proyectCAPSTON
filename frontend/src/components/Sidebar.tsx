@@ -1,5 +1,7 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
+  LogIn,
+  LogOut,
   GraduationCap,
   Home,
   BookOpen,
@@ -7,6 +9,7 @@ import {
   Puzzle,
   CalendarDays,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const navItems = [
   { to: '/', label: 'Inicio', icon: Home },
@@ -17,6 +20,16 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+  const { usuario, cerrarSesion } = useAuth();
+  const navigate = useNavigate();
+  const nombreVisible = usuario?.nombre || usuario?.email || '';
+  const inicial = nombreVisible.charAt(0).toUpperCase();
+
+  function salir() {
+    cerrarSesion();
+    navigate('/');
+  }
+
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col border-r border-ink-300/20 bg-surface-sidebar">
       {/* Logo / marca */}
@@ -55,6 +68,39 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      {/* Sesión del docente */}
+      <div className="border-t border-ink-300/20 px-3 py-3">
+        {usuario ? (
+          <div className="flex items-center gap-3 rounded-lg px-2 py-2">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">
+              {inicial}
+            </div>
+            <div className="min-w-0 flex-1">
+              {usuario.nombre && (
+                <p className="truncate text-sm font-medium text-ink-900">{usuario.nombre}</p>
+              )}
+              <p className="truncate text-xs text-ink-500">{usuario.email}</p>
+            </div>
+            <button
+              onClick={salir}
+              title="Cerrar sesión"
+              aria-label="Cerrar sesión"
+              className="rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-300/10 hover:text-ink-900"
+            >
+              <LogOut size={16} />
+            </button>
+          </div>
+        ) : (
+          <Link
+            to="/login"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-100"
+          >
+            <LogIn size={18} />
+            Iniciar sesión
+          </Link>
+        )}
+      </div>
 
       {/* Estado del proyecto */}
       <div className="border-t border-ink-300/20 px-5 py-4">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CalendarDays, Plus } from 'lucide-react';
-import { api } from '../lib/api';
+import { api, mensajeDeError } from '../lib/api';
 
 interface Plan {
   id: string;
@@ -13,12 +13,14 @@ interface Plan {
 export default function Planificador() {
   const [planes, setPlanes] = useState<Plan[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     api
       .get<Plan[]>('/planner')
       .then((res) => setPlanes(res.data))
-      .catch(() => setError('No se pudo conectar con el backend todavía.'));
+      .catch((err) => setError(mensajeDeError(err, 'No se pudieron cargar tus planificaciones.')))
+      .finally(() => setCargando(false));
   }, []);
 
   return (
@@ -41,9 +43,17 @@ export default function Planificador() {
 
       {error && (
         <p className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
-          {error} Conecta el backend en <code>/api/planner</code> para ver
-          datos reales.
+          {error}
         </p>
+      )}
+
+      {!error && !cargando && planes.length === 0 && (
+        <div className="rounded-card border border-dashed border-ink-300/40 bg-white px-6 py-12 text-center">
+          <p className="font-medium text-ink-900">Aún no tienes clases planificadas.</p>
+          <p className="mt-1 text-sm text-ink-500">
+            Usa «Nueva clase» para armar tu primera planificación.
+          </p>
+        </div>
       )}
 
       <ul className="flex flex-col gap-3">

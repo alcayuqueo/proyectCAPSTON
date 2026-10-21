@@ -3,8 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  // Conexión que usa la aplicación (en Supabase: Transaction pooler, puerto 6543)
+  url       = env("DATABASE_URL")
+  // Conexión directa para las migraciones (en Supabase: Session pooler, puerto 5432)
+  directUrl = env("DIRECT_URL")
 }
 
 enum RolUsuario {
