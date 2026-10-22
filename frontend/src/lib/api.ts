@@ -45,6 +45,11 @@ export function mensajeDeError(error: unknown, porDefecto: string): string {
   if (!err.response) {
     return 'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.';
   }
+  // 5xx: el backend falló o no está disponible (en local, el proxy de Vite
+  // responde 500 cuando no puede conectarse a localhost:3000).
+  if (err.response.status >= 500) {
+    return 'El servidor no está respondiendo. Inténtalo de nuevo en unos segundos.';
+  }
   const msg = err.response.data?.message;
   // Los mensajes propios del backend ya vienen en español (409, 401).
   if (typeof msg === 'string' && err.response.status !== 400) {
