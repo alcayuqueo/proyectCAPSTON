@@ -50,10 +50,14 @@ export function mensajeDeError(error: unknown, porDefecto: string): string {
   if (err.response.status >= 500) {
     return 'El servidor no está respondiendo. Inténtalo de nuevo en unos segundos.';
   }
+  // Los mensajes del backend vienen en español: errores propios (401, 404, 409)
+  // como texto y errores de validación (400) como lista.
   const msg = err.response.data?.message;
-  // Los mensajes propios del backend ya vienen en español (409, 401).
-  if (typeof msg === 'string' && err.response.status !== 400) {
+  if (typeof msg === 'string' && msg.trim()) {
     return msg;
+  }
+  if (Array.isArray(msg) && msg.length > 0) {
+    return msg.join(' ');
   }
   return porDefecto;
 }

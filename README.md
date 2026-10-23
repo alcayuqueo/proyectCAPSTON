@@ -78,7 +78,7 @@ flowchart LR
 | `curriculum` | Asignaturas y búsqueda de OA | Render | Implementado |
 | `resources` | Recursos educativos | Render | Implementado (listado) |
 | `activities` | Actividades por objetivo | Render | Implementado (listado) |
-| `planner` | Planificaciones del docente (protegido con JWT) | Render | Implementado |
+| `planner` | Clases del docente: objetivo, recursos y actividades en orden (protegido con JWT) | Render | Implementado |
 | Base de datos | Currículum, usuarios y planificaciones | Supabase | Implementado |
 | App Android | Empaquetado del frontend con Capacitor | — | Planificado |
 | MinIO | Almacenamiento de archivos de recursos | — | Planificado |
@@ -224,14 +224,21 @@ npx cap open android
 
 | Método | Ruta | Descripción | Requiere JWT |
 |---|---|---|---|
-| POST | `/api/auth/register` | Registro de docente | No |
-| POST | `/api/auth/login` | Inicio de sesión, retorna JWT | No |
+| POST | `/api/auth/register` | Registro de docente; retorna JWT y datos del usuario | No |
+| POST | `/api/auth/login` | Inicio de sesión; retorna JWT y datos del usuario | No |
+| GET | `/api/auth/me` | Perfil del docente con sesión activa | Sí |
 | GET | `/api/curriculum/asignaturas` | Lista asignaturas y niveles | No |
 | GET | `/api/curriculum/objetivos?q=` | Busca objetivos de aprendizaje | No |
 | GET | `/api/resources` | Lista recursos | No |
 | GET | `/api/activities` | Lista actividades | No |
-| GET | `/api/planner` | Lista planificaciones del docente | Sí |
-| POST | `/api/planner` | Crea una planificación de clase | Sí |
+| GET | `/api/planner` | Lista las clases del docente, con objetivo, recursos y actividades | Sí |
+| GET | `/api/planner/:id` | Obtiene una clase | Sí |
+| POST | `/api/planner` | Crea una clase (título, fecha, objetivo, recursos, actividades y notas) | Sí |
+| PATCH | `/api/planner/:id` | Edita una clase | Sí |
+| POST | `/api/planner/:id/duplicar` | Duplica una clase | Sí |
+| DELETE | `/api/planner/:id` | Elimina una clase | Sí |
+
+Cada docente solo puede ver y modificar sus propias clases: una clase de otra cuenta responde 404.
 
 ---
 
@@ -247,6 +254,8 @@ npx cap open android
 | Planificador | Acceso sin sesión (401), crear, listar, datos inválidos (400) |
 
 **Inicio de sesión y registro (frontend):** 12 casos de prueba de interfaz, todos aprobados: redirección sin sesión, validaciones, registro, persistencia de la sesión, cierre de sesión, credenciales inválidas, correo duplicado, token inválido y vista en celular.
+
+**Planificador:** 16 casos de prueba de la API (crear, editar, duplicar, eliminar, validaciones en español y aislamiento entre docentes) y 18 casos de interfaz, todos aprobados.
 
 **Despliegue:** flujo validado en la versión publicada (explorador curricular, inicio de sesión y planificador).
 
@@ -287,7 +296,7 @@ El proyecto se gestiona con **Kanban**:
 | Modelo de datos, migraciones y seed | ✅ |
 | Explorador curricular | ✅ |
 | Recursos y actividades | ✅ (listado) |
-| Planificador de clases | 🔄 (API lista; falta crear, editar y eliminar desde la interfaz) |
+| Planificador de clases: crear, editar, duplicar y eliminar | ✅ |
 | Despliegue en la nube (Vercel + Render + Supabase) | ✅ |
 | Carga del currículum oficial MINEDUC completo | 🔄 |
 | Modo presentación para pantalla interactiva | ⏳ |

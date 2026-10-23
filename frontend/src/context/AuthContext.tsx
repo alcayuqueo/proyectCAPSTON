@@ -13,6 +13,13 @@ export interface Usuario {
   id: string;
   email: string;
   nombre?: string;
+  rol?: 'DOCENTE' | 'ADMIN';
+}
+
+/** Respuesta del backend al iniciar sesión o registrarse. */
+interface RespuestaSesion {
+  accessToken: string;
+  usuario?: Usuario;
 }
 
 interface AuthContextValue {
@@ -67,11 +74,16 @@ function sesionInicial(): Usuario | null {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<Usuario | null>(sesionInicial);
 
-  const abrirSesion = useCallback((token: string, nombre?: string) => {
-    const payload = leerPayload(token);
+  const abrirSesion = useCallback((respuesta: RespuestaSesion) => {
+    const payload = leerPayload(respuesta.accessToken);
     if (!payload) throw new Error('Token inválido');
-    const nuevo: Usuario = { id: payload.sub, email: payload.email, nombre };
-    guardar(TOKEN_KEY, token);
+    const nuevo: Usuario = {
+      id: payload.sub,
+      email: payload.email,
+      nombre: respuesta.usuario?.nombre,
+      rol: respuesta.usuario?.rol,
+    };
+    guardar(TOKEN_KEY, respuesta.accessToken);
     guardar(USUARIO_KEY, JSON.stringify(nuevo));
     setUsuario(nuevo);
   }, []);
@@ -84,35 +96,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const iniciarSesion = useCallback(
     async (email: string, password: string) => {
-      const { data } = await api.post<{ accessToken: string }>('/auth/login', {
-        email,
-        password,
-      });
-      // El login no devuelve el nombre: se conserva si ya se conocía en este equipo.
-      let nombre: string | undefined;
-      try {
-        const previo = JSON.parse(localStorage.getItem('nombre:' + email) ?? 'null');
-        nombre = previo ?? undefined;
-      } catch {
-        nombre = undefined;
-      }
-      abrirSesion(data.accessToken, nombre);
+      const { data } = await api.post<RespuestaSesion>('/auth/login', { email, password });
+      abrirSesion(data);
     },
     [abrirSesion],
   );
 
   const registrarse = useCallback(
     async (nombre: string, email: string, password: string) => {
-      const { data } = await api.post<{ accessToken: string }>('/auth/register', {
+      const { data } = await api.post<RespuestaSesion>('/auth/register', {
         nombre,
         email,
         password,
       });
-      guardar('nombre:' + email, JSON.stringify(nombre));
-      abrirSesion(data.accessToken, nombre);
+      abrirSesion(data);
     },
     [abrirSesion],
   );
+
+  // Sesiones guardadas antes de que el login devolviera el nombre:
+  // se completan los datos del docente consultando su perfil.
+  const faltaNombre = !!usuario && !usuario.nombre;
+  useEffect(() => {
+    if (!faltaNombre) return;
+    api
+      .get<Usuario>('/auth/me')
+      .then(({ data }) => {
+        setUsuario((actual) => {
+          if (!actual) return actual;
+          const completo = { ...actual, nombre: data.nombre, rol: data.rol };
+          guardar(USUARIO_KEY, JSON.stringify(completo));
+          return completo;
+        });
+      })
+      .catch(() => {
+        /* si falla, se sigue mostrando el correo */
+      });
+  }, [faltaNombre]);
 
   // Si la API rechaza el token (expiró), se cierra la sesión automáticamente.
   useEffect(() => {

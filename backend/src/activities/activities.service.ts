@@ -15,7 +15,9 @@ export class ActivitiesService {
       titulo: a.titulo,
       descripcion: a.descripcion,
       duracionMinutos: a.duracionMinutos,
+      asignaturaId: a.asignaturaId,
       asignatura: a.asignatura.nombre,
+      nivel: a.asignatura.nivel,
     }));
   }
 }

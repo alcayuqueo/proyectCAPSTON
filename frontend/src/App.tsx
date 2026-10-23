@@ -6,6 +6,7 @@ import ExploradorCurricular from './pages/ExploradorCurricular';
 import Recursos from './pages/Recursos';
 import Actividades from './pages/Actividades';
 import Planificador from './pages/Planificador';
+import FormularioClase from './pages/FormularioClase';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 
@@ -38,6 +39,22 @@ export default function App() {
           element={
             <RutaProtegida>
               <Planificador />
+            </RutaProtegida>
+          }
+        />
+        <Route
+          path="/planificador/nueva"
+          element={
+            <RutaProtegida>
+              <FormularioClase />
+            </RutaProtegida>
+          }
+        />
+        <Route
+          path="/planificador/:id/editar"
+          element={
+            <RutaProtegida>
+              <FormularioClase />
             </RutaProtegida>
           }
         />

@@ -33,12 +33,15 @@ export class CurriculumService {
       id: o.id,
       codigo: o.codigo,
       descripcion: o.descripcion,
+      asignaturaId: o.asignaturaId,
       asignatura: o.asignatura.nombre,
       nivel: o.asignatura.nivel,
     }));
   }
 
   listarAsignaturas() {
-    return this.prisma.asignatura.findMany();
+    return this.prisma.asignatura.findMany({
+      orderBy: [{ nombre: 'asc' }, { nivel: 'asc' }],
+    });
   }
 }

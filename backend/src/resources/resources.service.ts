@@ -14,8 +14,11 @@ export class ResourcesService {
       id: r.id,
       titulo: r.titulo,
       tipo: r.tipo.toLowerCase(),
+      url: r.url,
       unidad: r.unidad,
+      asignaturaId: r.asignaturaId,
       asignatura: r.asignatura.nombre,
+      nivel: r.asignatura.nivel,
     }));
   }
 }
