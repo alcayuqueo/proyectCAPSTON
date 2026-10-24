@@ -75,7 +75,7 @@ flowchart LR
 |---|---|---|---|
 | Frontend web | Interfaz del docente: inicio de sesión, explorador, recursos, actividades y planificador | Vercel | Implementado |
 | `auth` | Registro e inicio de sesión, emisión de JWT | Render | Implementado |
-| `curriculum` | Asignaturas y búsqueda de OA | Render | Implementado |
+| `curriculum` | Asignaturas, ejes y búsqueda de OA por asignatura, nivel, eje o palabra clave | Render | Implementado |
 | `resources` | Recursos educativos | Render | Implementado (listado) |
 | `activities` | Actividades por objetivo | Render | Implementado (listado) |
 | `planner` | Clases del docente: objetivo, recursos y actividades en orden (protegido con JWT) | Render | Implementado |
@@ -147,10 +147,13 @@ docker compose up -d db
 cd backend
 npm install
 npx prisma migrate deploy
-npx prisma db seed   # solo la primera vez
+npx prisma db seed           # solo la primera vez
+npm run curriculum:cargar    # currículum oficial; se puede repetir sin duplicar datos
 ```
 
-El seed carga asignaturas y objetivos de ejemplo (Matemática y Ciencias Naturales, 5° básico). Ejecutarlo una sola vez para no duplicar datos.
+El seed carga datos de ejemplo (recursos y actividades de Matemática y Ciencias Naturales, 5° básico). Ejecutarlo una sola vez para no duplicar datos.
+
+`npm run curriculum:cargar` carga los **324 Objetivos de Aprendizaje oficiales** de Matemática y Lenguaje y Comunicación de 1° a 6° básico, con su eje temático, más 24 actividades de ejemplo. El texto de cada OA se extrajo de las [Bases Curriculares Primero a Sexto Básico](https://www.curriculumnacional.cl/614/articles-22394_bases.pdf) (MINEDUC, 2018) y está en `backend/prisma/data/oa-basica-1-6.json`. El script no duplica datos: si el OA ya existe, actualiza su texto y eje.
 
 ### 4. Levantar el backend
 
@@ -294,11 +297,12 @@ El proyecto se gestiona con **Kanban**:
 | Autenticación con JWT (API) | ✅ |
 | Inicio de sesión y registro en el frontend | ✅ |
 | Modelo de datos, migraciones y seed | ✅ |
-| Explorador curricular | ✅ |
+| Explorador curricular con filtros por asignatura, nivel y eje | ✅ |
 | Recursos y actividades | ✅ (listado) |
 | Planificador de clases: crear, editar, duplicar y eliminar | ✅ |
 | Despliegue en la nube (Vercel + Render + Supabase) | ✅ |
-| Carga del currículum oficial MINEDUC completo | 🔄 |
+| Currículum oficial: Matemática y Lenguaje, 1° a 6° básico (324 OA con eje) | ✅ |
+| Currículum oficial: otras asignaturas y niveles | ⏳ |
 | Modo presentación para pantalla interactiva | ⏳ |
 | Roles y panel de administración del establecimiento | ⏳ |
 | App Android (APK) | ⏳ |

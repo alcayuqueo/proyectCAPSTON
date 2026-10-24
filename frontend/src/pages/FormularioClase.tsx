@@ -117,6 +117,15 @@ export default function FormularioClase() {
     () => objetivos.filter((o) => o.asignaturaId === asignaturaId),
     [objetivos, asignaturaId],
   );
+  // Los OA se agrupan por eje (Números y Operaciones, Lectura…), en el orden de las Bases.
+  const ejesAsignatura = useMemo(() => {
+    const grupos = new Map<string, Objetivo[]>();
+    for (const o of objetivosAsignatura) {
+      const clave = o.eje ?? '';
+      grupos.set(clave, [...(grupos.get(clave) ?? []), o]);
+    }
+    return [...grupos.entries()];
+  }, [objetivosAsignatura]);
   const recursosAsignatura = useMemo(
     () => recursos.filter((r) => r.asignaturaId === asignaturaId),
     [recursos, asignaturaId],
@@ -308,36 +317,45 @@ export default function FormularioClase() {
               {objetivosAsignatura.length === 0 && (
                 <p className="text-sm text-ink-500">Esta asignatura aún no tiene objetivos cargados.</p>
               )}
-              {objetivosAsignatura.map((o) => {
-                const elegido = objetivoId === o.id;
-                return (
-                  <label
-                    key={o.id}
-                    className={[
-                      'flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm transition-colors focus-within:ring-2 focus-within:ring-brand-400',
-                      elegido
-                        ? 'border-brand-500 bg-brand-50'
-                        : 'border-ink-300/30 hover:border-ink-300/60',
-                    ].join(' ')}
-                  >
-                    <input
-                      type="radio"
-                      name="objetivo"
-                      value={o.id}
-                      checked={elegido}
-                      onChange={() => {
-                        setObjetivoId(o.id);
-                        setErrores((e) => ({ ...e, objetivo: undefined }));
-                      }}
-                      className="mt-0.5 accent-brand-600"
-                    />
-                    <span className="shrink-0 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700">
-                      {o.codigo}
-                    </span>
-                    <span className="text-ink-700">{o.descripcion}</span>
-                  </label>
-                );
-              })}
+              {ejesAsignatura.map(([eje, lista]) => (
+                <div key={eje} className="flex flex-col gap-2">
+                  {eje && (
+                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-ink-500">
+                      {eje}
+                    </p>
+                  )}
+                  {lista.map((o) => {
+                    const elegido = objetivoId === o.id;
+                    return (
+                      <label
+                        key={o.id}
+                        className={[
+                          'flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm transition-colors focus-within:ring-2 focus-within:ring-brand-400',
+                          elegido
+                            ? 'border-brand-500 bg-brand-50'
+                            : 'border-ink-300/30 hover:border-ink-300/60',
+                        ].join(' ')}
+                      >
+                        <input
+                          type="radio"
+                          name="objetivo"
+                          value={o.id}
+                          checked={elegido}
+                          onChange={() => {
+                            setObjetivoId(o.id);
+                            setErrores((e) => ({ ...e, objetivo: undefined }));
+                          }}
+                          className="mt-0.5 accent-brand-600"
+                        />
+                        <span className="shrink-0 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700">
+                          {o.codigo}
+                        </span>
+                        <span className="whitespace-pre-line text-ink-700">{o.descripcion}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              ))}
             </fieldset>
           )}
           {errores.objetivo && <p className="text-xs text-red-600">{errores.objetivo}</p>}

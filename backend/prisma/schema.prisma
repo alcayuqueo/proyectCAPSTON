@@ -38,6 +38,7 @@ model Objetivo {
   id           String     @id @default(uuid())
   codigo       String // ej: "OA05"
   descripcion  String
+  eje          String? // ej: "Números y Operaciones", "Lectura"
   asignatura   Asignatura @relation(fields: [asignaturaId], references: [id])
   asignaturaId String
   planes       Plan[]

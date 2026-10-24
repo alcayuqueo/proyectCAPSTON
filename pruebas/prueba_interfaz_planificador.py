@@ -1,7 +1,7 @@
 # Pruebas de interfaz del planificador (18 casos) con Playwright.
 # Uso: backend y frontend corriendo en local ->  pip install playwright && playwright install chromium
 #      python pruebas/prueba_interfaz_planificador.py carpeta_capturas
-# Requiere los datos del seed más un recurso "Imagen: recta numérica con fracciones" y una actividad
+# Requiere los datos del seed y del currículum oficial (npm run curriculum:cargar), más un recurso "Imagen: recta numérica con fracciones" y una actividad
 # "Ticket de salida" de Matemática (ver pruebas/README.md).
 import sys, time
 from playwright.sync_api import sync_playwright
@@ -22,8 +22,9 @@ with sync_playwright() as p:
     ok('Validación: título y objetivo obligatorios', pg.get_by_text('Ingresa un título para la clase.').is_visible() and pg.get_by_text('Selecciona el objetivo de aprendizaje de la clase.').is_visible())
     pg.fill('#titulo','Fracciones en la recta numérica'); pg.fill('#fecha','2026-10-28')
     pg.select_option('#asignatura', label='Matemática · 5° básico')
-    ok('Al elegir asignatura solo aparecen sus OA', pg.get_by_text('OA05').is_visible() and pg.get_by_text('OA03').count()==0)
-    pg.get_by_text('Demostrar que comprenden las fracciones').click()
+    # Con el currículum oficial cargado (npm run curriculum:cargar): el OA de fracciones de 5° básico es el OA07.
+    ok('Al elegir asignatura solo aparecen sus OA', pg.get_by_text('OA07').is_visible() and pg.get_by_text('Investigar y explicar la estructura').count()==0)
+    pg.get_by_text('Demostrar que comprenden las fracciones propias').click()
     pg.get_by_text('Imagen: recta numérica con fracciones').click()
     pg.get_by_text('Video: ¿Qué es una fracción?').click()
     pg.get_by_text('Pizarra interactiva: ordenar fracciones').click()

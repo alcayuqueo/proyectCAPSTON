@@ -10,6 +10,7 @@ export interface Objetivo {
   id: string;
   codigo: string;
   descripcion: string;
+  eje: string | null; // ej: "Números y Operaciones", "Lectura"
   asignaturaId: string;
   asignatura: string;
   nivel: string;
