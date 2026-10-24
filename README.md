@@ -76,8 +76,8 @@ flowchart LR
 | Frontend web | Interfaz del docente: inicio de sesión, explorador, recursos, actividades y planificador | Vercel | Implementado |
 | `auth` | Registro e inicio de sesión, emisión de JWT | Render | Implementado |
 | `curriculum` | Asignaturas, ejes y búsqueda de OA por asignatura, nivel, eje o palabra clave | Render | Implementado |
-| `resources` | Recursos educativos | Render | Implementado (listado) |
-| `activities` | Actividades por objetivo | Render | Implementado (listado) |
+| `resources` | Recursos educativos: catálogo y recursos propios del docente (crear, editar, eliminar) | Render | Implementado |
+| `activities` | Actividades de clase: catálogo y actividades propias del docente (crear, editar, eliminar) | Render | Implementado |
 | `planner` | Clases del docente: objetivo, recursos y actividades en orden (protegido con JWT) | Render | Implementado |
 | Base de datos | Currículum, usuarios y planificaciones | Supabase | Implementado |
 | App Android | Empaquetado del frontend con Capacitor | — | Planificado |
@@ -231,9 +231,16 @@ npx cap open android
 | POST | `/api/auth/login` | Inicio de sesión; retorna JWT y datos del usuario | No |
 | GET | `/api/auth/me` | Perfil del docente con sesión activa | Sí |
 | GET | `/api/curriculum/asignaturas` | Lista asignaturas y niveles | No |
-| GET | `/api/curriculum/objetivos?q=` | Busca objetivos de aprendizaje | No |
-| GET | `/api/resources` | Lista recursos | No |
-| GET | `/api/activities` | Lista actividades | No |
+| GET | `/api/curriculum/objetivos?q=&asignatura=&nivel=&eje=` | Busca objetivos de aprendizaje | No |
+| GET | `/api/curriculum/ejes?asignatura=` | Ejes de una asignatura | No |
+| GET | `/api/resources` | Lista el catálogo y, con sesión, los recursos propios | Opcional |
+| POST | `/api/resources` | Crea un recurso propio (título, tipo, enlace, unidad, asignatura) | Sí |
+| PATCH | `/api/resources/:id` | Edita un recurso propio | Sí |
+| DELETE | `/api/resources/:id` | Elimina un recurso propio (se quita de las clases que lo usaban) | Sí |
+| GET | `/api/activities` | Lista el catálogo y, con sesión, las actividades propias | Opcional |
+| POST | `/api/activities` | Crea una actividad propia (título, descripción, duración, asignatura) | Sí |
+| PATCH | `/api/activities/:id` | Edita una actividad propia | Sí |
+| DELETE | `/api/activities/:id` | Elimina una actividad propia | Sí |
 | GET | `/api/planner` | Lista las clases del docente, con objetivo, recursos y actividades | Sí |
 | GET | `/api/planner/:id` | Obtiene una clase | Sí |
 | POST | `/api/planner` | Crea una clase (título, fecha, objetivo, recursos, actividades y notas) | Sí |
@@ -242,6 +249,8 @@ npx cap open android
 | DELETE | `/api/planner/:id` | Elimina una clase | Sí |
 
 Cada docente solo puede ver y modificar sus propias clases: una clase de otra cuenta responde 404.
+
+Los recursos y actividades del **catálogo** (sin autor) son de solo lectura (403 al intentar modificarlos). Los **propios** solo los ve, edita y usa en sus clases el docente que los creó; para otra cuenta responden 404. Los enlaces de recursos solo aceptan direcciones `http://` o `https://`.
 
 ---
 
@@ -298,7 +307,7 @@ El proyecto se gestiona con **Kanban**:
 | Inicio de sesión y registro en el frontend | ✅ |
 | Modelo de datos, migraciones y seed | ✅ |
 | Explorador curricular con filtros por asignatura, nivel y eje | ✅ |
-| Recursos y actividades | ✅ (listado) |
+| Recursos y actividades: catálogo y propios (crear, editar, eliminar) | ✅ |
 | Planificador de clases: crear, editar, duplicar y eliminar | ✅ |
 | Despliegue en la nube (Vercel + Render + Supabase) | ✅ |
 | Diseño adaptable: menú desplegable en celulares y tablets | ✅ |
@@ -308,6 +317,6 @@ El proyecto se gestiona con **Kanban**:
 | Roles y panel de administración del establecimiento | ⏳ |
 | App Android (APK) | ⏳ |
 | Almacenamiento de archivos (MinIO) | ⏳ |
-| Pruebas automatizadas | ⏳ |
+| Pruebas automatizadas (unitarias con Jest, API e interfaz) | 🔄 |
 
 ✅ hecho · 🔄 en progreso · ⏳ planificado

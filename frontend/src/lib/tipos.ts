@@ -27,6 +27,10 @@ export interface Recurso {
   asignaturaId: string;
   asignatura: string;
   nivel: string;
+  /** true si lo creó el docente con sesión: puede editarlo y eliminarlo. */
+  propio: boolean;
+  /** Cantidad de clases que lo usan. */
+  usos: number;
 }
 
 export interface Actividad {
@@ -37,6 +41,10 @@ export interface Actividad {
   asignaturaId: string;
   asignatura: string;
   nivel: string;
+  /** true si la creó el docente con sesión: puede editarla y eliminarla. */
+  propio: boolean;
+  /** Cantidad de clases que la usan. */
+  usos: number;
 }
 
 /** Planificación de una clase, tal como la devuelve /api/planner. */

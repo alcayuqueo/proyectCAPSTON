@@ -23,6 +23,8 @@ model Usuario {
   rol           RolUsuario @default(DOCENTE)
   createdAt     DateTime   @default(now())
   planes        Plan[]
+  recursos      Recurso[]
+  actividades   Actividad[]
 }
 
 model Asignatura {
@@ -60,8 +62,13 @@ model Recurso {
   unidad       String
   asignatura   Asignatura    @relation(fields: [asignaturaId], references: [id])
   asignaturaId String
+  // Docente que lo creó. Vacío = recurso del catálogo, compartido y de solo lectura.
+  autor        Usuario?      @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  autorId      String?
   createdAt    DateTime      @default(now())
   planes       PlanRecurso[]
+
+  @@index([autorId])
 }
 
 model Actividad {
@@ -71,8 +78,13 @@ model Actividad {
   duracionMinutos Int
   asignatura      Asignatura      @relation(fields: [asignaturaId], references: [id])
   asignaturaId    String
+  // Docente que la creó. Vacío = actividad del catálogo, compartida y de solo lectura.
+  autor           Usuario?        @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  autorId         String?
   createdAt       DateTime        @default(now())
   planes          PlanActividad[]
+
+  @@index([autorId])
 }
 
 model Plan {

@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { visiblesPara } from '../common/catalogo';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
 
@@ -64,8 +65,11 @@ export class PlannerService {
     return plan;
   }
 
-  /** Verifica que el objetivo, los recursos y las actividades existan antes de guardar. */
-  private async validarReferencias(dto: {
+  /**
+   * Verifica que el objetivo, los recursos y las actividades existan antes de guardar.
+   * Los recursos y actividades deben ser del catálogo o del propio docente.
+   */
+  private async validarReferencias(docenteId: string, dto: {
     objetivoId?: string;
     recursoIds?: string[];
     actividadIds?: string[];
@@ -78,14 +82,18 @@ export class PlannerService {
     }
     if (dto.recursoIds?.length) {
       const unicos = [...new Set(dto.recursoIds)];
-      const total = await this.prisma.recurso.count({ where: { id: { in: unicos } } });
+      const total = await this.prisma.recurso.count({
+        where: { id: { in: unicos }, ...visiblesPara(docenteId) },
+      });
       if (total !== unicos.length) {
         throw new BadRequestException('Alguno de los recursos seleccionados no existe.');
       }
     }
     if (dto.actividadIds?.length) {
       const unicas = [...new Set(dto.actividadIds)];
-      const total = await this.prisma.actividad.count({ where: { id: { in: unicas } } });
+      const total = await this.prisma.actividad.count({
+        where: { id: { in: unicas }, ...visiblesPara(docenteId) },
+      });
       if (total !== unicas.length) {
         throw new BadRequestException('Alguna de las actividades seleccionadas no existe.');
       }
@@ -114,7 +122,7 @@ export class PlannerService {
   }
 
   async crear(docenteId: string, dto: CreatePlanDto) {
-    await this.validarReferencias(dto);
+    await this.validarReferencias(docenteId, dto);
     const plan = await this.prisma.plan.create({
       data: {
         titulo: dto.titulo.trim(),
@@ -132,7 +140,7 @@ export class PlannerService {
 
   async actualizar(docenteId: string, id: string, dto: UpdatePlanDto) {
     await this.buscarPropia(docenteId, id);
-    await this.validarReferencias(dto);
+    await this.validarReferencias(docenteId, dto);
     const plan = await this.prisma.plan.update({
       where: { id },
       data: {
