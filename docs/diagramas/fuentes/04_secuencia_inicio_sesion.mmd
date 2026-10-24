@@ -1,0 +1,33 @@
+---
+title: Secuencia · Inicio de sesión con JWT
+---
+sequenceDiagram
+    autonumber
+    actor D as Docente
+    participant W as Frontend React<br/>(Login, AuthContext)
+    participant AC as AuthController
+    participant VP as ValidationPipe
+    participant AS as AuthService
+    participant DB as PostgreSQL<br/>(Prisma)
+
+    D->>W: Ingresa correo y contraseña
+    W->>AC: POST /api/auth/login {email, password}
+    AC->>VP: Valida LoginDto
+    alt Datos con formato inválido
+        VP-->>W: 400 con mensajes en español
+    else Datos válidos
+        AC->>AS: login(dto)
+        AS->>DB: usuario.findUnique(email en minúsculas)
+        DB-->>AS: Usuario o null
+        alt No existe o contraseña incorrecta (bcrypt.compare)
+            AS-->>W: 401 «Credenciales inválidas.»
+            W-->>D: Muestra el error en el formulario
+        else Contraseña correcta
+            AS->>AS: jwt.sign({sub, email})
+            AS-->>W: 201 {accessToken, usuario}
+            W->>W: Guarda el token en localStorage
+            W-->>D: Redirige al planificador
+        end
+    end
+
+    Note over W,AC: En cada petición siguiente, axios agrega<br/>Authorization: Bearer <token>.<br/>Si el backend responde 401, la sesión se cierra.

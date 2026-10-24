@@ -1,0 +1,41 @@
+---
+title: Diagrama de componentes · Software Educativo
+config:
+  layout: elk
+---
+flowchart LR
+    subgraph CL["«subsistema» Cliente · React + Vite + TypeScript"]
+        direction TB
+        UI["«componente»<br/>Páginas<br/>Explorador · Recursos · Actividades<br/>Planificador · Formulario de clase"]
+        MP["«componente»<br/>Modo presentación<br/>diapositivas · cronómetro"]
+        AU["«componente»<br/>AuthContext<br/>sesión y RutaProtegida"]
+        AX["«componente»<br/>Cliente HTTP (axios)<br/>token Bearer · manejo de 401"]
+        UI --> AX
+        MP --> AX
+        AU --> AX
+    end
+
+    subgraph BE["«subsistema» API REST · NestJS"]
+        direction TB
+        AUTH["«componente» auth<br/>registro · login · JWT · guards"]
+        CUR["«componente» curriculum<br/>asignaturas · OA · ejes"]
+        RES["«componente» resources<br/>catálogo + propios"]
+        ACT["«componente» activities<br/>catálogo + propias"]
+        PLA["«componente» planner<br/>clases del docente"]
+        PRI["«componente» prisma<br/>PrismaService (ORM)"]
+        CUR --> PRI
+        RES --> PRI
+        ACT --> PRI
+        PLA --> PRI
+        AUTH --> PRI
+        RES -. usa .-> AUTH
+        ACT -. usa .-> AUTH
+        PLA -. usa .-> AUTH
+    end
+
+    DB[("«base de datos»<br/>PostgreSQL 16<br/>Row Level Security")]
+    EXT["«servicio externo»<br/>YouTube · Google Drive"]
+
+    AX == "«interfaz» REST /api · JSON + JWT" ==> BE
+    PRI == "SQL (Prisma)" ==> DB
+    MP -. "iframe embed" .-> EXT

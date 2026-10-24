@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="990" viewBox="0 0 1240 990">
+<defs>
+  <marker id="abierta" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+    <path d="M1,1 L11,6 L1,11" fill="none" stroke="#3f4744" stroke-width="1.6"/></marker>
+  <marker id="triangulo" viewBox="0 0 16 16" refX="15" refY="8" markerWidth="16" markerHeight="16" orient="auto-start-reverse">
+    <path d="M1,1 L15,8 L1,15 Z" fill="#fff" stroke="#3f4744" stroke-width="1.6"/></marker>
+</defs>
+<rect width="1240" height="990" fill="#ffffff"/>
+<text x="620.0" y="26.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Diagrama de casos de uso · Software Educativo</text>
+<rect x="250" y="56" width="770" height="860" rx="10" fill="#f6f8f7" stroke="#6b7370" stroke-width="1.5"/>
+<text x="635.0" y="78.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Software Educativo</text>
+<line x1="270" y1="408" x2="1000" y2="408" stroke="#aab0ad" stroke-dasharray="4 6"/>
+<text x="280" y="106.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" dominant-baseline="middle" fill="#6b7370">Sin sesión</text>
+<text x="280" y="431.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" dominant-baseline="middle" fill="#6b7370">Con sesión iniciada (JWT)</text>
+<ellipse cx="470" cy="125" rx="137.0" ry="23.5" fill="#eefaf6" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="125.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Explorar el currículum oficial</text>
+<ellipse cx="470" cy="205" rx="114.2" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="196.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Ver catálogo de recursos</text>
+<text x="470" y="213.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">y actividades</text>
+<ellipse cx="470" cy="285" rx="64.8" ry="23.5" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="285.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Registrarse</text>
+<ellipse cx="470" cy="355" rx="76.2" ry="23.5" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="355.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Iniciar sesión</text>
+<ellipse cx="840" cy="125" rx="121.8" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="840" y="116.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Filtrar OA por asignatura,</text>
+<text x="840" y="133.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">nivel, eje o palabra clave</text>
+<ellipse cx="470" cy="545" rx="121.8" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="536.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Gestionar recursos propios</text>
+<text x="470" y="553.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">(crear, editar, eliminar)</text>
+<ellipse cx="470" cy="630" rx="133.2" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="621.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Gestionar actividades propias</text>
+<text x="470" y="638.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">(crear, editar, eliminar)</text>
+<ellipse cx="510" cy="720" rx="156.0" ry="32.0" fill="#eefaf6" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="510" y="711.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Planificar una clase</text>
+<text x="510" y="728.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">(crear, editar, duplicar, eliminar)</text>
+<ellipse cx="440" cy="815" rx="121.8" ry="32.0" fill="#eefaf6" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="440" y="806.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Presentar la clase</text>
+<text x="440" y="823.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">en la pantalla interactiva</text>
+<ellipse cx="470" cy="470" rx="72.4" ry="23.5" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="470" y="470.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Cerrar sesión</text>
+<ellipse cx="840" cy="680" rx="87.6" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="840" y="671.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Seleccionar el OA</text>
+<text x="840" y="688.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">del currículum</text>
+<ellipse cx="840" cy="775" rx="80.0" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="840" y="766.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Usar cronómetro</text>
+<text x="840" y="783.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">de la actividad</text>
+<ellipse cx="840" cy="865" rx="91.4" ry="32.0" fill="#fff" stroke="#0c6f59" stroke-width="1.8"/>
+<text x="840" y="856.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Reproducir video o</text>
+<text x="840" y="873.8" font-family="Inter, Arial, Helvetica, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">archivo incrustado</text>
+<line x1="718.2" y1="125.0" x2="607.0" y2="125.0" stroke="#3f4744" stroke-width="1.5" stroke-dasharray="7 5" marker-end="url(#abierta)"/>
+<rect x="614.6" y="105.0" width="96" height="20" fill="#fff"/>
+<text x="662.6" y="115.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#3f4744">«extend»</text>
+<line x1="644.3" y1="703.7" x2="756.9" y2="690.1" stroke="#3f4744" stroke-width="1.5" stroke-dasharray="7 5" marker-end="url(#abierta)"/>
+<rect x="652.5810834210224" y="676.8992626156337" width="96" height="20" fill="#fff"/>
+<text x="700.5810834210224" y="686.9" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#3f4744">«include»</text>
+<line x1="762.4" y1="782.8" x2="553.8" y2="803.6" stroke="#3f4744" stroke-width="1.5" stroke-dasharray="7 5" marker-end="url(#abierta)"/>
+<rect x="610.1107995517937" y="773.1889200448206" width="96" height="20" fill="#fff"/>
+<text x="658.1107995517937" y="783.2" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#3f4744">«extend»</text>
+<line x1="753.9" y1="854.2" x2="550.0" y2="828.7" stroke="#3f4744" stroke-width="1.5" stroke-dasharray="7 5" marker-end="url(#abierta)"/>
+<rect x="603.9538115174038" y="821.4942264396755" width="96" height="20" fill="#fff"/>
+<text x="651.9538115174038" y="831.5" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12.5" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#3f4744">«extend»</text>
+<g stroke="#1a1f1c" stroke-width="2" fill="none"><circle cx="120" cy="200" r="13" fill="#fff"/><line x1="120" y1="213" x2="120" y2="250"/><line x1="98" y1="226" x2="142" y2="226"/><line x1="120" y1="250" x2="102" y2="280"/><line x1="120" y1="250" x2="138" y2="280"/></g>
+<text x="120" y="300.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Visitante</text>
+<g stroke="#1a1f1c" stroke-width="2" fill="none"><circle cx="120" cy="575" r="13" fill="#fff"/><line x1="120" y1="588" x2="120" y2="625"/><line x1="98" y1="601" x2="142" y2="601"/><line x1="120" y1="625" x2="102" y2="655"/><line x1="120" y1="625" x2="138" y2="655"/></g>
+<text x="120" y="675.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">Docente</text>
+<g stroke="#1a1f1c" stroke-width="2" fill="none"><circle cx="1130" cy="810" r="13" fill="#fff"/><line x1="1130" y1="823" x2="1130" y2="860"/><line x1="1108" y1="836" x2="1152" y2="836"/><line x1="1130" y1="860" x2="1112" y2="890"/><line x1="1130" y1="860" x2="1148" y2="890"/></g>
+<text x="1130" y="908.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="middle" dominant-baseline="middle" fill="#6b7370">«sistema externo»</text>
+<text x="1130" y="926.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" dominant-baseline="middle" fill="#1a1f1c">YouTube / Drive</text>
+<line x1="144.0" y1="230.0" x2="402.0" y2="145.4" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="230.0" x2="359.3" y2="212.9" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="230.0" x2="410.5" y2="275.7" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="230.0" x2="420.2" y2="337.2" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="605.0" x2="368.0" y2="562.5" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="605.0" x2="342.3" y2="620.9" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="605.0" x2="420.9" y2="693.7" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="605.0" x2="394.7" y2="785.3" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="144.0" y1="605.0" x2="423.4" y2="488.0" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="1106.0" y1="840.0" x2="928.7" y2="857.3" stroke="#3f4744" stroke-width="1.5"/>
+<line x1="120.0" y1="562.0" x2="120.0" y2="324.0" stroke="#3f4744" stroke-width="1.5" marker-end="url(#triangulo)"/>
+<text x="132" y="420.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="11.5" font-weight="normal" text-anchor="start" dominant-baseline="middle" fill="#6b7370">generalización</text>
+<g><path d="M250 928 h420 l14 14 v30 h-434 z" fill="#fffbe6" stroke="#aab0ad"/><path d="M670 928 v14 h14" fill="none" stroke="#aab0ad"/></g>
+<text x="260" y="950.0" font-family="Inter, Arial, Helvetica, sans-serif" font-size="12" font-weight="normal" text-anchor="start" dominant-baseline="middle" fill="#3f4744">Los recursos y actividades del catálogo son de solo lectura.</text>
+</svg>

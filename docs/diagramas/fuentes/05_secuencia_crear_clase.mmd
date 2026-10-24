@@ -1,0 +1,39 @@
+---
+title: Secuencia · Crear una clase en el planificador
+---
+sequenceDiagram
+    autonumber
+    actor D as Docente
+    participant F as FormularioClase<br/>(React)
+    participant G as JwtAuthGuard<br/>+ JwtStrategy
+    participant PC as PlannerController
+    participant PS as PlannerService
+    participant DB as PostgreSQL<br/>(Prisma)
+    participant O as Otros módulos de la API<br/>(curriculum, resources, activities)
+
+    D->>F: Abre «Nueva clase»
+    par Carga del currículum y catálogos
+        F->>O: GET /curriculum/asignaturas y /curriculum/objetivos
+        F->>O: GET /resources y /activities (catálogo + propios)
+        O-->>F: Asignaturas, OA, recursos y actividades
+    end
+    D->>F: Título, fecha, asignatura, OA,<br/>recursos y actividades en orden
+    F->>F: Valida campos obligatorios
+    F->>G: POST /api/planner + Bearer token
+    alt Token ausente o vencido
+        G-->>F: 401 → se cierra la sesión
+    else Token válido
+        G->>PC: req.user = {userId}
+        PC->>PS: crear(userId, CreatePlanDto)
+        PS->>DB: objetivo.findUnique(objetivoId)
+        PS->>DB: recurso.count(ids, catálogo o propios)
+        PS->>DB: actividad.count(ids, catálogo o propias)
+        alt Alguna referencia no existe o es de otro docente
+            PS-->>F: 400 con el motivo
+        else Todo válido
+            PS->>DB: plan.create con PlanRecurso y PlanActividad (orden)
+            DB-->>PS: Plan con objetivo, recursos y actividades
+            PS-->>F: 201 Clase (duración total calculada)
+            F-->>D: Vuelve al planificador con el aviso «Clase … creada.»
+        end
+    end

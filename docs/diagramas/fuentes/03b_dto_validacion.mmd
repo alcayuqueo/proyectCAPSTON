@@ -1,0 +1,60 @@
+---
+title: DTO y reglas de validación (class-validator, mensajes en español)
+config:
+  layout: elk
+---
+classDiagram
+    direction LR
+    class RegisterDto {
+        nombre: string
+        email: string
+        password: string «mín. 6»
+    }
+    class LoginDto {
+        email: string
+        password: string
+    }
+    class CreateRecursoDto {
+        titulo: string
+        tipo: video | documento | imagen
+        url?: string «opcional, solo http o https»
+        unidad: string
+        asignaturaId: string
+    }
+    class CreateActividadDto {
+        titulo: string
+        descripcion: string
+        duracionMinutos: int «1 a 240»
+        asignaturaId: string
+    }
+    class CreatePlanDto {
+        titulo: string
+        fecha: string
+        objetivoId: string
+        notas?: string
+        recursoIds?: string[]
+        actividadIds?: string[]
+    }
+
+    class UpdateRecursoDto {
+        todos los campos opcionales
+    }
+    class UpdateActividadDto {
+        todos los campos opcionales
+    }
+    class UpdatePlanDto {
+        todos los campos opcionales
+    }
+    class ValidationPipe {
+        <<global>>
+        whitelist: true
+        transform: true
+    }
+    ValidationPipe ..> RegisterDto : valida
+    ValidationPipe ..> LoginDto : valida
+    ValidationPipe ..> CreateRecursoDto : valida
+    ValidationPipe ..> CreateActividadDto : valida
+    ValidationPipe ..> CreatePlanDto : valida
+    CreateRecursoDto <.. UpdateRecursoDto : mismas reglas
+    CreateActividadDto <.. UpdateActividadDto : mismas reglas
+    CreatePlanDto <.. UpdatePlanDto : mismas reglas

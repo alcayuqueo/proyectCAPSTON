@@ -48,6 +48,8 @@ Plataforma web y móvil que ayuda a docentes de establecimientos chilenos a **pl
 
 Arquitectura en **tres capas** desplegada en la nube: cliente (web y móvil), API REST y persistencia. El backend sigue el patrón **Controller → Service → Prisma** en cada módulo.
 
+> Diagramas completos (modelo ER, casos de uso, clases, secuencia, componentes y despliegue) en [`docs/diagramas`](docs/diagramas/README.md).
+
 ```mermaid
 flowchart LR
     subgraph Cliente["Cliente"]
@@ -317,6 +319,7 @@ El proyecto se gestiona con **Kanban**:
 | Roles y panel de administración del establecimiento | ⏳ |
 | App Android (APK) | ⏳ |
 | Almacenamiento de archivos (MinIO) | ⏳ |
+| Diagramas UML y modelo ER (`docs/diagramas`) | ✅ |
 | Pruebas automatizadas (unitarias con Jest, API e interfaz) | 🔄 |
 
 ✅ hecho · 🔄 en progreso · ⏳ planificado

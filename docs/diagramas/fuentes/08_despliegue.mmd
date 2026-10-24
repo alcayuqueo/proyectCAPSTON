@@ -1,0 +1,27 @@
+---
+title: Diagrama de despliegue · Producción
+config:
+  layout: elk
+---
+flowchart LR
+    subgraph AULA["«dispositivo» Pantalla interactiva / notebook / celular"]
+        NAV["Navegador web<br/>(app Android con Capacitor: planificada)"]
+    end
+    subgraph VERCEL["«nodo» Vercel (CDN)"]
+        FE["«artefacto»<br/>frontend/dist<br/>HTML · JS · CSS"]
+    end
+    subgraph RENDER["«nodo» Render · Web Service Node 20"]
+        API["«artefacto»<br/>backend/dist (NestJS)<br/>prisma migrate deploy al iniciar"]
+    end
+    subgraph SUPA["«nodo» Supabase · PostgreSQL 16"]
+        BD[("base de datos postgres<br/>RLS activado en todas las tablas")]
+    end
+    GH["«repositorio» GitHub<br/>alcayuqueo/proyectCAPSTON"]
+    YT["YouTube · Google Drive"]
+
+    NAV -- "HTTPS" --> FE
+    NAV -- "HTTPS · REST + JWT" --> API
+    API -- "TLS · pooler 6543 (app)<br/>5432 (migraciones)" --> BD
+    NAV -. "HTTPS · iframe" .-> YT
+    GH -. "git push → despliegue automático" .-> VERCEL
+    GH -. "git push → despliegue automático" .-> RENDER

@@ -1,0 +1,29 @@
+---
+title: Secuencia · Presentar una clase en la pantalla interactiva
+---
+sequenceDiagram
+    autonumber
+    actor D as Docente
+    participant P as ModoPresentacion<br/>(React)
+    participant API as PlannerController<br/>/ PlannerService
+    participant YT as YouTube / Google Drive
+
+    D->>P: «Presentar» en una clase
+    P->>API: GET /api/planner/:id (JWT)
+    API-->>P: Clase: objetivo, recursos y actividades en orden
+    P->>P: Arma las diapositivas:<br/>portada → recursos → actividades → cierre
+    P-->>D: Portada con el OA y la agenda
+
+    loop Siguiente (botón, flecha, control remoto o gesto)
+        alt Diapositiva de recurso con video o archivo
+            P->>P: medioDe(url): obtiene el id del video o archivo
+            P->>YT: iframe youtube-nocookie.com/embed/{id}<br/>o drive.google.com/file/d/{id}/preview
+            YT-->>D: Reproduce dentro de la diapositiva
+        else Diapositiva de actividad
+            D->>P: Iniciar / Pausar / +1 min
+            P->>P: Cronómetro por actividad<br/>(sigue al cambiar de diapositiva)
+            P-->>D: «¡Tiempo!» al llegar a cero
+        end
+    end
+    D->>P: Terminar
+    P-->>D: Vuelve al planificador

@@ -1,0 +1,76 @@
+---
+title: Modelo entidad-relación · Software Educativo (PostgreSQL en Supabase)
+config:
+  layout: elk
+---
+erDiagram
+    USUARIO ||--o{ PLAN : "planifica"
+    USUARIO |o--o{ RECURSO : "crea (propios)"
+    USUARIO |o--o{ ACTIVIDAD : "crea (propias)"
+    ASIGNATURA ||--o{ OBJETIVO : "contiene"
+    ASIGNATURA ||--o{ RECURSO : "clasifica"
+    ASIGNATURA ||--o{ ACTIVIDAD : "clasifica"
+    OBJETIVO ||--o{ PLAN : "se trabaja en"
+    PLAN ||--o{ PLAN_RECURSO : "usa, en orden"
+    RECURSO ||--o{ PLAN_RECURSO : "aparece en"
+    PLAN ||--o{ PLAN_ACTIVIDAD : "realiza, en orden"
+    ACTIVIDAD ||--o{ PLAN_ACTIVIDAD : "aparece en"
+
+    USUARIO {
+        uuid id PK
+        text nombre
+        text email UK "único"
+        text passwordHash "bcrypt"
+        enum rol "DOCENTE | ADMIN"
+        timestamp createdAt
+    }
+    ASIGNATURA {
+        uuid id PK
+        text nombre "ej. Matemática"
+        text nivel "ej. 3° básico"
+    }
+    OBJETIVO {
+        uuid id PK
+        text codigo "ej. OA11"
+        text descripcion "texto oficial del OA"
+        text eje "ej. Números y Operaciones (opcional)"
+        uuid asignaturaId FK "único junto a codigo"
+    }
+    RECURSO {
+        uuid id PK
+        text titulo
+        enum tipo "VIDEO | DOCUMENTO | IMAGEN"
+        text url "opcional, solo http(s)"
+        text unidad
+        uuid asignaturaId FK
+        uuid autorId FK "vacío = catálogo"
+        timestamp createdAt
+    }
+    ACTIVIDAD {
+        uuid id PK
+        text titulo
+        text descripcion
+        int duracionMinutos "1 a 240"
+        uuid asignaturaId FK
+        uuid autorId FK "vacío = catálogo"
+        timestamp createdAt
+    }
+    PLAN {
+        uuid id PK
+        text titulo
+        timestamp fecha
+        text notas "opcional"
+        uuid docenteId FK
+        uuid objetivoId FK
+        timestamp createdAt
+    }
+    PLAN_RECURSO {
+        uuid planId PK, FK
+        uuid recursoId PK, FK
+        int orden "posición en la clase"
+    }
+    PLAN_ACTIVIDAD {
+        uuid planId PK, FK
+        uuid actividadId PK, FK
+        int orden "posición en la clase"
+    }

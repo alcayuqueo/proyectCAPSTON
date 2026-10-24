@@ -1,0 +1,125 @@
+---
+title: Diagrama de clases · Backend NestJS (patrón Controller → Service → Prisma)
+config:
+  layout: elk
+---
+classDiagram
+    direction LR
+
+    class AuthController {
+        +register(dto: RegisterDto)
+        +login(dto: LoginDto)
+        +perfil(req) «JWT»
+    }
+    class AuthService {
+        -prisma: PrismaService
+        -jwt: JwtService
+        +register(dto) RespuestaSesion
+        +login(dto) RespuestaSesion
+        +perfil(usuarioId) Usuario
+    }
+    class JwtStrategy {
+        +validate(payload) userId, email
+    }
+    class JwtAuthGuard {
+        <<Guard>>
+        exige un JWT válido
+    }
+    class OptionalJwtAuthGuard {
+        <<Guard>>
+        +handleRequest(err, user) user | null
+    }
+
+    class CurriculumController {
+        +buscarObjetivos(q, asignatura, nivel, eje)
+        +listarAsignaturas()
+        +listarEjes(asignatura)
+    }
+    class CurriculumService {
+        +buscarObjetivos(filtros) Objetivo[]
+        +listarAsignaturas() Asignatura[]
+        +listarEjes(asignatura) string[]
+    }
+
+    class ResourcesController {
+        +listar(req) «sesión opcional»
+        +crear(req, dto) «JWT»
+        +actualizar(req, id, dto) «JWT»
+        +eliminar(req, id) «JWT»
+    }
+    class ResourcesService {
+        +listar(docenteId?) Recurso[]
+        +crear(docenteId, dto) Recurso
+        +actualizar(docenteId, id, dto) Recurso
+        +eliminar(docenteId, id)
+        -validarAsignatura(id)
+        -formatear(recurso, docenteId)
+    }
+    class ActivitiesController {
+        +listar(req) «sesión opcional»
+        +crear(req, dto) «JWT»
+        +actualizar(req, id, dto) «JWT»
+        +eliminar(req, id) «JWT»
+    }
+    class ActivitiesService {
+        +listar(docenteId?) Actividad[]
+        +crear(docenteId, dto) Actividad
+        +actualizar(docenteId, id, dto) Actividad
+        +eliminar(docenteId, id)
+        -validarAsignatura(id)
+        -formatear(actividad, docenteId)
+    }
+    class Catalogo {
+        <<common/catalogo.ts>>
+        +verificarAutor(elemento, docenteId)
+        +visiblesPara(docenteId?) filtro
+    }
+
+    class PlannerController {
+        <<JWT en todas las rutas>>
+        +listar(req)
+        +obtener(req, id)
+        +crear(req, dto)
+        +actualizar(req, id, dto)
+        +duplicar(req, id)
+        +eliminar(req, id)
+    }
+    class PlannerService {
+        +listarPorDocente(docenteId) Clase[]
+        +obtener(docenteId, id) Clase
+        +crear(docenteId, dto) Clase
+        +actualizar(docenteId, id, dto) Clase
+        +duplicar(docenteId, id) Clase
+        +eliminar(docenteId, id)
+        -buscarPropia(docenteId, id)
+        -validarReferencias(docenteId, dto)
+    }
+
+    class PrismaService {
+        <<extiende PrismaClient>>
+        +onModuleInit()
+        +onModuleDestroy()
+    }
+
+    AuthController --> AuthService
+    AuthService --> PrismaService
+    JwtAuthGuard ..> JwtStrategy : usa
+    OptionalJwtAuthGuard ..> JwtStrategy : usa
+    CurriculumController --> CurriculumService
+    CurriculumService --> PrismaService
+    ResourcesController --> ResourcesService
+    ResourcesService --> PrismaService
+    ResourcesService ..> Catalogo
+    ActivitiesController --> ActivitiesService
+    ActivitiesService --> PrismaService
+    ActivitiesService ..> Catalogo
+    PlannerController --> PlannerService
+    PlannerService --> PrismaService
+    PlannerService ..> Catalogo
+
+    PlannerController ..> JwtAuthGuard : protegido por
+    AuthController ..> JwtAuthGuard : /auth/me
+    ResourcesController ..> OptionalJwtAuthGuard : listado
+    ResourcesController ..> JwtAuthGuard : crear, editar, eliminar
+    ActivitiesController ..> OptionalJwtAuthGuard : listado
+    ActivitiesController ..> JwtAuthGuard : crear, editar, eliminar
