@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { configurarApp } from './configuracion';
+import { verificarSecretoJwt } from './auth/secreto-jwt';
 
 async function bootstrap() {
+  verificarSecretoJwt();
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
-  app.enableCors();
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  configurarApp(app);
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`Backend escuchando en http://localhost:${port}/api`);

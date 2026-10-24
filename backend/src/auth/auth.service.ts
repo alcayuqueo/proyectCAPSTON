@@ -10,6 +10,12 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
 
+/**
+ * Hash bcrypt de una contraseña cualquiera. Cuando el correo no existe se compara igual
+ * contra este hash, para que la respuesta tarde lo mismo y no revele qué correos tienen cuenta.
+ */
+const HASH_DE_RELLENO = bcrypt.hashSync('contraseña-de-relleno', 10);
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -37,6 +43,7 @@ export class AuthService {
       where: { email: dto.email.trim().toLowerCase() },
     });
     if (!usuario) {
+      await bcrypt.compare(dto.password, HASH_DE_RELLENO);
       throw new UnauthorizedException('Credenciales inválidas.');
     }
 

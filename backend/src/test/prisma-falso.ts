@@ -18,7 +18,7 @@ function cumple(fila: Fila, where: Fila = {}): boolean {
 function tabla(nombre: string, db: PrismaFalso) {
   const filas: Fila[] = [];
   let siguiente = 1;
-  const conRelaciones = (f: Fila) => ({
+  const conRelaciones = (f: Fila): Fila => ({
     ...f,
     asignatura: db.datos.asignatura.find((a) => a.id === f.asignaturaId),
     _count: { planes: db.usos[f.id] ?? 0 },
@@ -62,4 +62,30 @@ export class PrismaFalso {
   };
   recurso = tabla('recurso', this);
   actividad = tabla('actividad', this);
+
+  // Usuarios y clases (para las pruebas de seguridad de la API)
+  usuarios: Fila[] = [];
+  /** Últimos filtros recibidos por objetivo.findMany (para revisar que el texto llega como dato). */
+  ultimaBusqueda: Fila | null = null;
+  usuario = {
+    findUnique: async ({ where }: Fila) =>
+      this.usuarios.find((u) => (where.id ? u.id === where.id : u.email === where.email)) ?? null,
+    create: async ({ data }: Fila) => {
+      const u = { id: `usuario-${this.usuarios.length + 1}`, rol: 'DOCENTE', createdAt: new Date(), ...data };
+      this.usuarios.push(u);
+      return u;
+    },
+  };
+  plan = {
+    findMany: async () => [],
+    findFirst: async () => null,
+  };
+  objetivo = {
+    findMany: async (args: Fila) => {
+      this.ultimaBusqueda = args;
+      return [];
+    },
+  };
+  $connect = async () => {};
+  $disconnect = async () => {};
 }

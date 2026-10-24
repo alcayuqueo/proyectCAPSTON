@@ -49,6 +49,7 @@ Plataforma web y móvil que ayuda a docentes de establecimientos chilenos a **pl
 Arquitectura en **tres capas** desplegada en la nube: cliente (web y móvil), API REST y persistencia. El backend sigue el patrón **Controller → Service → Prisma** en cada módulo.
 
 > Diagramas completos (modelo ER, casos de uso, clases, secuencia, componentes y despliegue) en [`docs/diagramas`](docs/diagramas/README.md).
+> Pruebas de seguridad y rendimiento, y requisitos no funcionales, en [`docs/pruebas`](docs/pruebas/README.md).
 
 ```mermaid
 flowchart LR
@@ -185,6 +186,7 @@ Aplicación disponible en `http://localhost:5173`. En local, Vite redirige `/api
 | `DIRECT_URL` | Conexión directa para migraciones (Supabase: Session pooler, puerto 5432) |
 | `JWT_SECRET` | Clave aleatoria para firmar los tokens JWT. Generar con `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
 | `PORT` | Puerto del backend en local (`3000`). En Render se asigna automáticamente |
+| `CORS_ORIGINS` | *(Opcional)* Orígenes autorizados a llamar a la API, separados por comas. Si no se define, se usan el frontend de Vercel, localhost y la app Android |
 
 **Frontend (`frontend/.env`):**
 
@@ -320,6 +322,7 @@ El proyecto se gestiona con **Kanban**:
 | App Android (APK) | ⏳ |
 | Almacenamiento de archivos (MinIO) | ⏳ |
 | Diagramas UML y modelo ER (`docs/diagramas`) | ✅ |
-| Pruebas automatizadas (unitarias con Jest, API e interfaz) | 🔄 |
+| Pruebas automatizadas: unitarias, integración, interfaz, seguridad y rendimiento | ✅ |
+| Seguridad reforzada: límite de intentos, encabezados HTTP, CORS restringido y CSP (`docs/pruebas`) | ✅ |
 
 ✅ hecho · 🔄 en progreso · ⏳ planificado

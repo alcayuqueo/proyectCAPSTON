@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import AuthLayout, { Campo } from '../components/AuthLayout';
+import { destinoSeguro } from '../lib/rutas';
 import { useAuth } from '../context/AuthContext';
 import { mensajeDeError } from '../lib/api';
 
@@ -11,7 +12,7 @@ export default function Login() {
   const { usuario, iniciarSesion } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const destino = (location.state as { desde?: string } | null)?.desde ?? '/planificador';
+  const destino = destinoSeguro((location.state as { desde?: unknown } | null)?.desde, '/planificador');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

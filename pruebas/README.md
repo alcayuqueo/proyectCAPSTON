@@ -4,6 +4,7 @@
 |---|---|---|
 | `prueba_api_planificador.py` | API: registro, login, perfil, validaciones en español y planificador (crear, listar, editar, duplicar, eliminar y aislamiento entre docentes) | 25 |
 | `prueba_api_recursos_actividades.py` | API: crear, editar y eliminar recursos y actividades; validaciones (enlaces seguros, duración); catálogo de solo lectura; aislamiento entre docentes; uso en el planificador | 22 |
+| `prueba_rendimiento.py` | Carga de la API: 1, 10, 25 y 50 docentes simultáneos con consultas de lectura; tiempos p50/p95/p99 (se puede ejecutar contra producción) | 4 niveles |
 | `prueba_datos_curriculum.py` | Datos del currículum oficial: cantidad de OA por nivel según las Bases Curriculares, códigos sin saltos, ejes válidos y texto sin restos de la extracción del PDF | 35 |
 | `prueba_interfaz_planificador.py` | Interfaz en el navegador (Playwright): registro, formulario de clase, validaciones, edición, duplicar, eliminar con confirmación y sesión | 18 |
 
@@ -19,6 +20,8 @@ npm test
 | `resources/resources.service.spec.ts` | Servicio de recursos: crear, listar (catálogo + propios), editar, eliminar y permisos | 11 |
 | `activities/activities.service.spec.ts` | Servicio de actividades: crear, listar, editar, eliminar y permisos | 7 |
 | `common/validacion.spec.ts` | Reglas de validación: campos obligatorios, tipos, enlaces inseguros y duración | 12 |
+| `test/seguridad.spec.ts` | **Seguridad de la API completa:** tokens (sin firma, falsos, vencidos, alterados), fuerza bruta (429), encabezados, CORS, inyección SQL, asignación masiva, cuerpos grandes y acceso a datos ajenos | 21 |
+| `auth/secreto-jwt.spec.ts` | Chequeo del `JWT_SECRET` en producción | 3 |
 
 ## Cómo ejecutarlas
 
@@ -57,3 +60,5 @@ Las URL se pueden cambiar con las variables `API_URL` y `APP_URL`.
 - Unitarias (Jest): **30/30** aprobadas.
 - Interfaz de recursos y actividades (Playwright, con API simulada): **20/20** aprobadas.
 - Modo presentación (Playwright, con API simulada): **25/25** aprobadas.
+- Unitarias y de seguridad (Jest): **54/54** aprobadas.
+- Lighthouse del frontend: rendimiento 99–100, accesibilidad 100, buenas prácticas 100 y SEO 100 (ver `docs/pruebas`).
