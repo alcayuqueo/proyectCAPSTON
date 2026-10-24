@@ -278,7 +278,7 @@ export default function ModoPresentacion() {
       </header>
 
       {/* Diapositiva */}
-      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 sm:px-10 sm:py-8" aria-roledescription="diapositiva">
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 sm:px-10 sm:py-8 [@media(max-height:700px)]:py-3" aria-roledescription="diapositiva">
         <div key={indice} className="mx-auto flex w-full max-w-6xl flex-1 flex-col animate-[aparecer_.25s_ease-out]">
           {actual.tipo === 'portada' && <Portada clase={clase} />}
           {actual.tipo === 'recurso' && <DiapositivaRecurso {...actual} />}
@@ -465,18 +465,31 @@ function DiapositivaRecurso({ recurso, numero, total }: { recurso: RecursoClase;
   const [falloImagen, setFalloImagen] = useState(false);
 
   return (
-    <div className="flex flex-1 flex-col gap-4">
+    <div className="flex flex-1 flex-col gap-4 [@media(max-height:700px)]:gap-2">
       <div>
         <Etiqueta icono={Icono}>
           Recurso {numero} de {total} · {NOMBRE_TIPO[recurso.tipo]}
         </Etiqueta>
-        <h2 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl">{recurso.titulo}</h2>
-        <p className="mt-1 text-ink-500">{recurso.unidad}</p>
+        <h2 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl [@media(max-height:700px)]:text-2xl">{recurso.titulo}</h2>
+        {/* En pantallas bajas se omite la unidad para dejar más espacio al video */}
+        <p className="mt-1 text-ink-500 [@media(max-height:700px)]:hidden">{recurso.unidad}</p>
       </div>
 
-      <div className="flex min-h-[240px] flex-1 items-center justify-center">
+      {/* Para videos e imágenes, el contenedor mide el espacio libre (container-type: size) y el
+          medio usa el máximo que cabe sin tapar el título: 100cqw de ancho o 100cqh de alto. */}
+      <div
+        className={[
+          'flex flex-1 items-center justify-center',
+          medio.tipo === 'youtube' || medio.tipo === 'drive' || medio.tipo === 'video' || (medio.tipo === 'imagen' && !falloImagen)
+            ? 'min-h-[180px] [container-type:size]'
+            : 'min-h-[240px]',
+        ].join(' ')}
+      >
         {(medio.tipo === 'youtube' || medio.tipo === 'drive') && (
-          <div className="aspect-video w-full max-w-5xl overflow-hidden rounded-2xl bg-black shadow-lg">
+          <div
+            className="aspect-video overflow-hidden rounded-2xl bg-black shadow-lg"
+            style={{ width: 'min(100cqw, 72rem, 100cqh * 16 / 9)' }}
+          >
             <iframe
               src={medio.src}
               title={recurso.titulo}
@@ -492,11 +505,17 @@ function DiapositivaRecurso({ recurso, numero, total }: { recurso: RecursoClase;
             src={medio.src}
             alt={recurso.titulo}
             onError={() => setFalloImagen(true)}
-            className="max-h-[62vh] max-w-full rounded-2xl bg-white object-contain shadow-lg"
+            style={{ maxHeight: '100cqh' }}
+            className="max-w-full rounded-2xl bg-white object-contain shadow-lg"
           />
         )}
         {medio.tipo === 'video' && (
-          <video src={medio.src} controls className="max-h-[62vh] w-full max-w-5xl rounded-2xl bg-black shadow-lg" />
+          <video
+            src={medio.src}
+            controls
+            style={{ maxHeight: '100cqh' }}
+            className="w-full max-w-5xl rounded-2xl bg-black shadow-lg"
+          />
         )}
         {(medio.tipo === 'enlace' || (medio.tipo === 'imagen' && falloImagen)) && (
           <TarjetaEnlace
