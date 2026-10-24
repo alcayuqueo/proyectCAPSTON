@@ -9,6 +9,7 @@ import Recursos from './pages/Recursos';
 import Actividades from './pages/Actividades';
 import Planificador from './pages/Planificador';
 import FormularioClase from './pages/FormularioClase';
+import ModoPresentacion from './pages/ModoPresentacion';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 
@@ -60,6 +61,16 @@ export default function App() {
       {/* Pantallas de autenticación, sin barra lateral */}
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
+
+      {/* Modo presentación: pantalla completa, sin barra lateral */}
+      <Route
+        path="/planificador/:id/presentar"
+        element={
+          <RutaProtegida>
+            <ModoPresentacion />
+          </RutaProtegida>
+        }
+      />
 
       <Route element={<LayoutPrincipal />}>
         <Route path="/" element={<Home />} />

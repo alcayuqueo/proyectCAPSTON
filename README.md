@@ -313,7 +313,7 @@ El proyecto se gestiona con **Kanban**:
 | Diseño adaptable: menú desplegable en celulares y tablets | ✅ |
 | Currículum oficial: Matemática y Lenguaje, 1° a 6° básico (324 OA con eje) | ✅ |
 | Currículum oficial: otras asignaturas y niveles | ⏳ |
-| Modo presentación para pantalla interactiva | ⏳ |
+| Modo presentación para pantalla interactiva: diapositivas, videos y cronómetro | ✅ |
 | Roles y panel de administración del establecimiento | ⏳ |
 | App Android (APK) | ⏳ |
 | Almacenamiento de archivos (MinIO) | ⏳ |

@@ -8,6 +8,7 @@ import {
   Layers,
   Loader2,
   Pencil,
+  Play,
   Plus,
   Puzzle,
   Trash2,
@@ -148,6 +149,15 @@ export default function Planificador() {
 
         {/* Acciones */}
         <div className="flex shrink-0 flex-col gap-1 sm:flex-row sm:items-start">
+          <Link
+            to={`/planificador/${c.id}/presentar`}
+            title="Presentar en la pantalla"
+            aria-label={`Presentar ${c.titulo}`}
+            className="flex items-center gap-1.5 rounded-lg bg-brand-600 p-2 text-sm font-medium text-white hover:bg-brand-700 sm:px-3"
+          >
+            <Play size={16} />
+            <span className="hidden sm:inline">Presentar</span>
+          </Link>
           <Link
             to={`/planificador/${c.id}/editar`}
             title="Editar"

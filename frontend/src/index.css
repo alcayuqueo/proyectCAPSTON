@@ -9,3 +9,16 @@ html, body, #root {
 body {
   @apply bg-surface-muted text-ink-900 antialiased;
 }
+
+/* Transición suave entre diapositivas del modo presentación */
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

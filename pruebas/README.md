@@ -56,3 +56,4 @@ Las URL se pueden cambiar con las variables `API_URL` y `APP_URL`.
 
 - Unitarias (Jest): **30/30** aprobadas.
 - Interfaz de recursos y actividades (Playwright, con API simulada): **20/20** aprobadas.
+- Modo presentación (Playwright, con API simulada): **25/25** aprobadas.
