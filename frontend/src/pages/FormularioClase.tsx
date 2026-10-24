@@ -483,8 +483,8 @@ export default function FormularioClase() {
         />
       </Seccion>
 
-      {/* Barra de acciones fija */}
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-ink-300/20 bg-white/95 backdrop-blur left-64">
+      {/* Barra de acciones fija (en pantallas grandes empieza después de la barra lateral) */}
+      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-ink-300/20 bg-white/95 backdrop-blur lg:left-64">
         <div className="mx-auto flex max-w-3xl items-center justify-end gap-3 px-4 py-3 sm:px-8">
           <Link
             to="/planificador"
@@ -495,7 +495,7 @@ export default function FormularioClase() {
           <button
             type="submit"
             disabled={guardando}
-            className="flex items-center gap-2 rounded-lg bg-brand-600 px-5 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-70"
+            className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-600 px-5 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-70"
           >
             {guardando && <Loader2 size={15} className="animate-spin" />}
             {guardando ? 'Guardando…' : editando ? 'Guardar cambios' : 'Crear clase'}

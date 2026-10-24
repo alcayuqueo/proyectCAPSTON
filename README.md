@@ -301,6 +301,7 @@ El proyecto se gestiona con **Kanban**:
 | Recursos y actividades | ✅ (listado) |
 | Planificador de clases: crear, editar, duplicar y eliminar | ✅ |
 | Despliegue en la nube (Vercel + Render + Supabase) | ✅ |
+| Diseño adaptable: menú desplegable en celulares y tablets | ✅ |
 | Currículum oficial: Matemática y Lenguaje, 1° a 6° básico (324 OA con eje) | ✅ |
 | Currículum oficial: otras asignaturas y niveles | ⏳ |
 | Modo presentación para pantalla interactiva | ⏳ |

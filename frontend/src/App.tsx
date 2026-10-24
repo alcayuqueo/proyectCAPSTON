@@ -1,4 +1,6 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { GraduationCap, Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import RutaProtegida from './components/RutaProtegida';
 import Home from './pages/Home';
@@ -10,14 +12,44 @@ import FormularioClase from './pages/FormularioClase';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 
-/** Diseño principal: barra lateral + contenido. */
+/**
+ * Diseño principal: barra lateral + contenido.
+ * En pantallas grandes la barra queda fija a la izquierda. En celulares y tablets se
+ * oculta y se abre como menú desde el botón de la barra superior.
+ */
 function LayoutPrincipal() {
+  const [menuAbierto, setMenuAbierto] = useState(false);
+  const { pathname } = useLocation();
+  const cerrarMenu = useCallback(() => setMenuAbierto(false), []);
+
+  // Al cambiar de página, el menú se cierra.
+  useEffect(() => setMenuAbierto(false), [pathname]);
+
   return (
     <div className="flex h-screen w-full overflow-hidden">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto px-8 py-8">
-        <Outlet />
-      </main>
+      <Sidebar abierto={menuAbierto} onCerrar={cerrarMenu} />
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Barra superior, solo en pantallas chicas */}
+        <header className="flex shrink-0 items-center gap-3 border-b border-ink-300/20 bg-surface-sidebar px-4 py-3 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setMenuAbierto(true)}
+            aria-label="Abrir menú"
+            aria-expanded={menuAbierto}
+            aria-controls="menu-principal"
+            className="-ml-1 rounded-lg p-2 text-ink-700 transition-colors hover:bg-ink-300/10"
+          >
+            <Menu size={22} />
+          </button>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
+            <GraduationCap size={16} />
+          </div>
+          <p className="text-[15px] font-semibold text-ink-900">Software Educativo</p>
+        </header>
+        <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

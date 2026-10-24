@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import {
   LogIn,
@@ -8,6 +9,7 @@ import {
   Layers,
   Puzzle,
   CalendarDays,
+  X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -19,8 +21,27 @@ const navItems = [
   { to: '/planificador', label: 'Planificador', icon: CalendarDays },
 ];
 
-export default function Sidebar() {
+interface Props {
+  /** En pantallas chicas, indica si el menú está abierto. */
+  abierto: boolean;
+  onCerrar: () => void;
+}
+
+export default function Sidebar({ abierto, onCerrar }: Props) {
   const { usuario, cerrarSesion } = useAuth();
+
+  // Con el menú abierto en el celular: Escape lo cierra y el fondo no se desplaza.
+  useEffect(() => {
+    if (!abierto) return;
+    const alPresionar = (e: KeyboardEvent) => e.key === 'Escape' && onCerrar();
+    document.addEventListener('keydown', alPresionar);
+    const overflowAnterior = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', alPresionar);
+      document.body.style.overflow = overflowAnterior;
+    };
+  }, [abierto, onCerrar]);
   const navigate = useNavigate();
   const nombreVisible = usuario?.nombre || usuario?.email || '';
   const inicial = nombreVisible.charAt(0).toUpperCase();
@@ -31,7 +52,25 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-ink-300/20 bg-surface-sidebar">
+    <>
+    {/* Fondo oscuro detrás del menú en pantallas chicas; al tocarlo se cierra */}
+    <div
+      onClick={onCerrar}
+      aria-hidden="true"
+      className={[
+        'fixed inset-0 z-30 bg-ink-900/40 transition-opacity lg:hidden',
+        abierto ? 'opacity-100' : 'pointer-events-none opacity-0',
+      ].join(' ')}
+    />
+    <aside
+      id="menu-principal"
+      className={[
+        'fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] shrink-0 flex-col border-r border-ink-300/20 bg-surface-sidebar shadow-xl transition-[transform,visibility] duration-200',
+        'lg:visible lg:static lg:w-64 lg:translate-x-0 lg:shadow-none',
+        // Cerrado: fuera de la pantalla e invisible, para que el teclado no llegue a sus enlaces.
+        abierto ? 'visible translate-x-0' : 'invisible -translate-x-full',
+      ].join(' ')}
+    >
       {/* Logo / marca */}
       <div className="flex items-center gap-3 px-5 py-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white">
@@ -45,6 +84,14 @@ export default function Sidebar() {
             Apoyo docente · MINEDUC
           </p>
         </div>
+        <button
+          type="button"
+          onClick={onCerrar}
+          aria-label="Cerrar menú"
+          className="ml-auto rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-300/10 lg:hidden"
+        >
+          <X size={18} />
+        </button>
       </div>
 
       {/* Navegación */}
@@ -110,5 +157,6 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }
