@@ -32,7 +32,7 @@ Plataforma web y móvil que ayuda a docentes de establecimientos chilenos a **pl
 | Capa | Tecnología |
 |---|---|
 | Frontend | React + Vite + TypeScript + Tailwind CSS, axios, react-router-dom |
-| App móvil | Capacitor (generación de APK Android) |
+| App móvil | Capacitor 7 (APK Android) |
 | Backend | NestJS (Node.js) + TypeScript |
 | Base de datos | PostgreSQL (Supabase) |
 | ORM | Prisma (modelo, migraciones y seed) |
@@ -55,7 +55,7 @@ Arquitectura en **tres capas** desplegada en la nube: cliente (web y móvil), AP
 flowchart LR
     subgraph Cliente["Cliente"]
         W["Web React + Vite<br/>(Vercel)"]
-        M["App Android<br/>(Capacitor, planificado)"]
+        M["App Android<br/>(Capacitor)"]
     end
     subgraph API["Backend NestJS (Render)"]
         A[auth]
@@ -83,7 +83,7 @@ flowchart LR
 | `activities` | Actividades de clase: catálogo y actividades propias del docente (crear, editar, eliminar) | Render | Implementado |
 | `planner` | Clases del docente: objetivo, recursos y actividades en orden (protegido con JWT) | Render | Implementado |
 | Base de datos | Currículum, usuarios y planificaciones | Supabase | Implementado |
-| App Android | Empaquetado del frontend con Capacitor | — | Planificado |
+| App Android | Empaquetado del frontend con Capacitor (APK de 4,0 MB) | Instalación en el dispositivo | Implementado |
 | MinIO | Almacenamiento de archivos de recursos | — | Planificado |
 
 **Comunicación:** el frontend llama a la API por HTTPS usando la URL definida en `VITE_API_URL`. Las rutas protegidas exigen el token JWT en el encabezado `Authorization: Bearer`. El backend y la base de datos están en la misma región (Virginia, EE. UU.) para reducir la latencia entre ambos.
@@ -215,15 +215,19 @@ Aplicación disponible en `http://localhost:5173`. En local, Vite redirige `/api
 
 Render y Vercel están conectados al repositorio de GitHub: **cada `git push` a `main` vuelve a publicar automáticamente** el backend y el frontend.
 
-### Generar el APK Android *(en desarrollo)*
+### Generar el APK Android
+
+La app Android se genera con **Capacitor 7** a partir del mismo frontend. La versión Android usa `frontend/.env.android`, que apunta a la API publicada en Render (la API ya autoriza el origen `https://localhost` de la app). Requisitos: Node.js 20 o superior y **Android Studio** (incluye el Android SDK y Java 21).
 
 ```bash
 cd frontend
-npm run build
-npx cap add android
-npx cap sync
-npx cap open android
+npm install
+npm run android:init     # solo la primera vez: compila y crea la carpeta android/
+npm run build:android    # las siguientes veces: compila y copia los cambios a android/
+npm run cap:open         # abre el proyecto en Android Studio
 ```
+
+En Android Studio: **Build → Generate App Bundles or APKs → Generate APKs**. El archivo queda en `frontend/android/app/build/outputs/apk/debug/app-debug.apk`. La carpeta `android/` se genera en cada equipo y no se sube al repositorio.
 
 ---
 
@@ -319,7 +323,7 @@ El proyecto se gestiona con **Kanban**:
 | Currículum oficial: otras asignaturas y niveles | ⏳ |
 | Modo presentación para pantalla interactiva: diapositivas, videos y cronómetro | ✅ |
 | Roles y panel de administración del establecimiento | ⏳ |
-| App Android (APK) | ⏳ |
+| App Android (APK) con Capacitor | ✅ |
 | Almacenamiento de archivos (MinIO) | ⏳ |
 | Diagramas UML y modelo ER (`docs/diagramas`) | ✅ |
 | Pruebas automatizadas: unitarias, integración, interfaz, seguridad y rendimiento | ✅ |

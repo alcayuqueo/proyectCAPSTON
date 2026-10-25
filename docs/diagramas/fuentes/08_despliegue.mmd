@@ -5,7 +5,8 @@ config:
 ---
 flowchart LR
     subgraph AULA["«dispositivo» Pantalla interactiva / notebook / celular"]
-        NAV["Navegador web<br/>(app Android con Capacitor: planificada)"]
+        NAV["Navegador web"]
+        APK["«artefacto» App Android<br/>app-debug.apk (Capacitor 7, WebView)"]
     end
     subgraph VERCEL["«nodo» Vercel (CDN)"]
         FE["«artefacto»<br/>frontend/dist<br/>HTML · JS · CSS"]
@@ -21,6 +22,8 @@ flowchart LR
 
     NAV -- "HTTPS" --> FE
     NAV -- "HTTPS · REST + JWT" --> API
+    APK -- "HTTPS · REST + JWT<br/>origen https://localhost" --> API
+    APK -. "HTTPS · iframe" .-> YT
     API -- "TLS · pooler 6543 (app)<br/>5432 (migraciones)" --> BD
     NAV -. "HTTPS · iframe" .-> YT
     GH -. "git push → despliegue automático" .-> VERCEL
