@@ -12,7 +12,7 @@ Las capturas se tomaron con el build de producción y la API simulada (datos de 
 - **Un color por sección** en el menú, los títulos y las tarjetas del inicio: Explorador azul, Recursos rosado, Actividades amarillo y Planificador verde.
 - **Tipografías redondeadas:** Fredoka para títulos y Nunito para el texto, incluidas en la app con `@fontsource` (sin Google Fonts), para respetar la Content-Security-Policy y funcionar sin internet en la app Android.
 - **Estilo «sticker»:** tarjetas y botones con borde grueso y sombra marcada; botón principal amarillo; fondo crema en lugar de gris.
-- **Fondo de universo** en las pantallas del docente. Área central: azul profundo con estrellas, nebulosas, un planeta con anillo y una luna (en celulares y tablets solo las estrellas, para no tapar el texto). El panel lateral y la barra superior del celular usan el mismo cielo, solo con estrellas. Los títulos, descripciones y opciones del menú sobre el fondo se ven en blanco, y las tarjetas mantienen su texto oscuro.
+- **Fondo de universo** en las pantallas del docente. Área central: azul profundo con estrellas, nebulosas, un planeta con anillo y una media luna (en celulares y tablets solo las estrellas, para no tapar el texto). El panel lateral y la barra superior del celular usan el mismo cielo, solo con estrellas. Los títulos, descripciones y opciones del menú sobre el fondo se ven en blanco, y las tarjetas mantienen su texto oscuro.
 - **Modo presentación:** «¡Hoy vamos a descubrir!», la meta de la clase con una diana, cronómetro circular, cierre «¡Lo logramos!» y escala proporcional en pantallas grandes (el texto base crece hasta 28 px).
 
 ## Capturas
