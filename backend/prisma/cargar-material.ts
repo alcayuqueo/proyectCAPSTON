@@ -9,6 +9,8 @@
  *  - Las diapositivas del OA se reemplazan por las del archivo.
  *  - Los videos se identifican por su URL dentro de la asignatura: si ya existen en el
  *    catálogo, se actualiza su título y su OA; si no, se crean.
+ *  - Los videos del catálogo que ya no están en el archivo se quitan del OA (se eliminan si
+ *    ninguna clase los usa).
  *  - La actividad se identifica por su título dentro de la asignatura.
  *  - Solo se tocan elementos del catálogo (sin autor), nunca los creados por docentes.
  *
@@ -38,6 +40,7 @@ async function main() {
   const entradas = leerEntradas();
   let oas = 0;
   let videosNuevos = 0;
+  let videosQuitados = 0;
   let actividadesNuevas = 0;
   const faltantes: string[] = [];
 
@@ -72,6 +75,19 @@ async function main() {
       }
     }
 
+    // Videos del catálogo que quedaron vinculados a este OA pero ya no están en el archivo
+    // (por ejemplo, uno reemplazado): si ninguna clase los usa se eliminan; si no, solo se
+    // desvinculan del OA para no cambiar las clases de los docentes.
+    const sobrantes = await prisma.recurso.findMany({
+      where: { objetivoId: objetivo.id, autorId: null, url: { notIn: e.videos.map((v) => v.url) } },
+      include: { _count: { select: { planes: true } } },
+    });
+    for (const r of sobrantes) {
+      if (r._count.planes === 0) await prisma.recurso.delete({ where: { id: r.id } });
+      else await prisma.recurso.update({ where: { id: r.id }, data: { objetivoId: null } });
+      videosQuitados++;
+    }
+
     const a = e.actividad;
     const actividad = await prisma.actividad.findFirst({
       where: { asignaturaId: objetivo.asignaturaId, titulo: a.titulo, autorId: null },
@@ -89,6 +105,7 @@ async function main() {
 
   console.log(`OA con material listo: ${oas} de ${entradas.length}`);
   console.log(`Videos nuevos en el catálogo: ${videosNuevos}`);
+  if (videosQuitados) console.log(`Videos reemplazados quitados del material: ${videosQuitados}`);
   console.log(`Actividades sugeridas nuevas: ${actividadesNuevas}`);
   if (faltantes.length) {
     console.warn(`No se encontraron estos OA (¿falta ejecutar npm run curriculum:cargar?):\n- ${faltantes.join('\n- ')}`);

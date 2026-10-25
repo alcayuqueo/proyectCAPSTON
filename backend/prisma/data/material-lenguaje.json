@@ -209,7 +209,7 @@
       { "tipo": "pregunta", "titulo": "¿Qué conviene hacer durante una exposición?", "puntos": ["Leer todo de una hoja", "Mirar al público y usar apoyo visual", "Hablar muy rápido"], "respuesta": "Mirar al público y usar apoyo visual." }
     ],
     "videos": [
-      { "titulo": "Video: cómo hacer una exposición oral", "url": "https://www.youtube.com/watch?v=a6j5h7vFuPc" }
+      { "titulo": "Video: la exposición oral para niños", "url": "https://www.youtube.com/watch?v=7I7IJowi99Y" }
     ],
     "actividad": { "titulo": "Mini exposiciones de 2 minutos", "descripcion": "Cada grupo prepara una exposición breve sobre un animal nativo de Chile, con introducción, desarrollo y cierre, apoyada en una imagen proyectada. El curso entrega retroalimentación con una pauta simple.", "duracionMinutos": 30 }
   },
