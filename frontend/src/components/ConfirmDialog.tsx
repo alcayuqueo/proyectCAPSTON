@@ -45,7 +45,7 @@ export default function ConfirmDialog({
         aria-modal="true"
         aria-labelledby="confirm-titulo"
         aria-describedby="confirm-mensaje"
-        className="w-full max-w-sm rounded-card bg-white p-6 shadow-xl"
+        className="w-full max-w-sm rounded-card border-[3px] border-ink-900 bg-white p-6 shadow-sticker"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="confirm-titulo" className="text-lg font-semibold text-ink-900">

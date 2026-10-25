@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { BookOpen, Search, X } from 'lucide-react';
 import { api, mensajeDeError } from '../lib/api';
 import type { Asignatura, Objetivo } from '../lib/tipos';
+import ChipAsignatura from '../components/ChipAsignatura';
 
 const claseSelect =
-  'w-full rounded-lg border border-ink-300/30 bg-white px-3 py-2.5 text-sm text-ink-900 outline-none focus:border-brand-500';
+  'w-full rounded-xl border-2 border-ink-300/70 bg-white px-3 py-2.5 text-sm text-ink-900 outline-none focus:border-brand-500';
 
 /** Ordena "1° básico", "2° básico"… por número y no alfabéticamente. */
 function numeroNivel(nivel: string) {
@@ -101,8 +102,10 @@ export default function ExploradorCurricular() {
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-6">
       <header>
-        <h1 className="flex items-center gap-2 text-2xl font-bold text-ink-900">
-          <BookOpen size={22} className="text-brand-600" />
+        <h1 className="flex items-center gap-3 text-3xl font-bold text-ink-900">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#C5D9FB' }} aria-hidden="true">
+            <BookOpen size={22} />
+          </span>
           Explorador curricular
         </h1>
         <p className="mt-1 text-[15px] text-ink-500">
@@ -111,7 +114,7 @@ export default function ExploradorCurricular() {
         </p>
       </header>
 
-      <div className="flex flex-col gap-3 rounded-card border border-ink-300/20 bg-white p-4">
+      <div className="flex flex-col gap-3 rounded-card border-2 border-ink-900 bg-white shadow-sticker-sm p-4">
         <div className="relative">
           <Search
             size={16}
@@ -122,7 +125,7 @@ export default function ExploradorCurricular() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ej: fracciones, poemas, perímetro…"
             aria-label="Buscar por palabra clave"
-            className="w-full rounded-lg border border-ink-300/30 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-brand-500"
+            className="w-full rounded-xl border-2 border-ink-300/70 bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-brand-500"
           />
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -193,15 +196,13 @@ export default function ExploradorCurricular() {
 
       <ul className="flex flex-col gap-3">
         {objetivos.map((o) => (
-          <li key={o.id} className="rounded-card border border-ink-300/20 bg-white p-4">
+          <li key={o.id} className="rounded-card border-2 border-ink-900 bg-white shadow-sticker-sm p-4">
             <div className="flex flex-wrap items-center gap-2 text-xs font-medium">
-              <span className="rounded-full bg-brand-100 px-2 py-0.5 text-brand-700">{o.codigo}</span>
+              <span className="rounded-full border-2 border-ink-900 bg-sol px-2.5 py-0.5 font-extrabold text-ink-900">{o.codigo}</span>
               {o.eje && (
-                <span className="rounded-full bg-surface-muted px-2 py-0.5 text-ink-700">{o.eje}</span>
+                <span className="rounded-full bg-surface-muted px-2.5 py-0.5 font-bold text-ink-700">{o.eje}</span>
               )}
-              <span className="text-ink-500">
-                {o.asignatura} · {o.nivel}
-              </span>
+              <ChipAsignatura asignatura={o.asignatura} nivel={o.nivel} />
             </div>
             <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink-900">
               {o.descripcion}

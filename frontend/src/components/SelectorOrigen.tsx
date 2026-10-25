@@ -16,7 +16,7 @@ export default function SelectorOrigen({
     ['propios', etiquetaPropios],
   ];
   return (
-    <div role="group" aria-label="Mostrar" className="flex rounded-lg bg-surface-muted p-1 text-xs font-medium">
+    <div role="group" aria-label="Mostrar" className="flex rounded-full border-2 border-ink-900 bg-white p-1 text-xs font-bold">
       {opciones.map(([o, etiqueta]) => (
         <button
           key={o}
@@ -24,8 +24,8 @@ export default function SelectorOrigen({
           aria-pressed={valor === o}
           onClick={() => onCambiar(o)}
           className={[
-            'rounded-md px-3 py-1.5 transition-colors',
-            valor === o ? 'bg-white text-ink-900 shadow-sm' : 'text-ink-500 hover:text-ink-900',
+            'rounded-full px-3 py-1.5 transition-colors',
+            valor === o ? 'bg-sol text-ink-900' : 'text-ink-500 hover:text-ink-900',
           ].join(' ')}
         >
           {etiqueta}

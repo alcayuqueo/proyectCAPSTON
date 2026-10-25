@@ -17,6 +17,8 @@ import { api, mensajeDeError } from '../lib/api';
 import { hoyISO, partesFecha } from '../lib/fechas';
 import type { Clase } from '../lib/tipos';
 import ConfirmDialog from '../components/ConfirmDialog';
+import ChipAsignatura from '../components/ChipAsignatura';
+import { temaDe } from '../lib/temas';
 
 export default function Planificador() {
   const navigate = useNavigate();
@@ -98,20 +100,21 @@ export default function Planificador() {
       <li
         key={c.id}
         className={[
-          'group flex gap-4 rounded-card border border-ink-300/20 bg-white p-4 transition-shadow hover:shadow-md',
+          'group flex gap-4 rounded-card border-2 border-ink-900 bg-white shadow-sticker-sm p-4 transition-shadow hover:-translate-y-0.5',
           pasada ? 'opacity-75' : '',
         ].join(' ')}
       >
         {/* Fecha */}
         <div
           className={[
-            'flex w-14 shrink-0 flex-col items-center justify-center rounded-lg py-2',
-            pasada ? 'bg-surface-muted text-ink-500' : 'bg-brand-50 text-brand-700',
+            'flex w-16 shrink-0 flex-col items-center justify-center rounded-2xl border-2 py-2',
+            pasada ? 'border-ink-300 bg-surface-muted text-ink-500' : 'border-ink-900',
           ].join(' ')}
+          style={pasada ? undefined : { background: temaDe(c.asignatura.nombre).suave, color: temaDe(c.asignatura.nombre).oscuro }}
           aria-label={c.fecha}
         >
           <span className="text-[11px] font-medium uppercase">{f.diaSemana}</span>
-          <span className="text-xl font-bold leading-tight">{f.dia}</span>
+          <span className="font-[Fredoka] text-2xl font-bold leading-tight">{f.dia}</span>
           <span className="text-[11px] uppercase">{f.mes}</span>
         </div>
 
@@ -120,12 +123,12 @@ export default function Planificador() {
           onClick={() => navigate(`/planificador/${c.id}/editar`)}
           className="min-w-0 flex-1 text-left"
         >
-          <p className="truncate font-semibold text-ink-900">{c.titulo}</p>
-          <p className="text-xs text-ink-500">
-            {c.asignatura.nombre} · {c.asignatura.nivel}
+          <p className="truncate font-[Fredoka] text-lg font-semibold text-ink-900">{c.titulo}</p>
+          <p className="mt-1">
+            <ChipAsignatura asignatura={c.asignatura.nombre} nivel={c.asignatura.nivel} />
           </p>
           <p className="mt-2 flex items-start gap-2 text-sm text-ink-700">
-            <span className="shrink-0 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700">
+            <span className="shrink-0 rounded-full border-2 border-ink-900 bg-sol px-2 py-0.5 text-xs font-extrabold text-ink-900">
               {c.objetivo.codigo}
             </span>
             <span className="line-clamp-1">{c.objetivo.descripcion}</span>
@@ -153,7 +156,7 @@ export default function Planificador() {
             to={`/planificador/${c.id}/presentar`}
             title="Presentar en la pantalla"
             aria-label={`Presentar ${c.titulo}`}
-            className="flex items-center gap-1.5 rounded-lg bg-brand-600 p-2 text-sm font-medium text-white hover:bg-brand-700 sm:px-3"
+            className="flex items-center gap-1.5 rounded-full border-[2.5px] border-ink-900 bg-sol p-2 text-sm font-bold text-ink-900 hover:bg-[#FFD35A] sm:px-3 shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
             <Play size={16} />
             <span className="hidden sm:inline">Presentar</span>
@@ -196,8 +199,10 @@ export default function Planificador() {
     <div className="mx-auto flex max-w-4xl flex-col gap-6">
       <header className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-bold text-ink-900">
-            <CalendarDays size={22} className="text-brand-600" />
+          <h1 className="flex items-center gap-3 text-3xl font-bold text-ink-900">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#BFE6D0' }} aria-hidden="true">
+              <CalendarDays size={22} />
+            </span>
             Planificador
           </h1>
           <p className="mt-1 text-[15px] text-ink-500">
@@ -206,7 +211,7 @@ export default function Planificador() {
         </div>
         <Link
           to="/planificador/nueva"
-          className="flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
+          className="flex items-center gap-2 rounded-full border-[2.5px] border-ink-900 bg-sol px-4 py-2 text-sm font-bold text-ink-900 hover:bg-[#FFD35A] shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           <Plus size={16} />
           Nueva clase
@@ -237,7 +242,7 @@ export default function Planificador() {
       )}
 
       {!error && !cargando && clases.length === 0 && (
-        <div className="rounded-card border border-dashed border-ink-300/40 bg-white px-6 py-12 text-center">
+        <div className="rounded-card border-2 border-dashed border-ink-300 bg-white px-6 py-12 text-center">
           <p className="font-medium text-ink-900">Aún no tienes clases planificadas.</p>
           <p className="mt-1 text-sm text-ink-500">
             Usa «Nueva clase» para armar tu primera planificación.

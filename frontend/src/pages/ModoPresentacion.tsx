@@ -24,6 +24,7 @@ import { api, mensajeDeError } from '../lib/api';
 import { fechaLarga } from '../lib/fechas';
 import { medioDe } from '../lib/medios';
 import type { Clase } from '../lib/tipos';
+import { temaDe, variablesTema } from '../lib/temas';
 
 type RecursoClase = Clase['recursos'][number];
 type ActividadClase = Clase['actividades'][number];
@@ -55,7 +56,8 @@ function formatoTiempo(ms: number) {
  * la pantalla interactiva. Diapositivas: objetivo de la clase, cada recurso (videos de
  * YouTube, imágenes y archivos de Drive se ven dentro de la diapositiva), cada actividad
  * con su cronómetro y un cierre. Se avanza con los botones, las flechas del teclado,
- * un control de presentaciones o deslizando el dedo.
+ * un control de presentaciones o deslizando el dedo. El diseño es lúdico y toma el color
+ * de la asignatura, porque lo ven los estudiantes en la sala.
  */
 export default function ModoPresentacion() {
   const { id } = useParams<{ id: string }>();
@@ -74,6 +76,12 @@ export default function ModoPresentacion() {
       .then((res) => setClase(res.data))
       .catch((err) => setError(mensajeDeError(err, 'No se pudo cargar la clase.')));
   }, [id]);
+
+  // En pantallas grandes (pantalla interactiva Full HD o 4K) todo se agranda en proporción.
+  useEffect(() => {
+    document.documentElement.classList.add('modo-presentacion');
+    return () => document.documentElement.classList.remove('modo-presentacion');
+  }, []);
 
   useEffect(() => {
     if (clase) document.title = `${clase.titulo} · Modo presentación`;
@@ -246,22 +254,33 @@ export default function ModoPresentacion() {
   }
 
   const actual = diapositivas[indice];
+  const tema = temaDe(clase.asignatura.nombre);
+  const enPortada = indice === 0;
 
   return (
     <div
-      className="flex h-[100dvh] w-full flex-col overflow-hidden bg-surface-muted text-ink-900"
+      className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-crema font-ronda text-tinta"
+      style={variablesTema(tema)}
       onTouchStart={alTocar}
       onTouchEnd={alSoltar}
     >
+      <Decoracion letras={tema.letras} />
+
       {/* Barra superior */}
-      <header className="flex shrink-0 items-center gap-3 border-b border-ink-300/20 bg-white px-4 py-2.5 sm:px-6">
+      <header className="relative z-10 flex shrink-0 items-center gap-3 px-4 pb-1 pt-3 sm:px-8 sm:pt-5">
+        <span className="hidden shrink-0 rounded-full bg-[var(--tema-oscuro)] px-4 py-2 text-sm font-extrabold text-white sm:inline sm:text-base">
+          {clase.asignatura.nombre} · {clase.asignatura.nivel}
+        </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold">{clase.titulo}</p>
-          <p className="truncate text-xs text-ink-500">
+          <p className="truncate font-bold text-tinta-suave sm:text-lg">{clase.titulo}</p>
+          <p className="truncate text-xs font-bold text-tinta-suave sm:hidden">
             {clase.asignatura.nombre} · {clase.asignatura.nivel}
           </p>
         </div>
-        <span className="shrink-0 text-sm tabular-nums text-ink-500" aria-live="polite">
+        <span
+          className="shrink-0 rounded-full border-[3px] border-tinta bg-white px-3 py-0.5 font-infantil text-base font-semibold tabular-nums sm:px-4 sm:text-xl"
+          aria-live="polite"
+        >
           {indice + 1} / {total}
         </span>
         {puedePantallaCompleta && (
@@ -278,8 +297,11 @@ export default function ModoPresentacion() {
       </header>
 
       {/* Diapositiva */}
-      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 sm:px-10 sm:py-8 [@media(max-height:700px)]:py-3" aria-roledescription="diapositiva">
-        <div key={indice} className="mx-auto flex w-full max-w-6xl flex-1 flex-col animate-[aparecer_.25s_ease-out]">
+      <main
+        className="relative z-10 flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-5 sm:px-10 sm:py-6 [@media(max-height:700px)]:py-3"
+        aria-roledescription="diapositiva"
+      >
+        <div key={indice} className="mx-auto flex w-full max-w-6xl flex-1 flex-col animate-[aparecer_.3s_ease-out]">
           {actual.tipo === 'portada' && <Portada clase={clase} />}
           {actual.tipo === 'recurso' && <DiapositivaRecurso {...actual} />}
           {actual.tipo === 'actividad' && (
@@ -298,18 +320,18 @@ export default function ModoPresentacion() {
       </main>
 
       {/* Navegación: botones grandes para tocar en la pantalla interactiva */}
-      <nav className="flex shrink-0 items-center gap-3 border-t border-ink-300/20 bg-white px-3 py-3 sm:px-6" aria-label="Navegación de la presentación">
+      <nav className="relative z-10 flex shrink-0 items-center gap-3 px-3 pb-4 pt-2 sm:px-8 sm:pb-6" aria-label="Navegación de la presentación">
         <button
           type="button"
           onClick={anterior}
           disabled={indice === 0}
-          className="flex h-14 items-center gap-2 rounded-xl border border-ink-300/40 px-4 text-base font-medium text-ink-700 hover:bg-surface-muted disabled:opacity-40 sm:px-6"
+          className="flex h-14 items-center gap-2 rounded-full border-[3px] border-tinta bg-white px-4 font-infantil text-lg font-semibold shadow-sticker-sm transition active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:border-tinta/25 disabled:text-tinta/40 disabled:shadow-none sm:h-16 sm:px-6"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={26} strokeWidth={3} />
           <span className="hidden sm:inline">Anterior</span>
         </button>
 
-        <ol className="flex min-w-0 flex-1 items-center justify-center gap-1.5 overflow-x-auto px-1">
+        <ol className="flex min-w-0 flex-1 items-center justify-center gap-2 overflow-x-auto px-1">
           {diapositivas.map((d, i) => (
             <li key={i}>
               <button
@@ -321,8 +343,8 @@ export default function ModoPresentacion() {
               >
                 <span
                   className={[
-                    'block h-2.5 rounded-full transition-all',
-                    i === indice ? 'w-8 bg-brand-600' : i < indice ? 'w-2.5 bg-brand-400/60' : 'w-2.5 bg-ink-300/50',
+                    'block h-4 rounded-full transition-all',
+                    i === indice ? 'w-10 bg-[var(--tema-oscuro)]' : i < indice ? 'w-4 bg-[var(--tema-fuerte)]' : 'w-4 bg-[var(--tema-medio)]',
                   ].join(' ')}
                 />
               </button>
@@ -334,18 +356,18 @@ export default function ModoPresentacion() {
           <button
             type="button"
             onClick={siguiente}
-            className="flex h-14 items-center gap-2 rounded-xl bg-brand-600 px-4 text-base font-semibold text-white hover:bg-brand-700 sm:px-6"
+            className="flex h-14 items-center gap-2 rounded-full border-[3px] border-tinta bg-sol px-5 font-infantil text-lg font-bold shadow-sticker-sm transition active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-16 sm:px-7 sm:text-xl"
           >
-            <span className="hidden sm:inline">Siguiente</span>
-            <ChevronRight size={24} />
+            <span className="hidden sm:inline">{enPortada ? '¡Comencemos!' : 'Siguiente'}</span>
+            <ChevronRight size={26} strokeWidth={3} />
           </button>
         ) : (
           <button
             type="button"
             onClick={salir}
-            className="flex h-14 items-center gap-2 rounded-xl bg-brand-600 px-4 text-base font-semibold text-white hover:bg-brand-700 sm:px-6"
+            className="flex h-14 items-center gap-2 rounded-full border-[3px] border-tinta bg-sol px-5 font-infantil text-lg font-bold shadow-sticker-sm transition active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-16 sm:px-7 sm:text-xl"
           >
-            <Flag size={20} />
+            <Flag size={22} strokeWidth={2.5} />
             <span className="hidden sm:inline">Terminar</span>
           </button>
         )}
@@ -362,9 +384,46 @@ function nombreDiapositiva(d: Diapositiva) {
 }
 
 // ---------------------------------------------------------------------------------------
+/** Formas decorativas de fondo (no se leen ni se pueden tocar). */
+function Decoracion({ letras = false }: { letras?: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      viewBox="0 0 1280 720"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <circle cx="1190" cy="90" r="210" fill="var(--tema-suave)" />
+      <circle cx="990" cy="56" r="40" fill="#FFE3A3" />
+      <circle cx="60" cy="680" r="150" fill="var(--tema-suave)" />
+      <circle cx="1225" cy="650" r="70" fill="#FFE3A3" />
+      <Estrella x={1070} y={300} r={30} />
+      <Estrella x={34} y={330} r={18} color="var(--tema-fuerte)" />
+      {letras && (
+        <g fontFamily="Fredoka, Nunito, sans-serif" fontWeight="700">
+          <text x="6" y="520" fontSize="58" fill="var(--tema-fuerte)" transform="rotate(-10 6 520)">A</text>
+          <text x="1236" y="560" fontSize="50" fill="#FFC93C" transform="rotate(-10 1236 560)">b</text>
+          <text x="150" y="712" fontSize="52" fill="var(--tema-medio)" transform="rotate(-14 150 712)">c</text>
+          <text x="690" y="58" fontSize="48" fill="var(--tema-medio)" transform="rotate(8 690 58)">ñ</text>
+        </g>
+      )}
+    </svg>
+  );
+}
+
+function Estrella({ x, y, r, color = '#FFC93C' }: { x: number; y: number; r: number; color?: string }) {
+  const puntos = Array.from({ length: 10 }, (_, i) => {
+    const radio = i % 2 === 0 ? r : r * 0.45;
+    const ang = (Math.PI / 5) * i - Math.PI / 2;
+    return `${(x + radio * Math.cos(ang)).toFixed(1)},${(y + radio * Math.sin(ang)).toFixed(1)}`;
+  }).join(' ');
+  return <polygon points={puntos} fill={color} />;
+}
+
+// ---------------------------------------------------------------------------------------
 
 function PantallaMensaje({ children }: { children: ReactNode }) {
-  return <div className="flex h-[100dvh] flex-col items-center justify-center bg-surface-muted px-6 text-center">{children}</div>;
+  return <div className="flex h-[100dvh] flex-col items-center justify-center bg-crema px-6 text-center font-ronda">{children}</div>;
 }
 
 function BotonIcono({ onClick, etiqueta, children }: { onClick: () => void; etiqueta: string; children: ReactNode }) {
@@ -374,19 +433,46 @@ function BotonIcono({ onClick, etiqueta, children }: { onClick: () => void; etiq
       onClick={onClick}
       aria-label={etiqueta}
       title={etiqueta}
-      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-ink-700 hover:bg-surface-muted"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[3px] border-tinta bg-white text-tinta hover:bg-[var(--tema-suave)]"
     >
       {children}
     </button>
   );
 }
 
-function Etiqueta({ icono: Icono, children }: { icono: typeof Target; children: ReactNode }) {
+function Etiqueta({
+  icono: Icono,
+  children,
+  color = 'tema',
+  centrada = false,
+}: {
+  icono: typeof Target;
+  children: ReactNode;
+  color?: 'tema' | 'sol';
+  centrada?: boolean;
+}) {
   return (
-    <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-brand-700 sm:text-base">
-      <Icono size={18} />
+    <p
+      className={[
+        centrada ? 'self-center' : 'self-start',
+        'inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-extrabold uppercase tracking-wide sm:text-base',
+        color === 'sol' ? 'bg-[#FFE3A3] text-[#6B4A00]' : 'bg-[var(--tema-suave)] text-[var(--tema-oscuro)]',
+      ].join(' ')}
+    >
+      <Icono size={18} strokeWidth={2.5} />
       {children}
     </p>
+  );
+}
+
+/** Diana con los colores de la asignatura: representa la meta (objetivo) de la clase. */
+function Diana({ tamano = 56 }: { tamano?: number }) {
+  return (
+    <svg aria-hidden="true" width={tamano} height={tamano} viewBox="0 0 56 56" className="shrink-0">
+      <circle cx="28" cy="28" r="26" fill="var(--tema-fuerte)" />
+      <circle cx="28" cy="28" r="17" fill="#FFFFFF" />
+      <circle cx="28" cy="28" r="8" fill="#FFC93C" />
+    </svg>
   );
 }
 
@@ -394,10 +480,10 @@ function Etiqueta({ icono: Icono, children }: { icono: typeof Target; children: 
 function TextoObjetivo({ texto, grande = false }: { texto: string; grande?: boolean }) {
   const [enunciado, ...vinetas] = texto.split('\n• ');
   return (
-    <div className={grande ? 'text-xl leading-relaxed sm:text-[1.7rem] sm:leading-snug' : 'text-lg leading-relaxed sm:text-xl'}>
+    <div className={grande ? 'text-xl font-semibold leading-relaxed sm:text-[1.6rem] sm:leading-snug' : 'text-lg font-semibold leading-relaxed sm:text-xl'}>
       <p>{enunciado}</p>
       {vinetas.length > 0 && (
-        <ul className="mt-3 list-disc space-y-1 pl-6 text-[0.85em] text-ink-700">
+        <ul className="mt-3 list-disc space-y-1 pl-6 text-[0.85em] font-medium text-tinta-suave">
           {vinetas.map((v, i) => (
             <li key={i}>{v}</li>
           ))}
@@ -409,47 +495,53 @@ function TextoObjetivo({ texto, grande = false }: { texto: string; grande?: bool
 
 function Portada({ clase }: { clase: Clase }) {
   const agenda = [
-    ...clase.recursos.map((r) => ({ id: r.id, icono: ICONO_RECURSO[r.tipo], texto: r.titulo, min: null as number | null })),
-    ...clase.actividades.map((a) => ({ id: a.id, icono: Puzzle, texto: a.titulo, min: a.duracionMinutos })),
+    ...clase.recursos.map((r) => ({ id: r.id, icono: ICONO_RECURSO[r.tipo], texto: r.titulo, min: null as number | null, actividad: false })),
+    ...clase.actividades.map((a) => ({ id: a.id, icono: Puzzle, texto: a.titulo, min: a.duracionMinutos, actividad: true })),
   ];
   return (
-    <div className="flex flex-1 flex-col justify-center gap-8">
+    <div className="flex flex-1 flex-col justify-center gap-7">
       <div>
-        <p className="text-base text-ink-500 sm:text-lg">
-          {mayusculaInicial(fechaLarga(clase.fecha))} · {clase.asignatura.nombre} · {clase.asignatura.nivel}
-        </p>
-        <h1 className="mt-2 text-4xl font-bold leading-tight sm:text-6xl">{clase.titulo}</h1>
+        <p className="font-infantil text-xl font-semibold text-[var(--tema-oscuro)] sm:text-2xl">¡Hoy vamos a descubrir!</p>
+        <h1 className="mt-1 font-infantil text-4xl font-bold leading-[1.05] sm:text-6xl">{clase.titulo}</h1>
+        <p className="mt-2 text-base font-bold text-tinta-suave sm:text-lg">{mayusculaInicial(fechaLarga(clase.fecha))}</p>
       </div>
 
-      <section className="rounded-2xl border border-brand-100 bg-white p-6 shadow-sm sm:p-8">
-        <Etiqueta icono={Target}>Objetivo de la clase</Etiqueta>
-        <div className="mt-4 flex items-start gap-4">
-          <span className="shrink-0 rounded-full bg-brand-100 px-3 py-1 text-base font-bold text-brand-700 sm:text-lg">
-            {clase.objetivo.codigo}
-          </span>
-          <TextoObjetivo texto={clase.objetivo.descripcion} grande />
+      <section className="flex items-start gap-4 rounded-[28px] border-[3px] border-tinta bg-white p-5 shadow-sticker sm:gap-5 sm:p-7" aria-label="Objetivo de la clase">
+        <Diana />
+        <div className="min-w-0">
+          <p className="text-sm font-extrabold uppercase tracking-wider text-[var(--tema-oscuro)] sm:text-base">
+            Nuestra meta · {clase.objetivo.codigo}
+          </p>
+          <div className="mt-1">
+            <TextoObjetivo texto={clase.objetivo.descripcion} grande />
+          </div>
         </div>
       </section>
 
       {agenda.length > 0 && (
         <section>
-          <p className="mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-ink-500">
+          <p className="mb-3 flex flex-wrap items-center gap-2 font-infantil text-xl font-semibold">
             Lo que haremos hoy
             {clase.duracionTotalMinutos > 0 && (
-              <span className="flex items-center gap-1 font-normal normal-case tracking-normal">
-                · <Clock size={14} /> {clase.duracionTotalMinutos} min de actividades
+              <span className="flex items-center gap-1 font-ronda text-base font-bold text-tinta-suave">
+                · <Clock size={16} /> {clase.duracionTotalMinutos} min de actividades
               </span>
             )}
           </p>
-          <ol className="grid gap-2 sm:grid-cols-2">
-            {agenda.map(({ id, icono: Icono, texto, min }, i) => (
-              <li key={id} className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 text-base sm:text-lg">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-muted text-sm font-semibold text-ink-500">
+          <ol className="grid gap-3 sm:grid-cols-2">
+            {agenda.map(({ id, icono: Icono, texto, min, actividad }, i) => (
+              <li key={id} className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-base font-bold sm:text-lg">
+                <span
+                  className={[
+                    'flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-infantil text-lg font-bold',
+                    actividad ? 'bg-sol text-tinta' : 'bg-[var(--tema-oscuro)] text-white',
+                  ].join(' ')}
+                >
                   {i + 1}
                 </span>
-                <Icono size={18} className="shrink-0 text-brand-600" />
+                <Icono size={20} className="shrink-0 text-[var(--tema-oscuro)]" />
                 <span className="min-w-0 flex-1 truncate">{texto}</span>
-                {min !== null && <span className="shrink-0 text-sm text-ink-500">{min} min</span>}
+                {min !== null && <span className="shrink-0 text-sm font-bold text-tinta-suave">{min} min</span>}
               </li>
             ))}
           </ol>
@@ -466,20 +558,20 @@ function DiapositivaRecurso({ recurso, numero, total }: { recurso: RecursoClase;
 
   return (
     <div className="flex flex-1 flex-col gap-4 [@media(max-height:700px)]:gap-2">
-      <div>
-        <Etiqueta icono={Icono}>
+      <div className="flex flex-col items-center text-center">
+        <Etiqueta icono={Icono} centrada>
           Recurso {numero} de {total} · {NOMBRE_TIPO[recurso.tipo]}
         </Etiqueta>
-        <h2 className="mt-1 text-3xl font-bold leading-tight sm:text-4xl [@media(max-height:700px)]:text-2xl">{recurso.titulo}</h2>
+        <h2 className="mt-2 font-infantil text-3xl font-bold leading-tight sm:text-5xl [@media(max-height:700px)]:text-2xl">{recurso.titulo}</h2>
         {/* En pantallas bajas se omite la unidad para dejar más espacio al video */}
-        <p className="mt-1 text-ink-500 [@media(max-height:700px)]:hidden">{recurso.unidad}</p>
+        <p className="mt-1 font-bold text-tinta-suave [@media(max-height:700px)]:hidden">{recurso.unidad}</p>
       </div>
 
       {/* Para videos e imágenes, el contenedor mide el espacio libre (container-type: size) y el
           medio usa el máximo que cabe sin tapar el título: 100cqw de ancho o 100cqh de alto. */}
       <div
         className={[
-          'flex flex-1 items-center justify-center',
+          'flex flex-1 items-center justify-center p-1 pb-3 pr-3',
           medio.tipo === 'youtube' || medio.tipo === 'drive' || medio.tipo === 'video' || (medio.tipo === 'imagen' && !falloImagen)
             ? 'min-h-[180px] [container-type:size]'
             : 'min-h-[240px]',
@@ -487,8 +579,8 @@ function DiapositivaRecurso({ recurso, numero, total }: { recurso: RecursoClase;
       >
         {(medio.tipo === 'youtube' || medio.tipo === 'drive') && (
           <div
-            className="aspect-video overflow-hidden rounded-2xl bg-black shadow-lg"
-            style={{ width: 'min(100cqw, 72rem, 100cqh * 16 / 9)' }}
+            className="aspect-video overflow-hidden rounded-[28px] border-4 border-tinta bg-tinta shadow-marco"
+            style={{ width: 'min(100cqw - 12px, 72rem, (100cqh - 12px) * 16 / 9)' }}
           >
             <iframe
               src={medio.src}
@@ -505,16 +597,16 @@ function DiapositivaRecurso({ recurso, numero, total }: { recurso: RecursoClase;
             src={medio.src}
             alt={recurso.titulo}
             onError={() => setFalloImagen(true)}
-            style={{ maxHeight: '100cqh' }}
-            className="max-w-full rounded-2xl bg-white object-contain shadow-lg"
+            style={{ maxHeight: 'calc(100cqh - 12px)' }}
+            className="max-w-full rounded-[28px] border-4 border-tinta bg-white object-contain shadow-marco"
           />
         )}
         {medio.tipo === 'video' && (
           <video
             src={medio.src}
             controls
-            style={{ maxHeight: '100cqh' }}
-            className="w-full max-w-5xl rounded-2xl bg-black shadow-lg"
+            style={{ maxHeight: 'calc(100cqh - 12px)' }}
+            className="w-full max-w-5xl rounded-[28px] border-4 border-tinta bg-tinta shadow-marco"
           />
         )}
         {(medio.tipo === 'enlace' || (medio.tipo === 'imagen' && falloImagen)) && (
@@ -529,10 +621,10 @@ function DiapositivaRecurso({ recurso, numero, total }: { recurso: RecursoClase;
           />
         )}
         {medio.tipo === 'sin-enlace' && (
-          <div className="flex max-w-lg flex-col items-center rounded-2xl border border-dashed border-ink-300/50 bg-white px-8 py-10 text-center">
-            <Icono size={40} className="text-ink-300" />
-            <p className="mt-4 text-lg text-ink-700">Este recurso no tiene un enlace para mostrar.</p>
-            <p className="mt-1 text-sm text-ink-500">Puedes agregar uno desde la sección Recursos.</p>
+          <div className="flex max-w-lg flex-col items-center rounded-[28px] border-[3px] border-dashed border-tinta/40 bg-white px-8 py-10 text-center">
+            <Icono size={40} className="text-tinta/40" />
+            <p className="mt-4 text-lg font-bold">Este recurso no tiene un enlace para mostrar.</p>
+            <p className="mt-1 text-sm font-semibold text-tinta-suave">Puedes agregar uno desde la sección Recursos.</p>
           </div>
         )}
       </div>
@@ -548,21 +640,48 @@ function TarjetaEnlace({ icono: Icono, href, mensaje }: { icono: typeof Video; h
     /* enlace no válido */
   }
   return (
-    <div className="flex max-w-lg flex-col items-center rounded-2xl bg-white px-8 py-10 text-center shadow-sm">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+    <div className="flex max-w-lg flex-col items-center rounded-[28px] border-[3px] border-tinta bg-white px-8 py-10 text-center shadow-sticker">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--tema-suave)] text-[var(--tema-oscuro)]">
         <Icono size={30} />
       </div>
-      <p className="mt-4 text-lg text-ink-700">{mensaje}</p>
-      {sitio && <p className="mt-1 text-sm text-ink-500">{sitio}</p>}
+      <p className="mt-4 text-lg font-bold">{mensaje}</p>
+      {sitio && <p className="mt-1 text-sm font-semibold text-tinta-suave">{sitio}</p>}
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-6 flex h-14 items-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-semibold text-white hover:bg-brand-700"
+        className="mt-6 flex h-14 items-center gap-2 rounded-full border-[3px] border-tinta bg-sol px-6 font-infantil text-lg font-bold text-tinta shadow-sticker-sm"
       >
         <ExternalLink size={20} />
         Abrir recurso
       </a>
+    </div>
+  );
+}
+
+/** Cronómetro circular: el anillo se vacía a medida que pasa el tiempo. */
+function AnilloTiempo({ fraccion, color, children }: { fraccion: number; color: string; children: ReactNode }) {
+  const r = 150;
+  const circunferencia = 2 * Math.PI * r;
+  return (
+    <div className="relative aspect-square w-[min(18.75rem,62vw)] [@media(max-height:700px)]:w-[13.75rem]">
+      <svg aria-hidden="true" viewBox="0 0 340 340" className="absolute inset-0 h-full w-full">
+        <circle cx="170" cy="170" r={r} fill="#FFFFFF" stroke="var(--tema-medio)" strokeWidth="24" />
+        <circle
+          cx="170"
+          cy="170"
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth="24"
+          strokeLinecap="round"
+          strokeDasharray={circunferencia}
+          strokeDashoffset={circunferencia * (1 - Math.max(0, Math.min(1, fraccion)))}
+          transform="rotate(-90 170 170)"
+          className="transition-[stroke-dashoffset] duration-300 ease-linear"
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">{children}</div>
     </div>
   );
 }
@@ -588,59 +707,67 @@ function DiapositivaActividad({
   onReiniciar: () => void;
   onSumarMinuto: () => void;
 }) {
+  const duracionMs = actividad.duracionMinutos * 60_000;
   const terminado = restanteMs === 0;
-  const completo = restanteMs === actividad.duracionMinutos * 60_000 && !corriendo;
+  const completo = restanteMs === duracionMs && !corriendo;
   // Aviso de que queda poco: último 25 % del tiempo, como máximo el último minuto.
   const quedaPoco = corriendo && restanteMs <= Math.min(60_000, actividad.duracionMinutos * 15_000);
+  const fraccion = restanteMs / Math.max(duracionMs, restanteMs, 1);
 
   return (
-    <div className="flex flex-1 flex-col gap-6 lg:flex-row lg:items-center lg:gap-12">
-      <div className="flex-1">
-        <Etiqueta icono={Puzzle}>
+    <div className="flex flex-1 flex-col gap-6 lg:flex-row lg:items-center lg:gap-14">
+      <div className="flex flex-1 flex-col">
+        <Etiqueta icono={Puzzle} color="sol">
           Actividad {numero} de {total} · {actividad.duracionMinutos} min
         </Etiqueta>
-        <h2 className="mt-2 text-3xl font-bold leading-tight sm:text-5xl">{actividad.titulo}</h2>
-        <p className="mt-4 whitespace-pre-line text-xl leading-relaxed text-ink-700 sm:text-2xl">{actividad.descripcion}</p>
+        <h2 className="mt-3 font-infantil text-3xl font-bold leading-tight sm:text-5xl">{actividad.titulo}</h2>
+        {actividad.descripcion && (
+          <p className="mt-5 whitespace-pre-line rounded-[28px] border-[3px] border-tinta bg-white p-5 text-xl font-semibold leading-relaxed shadow-sticker sm:p-6 sm:text-2xl">
+            {actividad.descripcion}
+          </p>
+        )}
       </div>
 
-      <section
-        aria-label="Cronómetro"
-        className={[
-          'flex shrink-0 flex-col items-center rounded-3xl px-6 py-6 shadow-sm transition-colors sm:px-10 lg:w-[380px]',
-          terminado ? 'bg-amber-50 ring-2 ring-amber-400' : 'bg-white',
-        ].join(' ')}
-      >
-        <p className="flex items-center gap-2 text-sm font-medium text-ink-500">
-          <Clock size={16} />
-          {terminado ? '¡Tiempo!' : corriendo ? 'En curso' : completo ? 'Listo para comenzar' : 'En pausa'}
-        </p>
-        <p
-          role="timer"
-          aria-live={terminado ? 'assertive' : 'off'}
-          className={[
-            'mt-1 font-bold tabular-nums leading-none',
-            'text-[clamp(4rem,14vw,7.5rem)]',
-            terminado ? 'animate-pulse text-amber-600' : quedaPoco ? 'text-amber-600' : 'text-ink-900',
-          ].join(' ')}
-        >
-          {formatoTiempo(restanteMs)}
-        </p>
-        <div className="mt-5 flex w-full items-center justify-center gap-3">
+      <section aria-label="Cronómetro" className="flex shrink-0 flex-col items-center gap-4 lg:w-[360px]">
+        <AnilloTiempo fraccion={fraccion} color={terminado || quedaPoco ? '#F2A900' : 'var(--tema-fuerte)'}>
+          <p
+            className={[
+              'flex items-center gap-1.5 text-sm font-extrabold sm:text-base',
+              terminado ? 'text-[#8A5A00]' : 'text-tinta-suave',
+            ].join(' ')}
+          >
+            <Clock size={16} strokeWidth={2.5} />
+            {terminado ? '¡Tiempo!' : corriendo ? 'En curso' : completo ? 'Listo para comenzar' : 'En pausa'}
+          </p>
+          <p
+            role="timer"
+            aria-live={terminado ? 'assertive' : 'off'}
+            className={[
+              'font-infantil font-bold tabular-nums leading-none',
+              'text-[clamp(3rem,11vw,5.5rem)] [@media(max-height:700px)]:text-[3.2rem]',
+              terminado ? 'animate-bounce text-[#8A5A00]' : quedaPoco ? 'text-[#8A5A00]' : 'text-tinta',
+            ].join(' ')}
+          >
+            {formatoTiempo(restanteMs)}
+          </p>
+        </AnilloTiempo>
+
+        <div className="flex w-full items-center justify-center gap-3">
           {corriendo ? (
             <button
               type="button"
               onClick={onPausar}
-              className="flex h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-ink-900 px-5 text-base font-semibold text-white hover:bg-ink-700"
+              className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border-[3px] border-tinta bg-sol px-5 font-infantil text-xl font-bold shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
             >
-              <Pause size={20} /> Pausar
+              <Pause size={20} fill="currentColor" /> Pausar
             </button>
           ) : (
             <button
               type="button"
               onClick={terminado ? onReiniciar : onIniciar}
-              className="flex h-14 flex-1 items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 text-base font-semibold text-white hover:bg-brand-700"
+              className="flex h-14 flex-1 items-center justify-center gap-2 rounded-full border-[3px] border-tinta bg-sol px-5 font-infantil text-xl font-bold shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
             >
-              {terminado ? <RotateCcw size={20} /> : <Play size={20} />}
+              {terminado ? <RotateCcw size={20} strokeWidth={3} /> : <Play size={20} fill="currentColor" />}
               {terminado ? 'Reiniciar' : completo ? 'Iniciar' : 'Continuar'}
             </button>
           )}
@@ -649,9 +776,9 @@ function DiapositivaActividad({
             onClick={onSumarMinuto}
             aria-label="Sumar un minuto"
             title="Sumar un minuto"
-            className="flex h-14 items-center gap-1 rounded-xl border border-ink-300/40 px-4 text-base font-medium text-ink-700 hover:bg-surface-muted"
+            className="flex h-14 items-center gap-1 rounded-full border-[3px] border-tinta bg-white px-4 font-infantil text-xl font-bold"
           >
-            <Plus size={18} />1
+            <Plus size={18} strokeWidth={3} />1
           </button>
           {!completo && !terminado && (
             <button
@@ -659,9 +786,9 @@ function DiapositivaActividad({
               onClick={onReiniciar}
               aria-label="Reiniciar cronómetro"
               title="Reiniciar"
-              className="flex h-14 w-14 items-center justify-center rounded-xl border border-ink-300/40 text-ink-700 hover:bg-surface-muted"
+              className="flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-tinta bg-white"
             >
-              <RotateCcw size={20} />
+              <RotateCcw size={20} strokeWidth={2.5} />
             </button>
           )}
         </div>
@@ -672,22 +799,33 @@ function DiapositivaActividad({
 
 function Cierre({ clase, onSalir }: { clase: Clase; onSalir: () => void }) {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+    <div className="relative flex flex-1 flex-col items-center justify-center gap-6 text-center">
+      <svg aria-hidden="true" viewBox="0 0 300 96" className="h-16 w-auto sm:h-24">
+        <Estrella x={50} y={56} r={30} />
+        <Estrella x={150} y={46} r={44} />
+        <Estrella x={250} y={56} r={30} />
+      </svg>
       <div>
-        <Flag size={44} className="mx-auto text-brand-600" />
-        <h2 className="mt-4 text-4xl font-bold sm:text-6xl">¡Buen trabajo!</h2>
-        <p className="mt-3 text-xl text-ink-500 sm:text-2xl">¿Qué aprendimos hoy?</p>
+        <h2 className="font-infantil text-5xl font-bold text-[var(--tema-oscuro)] sm:text-7xl">¡Lo logramos!</h2>
+        <p className="mt-2 font-infantil text-xl font-medium sm:text-3xl">¿Qué aprendimos hoy?</p>
       </div>
-      <section className="w-full max-w-4xl rounded-2xl bg-white p-6 text-left shadow-sm sm:p-8">
-        <Etiqueta icono={Target}>Recordemos el objetivo · {clase.objetivo.codigo}</Etiqueta>
-        <div className="mt-3">
-          <TextoObjetivo texto={clase.objetivo.descripcion} />
+      <section className="w-full max-w-4xl rounded-[28px] border-[3px] border-tinta bg-white p-5 text-left shadow-sticker sm:p-7">
+        <div className="flex items-start gap-4">
+          <Diana tamano={48} />
+          <div className="min-w-0">
+            <p className="text-sm font-extrabold uppercase tracking-wider text-[var(--tema-oscuro)] sm:text-base">
+              Recordemos nuestra meta · {clase.objetivo.codigo}
+            </p>
+            <div className="mt-1">
+              <TextoObjetivo texto={clase.objetivo.descripcion} />
+            </div>
+          </div>
         </div>
       </section>
       <button
         type="button"
         onClick={onSalir}
-        className="rounded-xl border border-ink-300/40 bg-white px-6 py-3 font-medium text-ink-700 hover:bg-surface-muted"
+        className="h-14 rounded-full border-[3px] border-tinta bg-white px-7 font-infantil text-lg font-semibold"
       >
         Volver al planificador
       </button>

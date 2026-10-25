@@ -13,12 +13,13 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+// Cada sección tiene su color, el mismo de su título y de su tarjeta en el inicio.
 const navItems = [
-  { to: '/', label: 'Inicio', icon: Home },
-  { to: '/curriculum', label: 'Explorador curricular', icon: BookOpen },
-  { to: '/recursos', label: 'Recursos', icon: Layers },
-  { to: '/actividades', label: 'Actividades', icon: Puzzle },
-  { to: '/planificador', label: 'Planificador', icon: CalendarDays },
+  { to: '/', label: 'Inicio', icon: Home, color: '#FFE3A3' },
+  { to: '/curriculum', label: 'Explorador curricular', icon: BookOpen, color: '#C5D9FB' },
+  { to: '/recursos', label: 'Recursos', icon: Layers, color: '#F6C2D6' },
+  { to: '/actividades', label: 'Actividades', icon: Puzzle, color: '#FFE3A3' },
+  { to: '/planificador', label: 'Planificador', icon: CalendarDays, color: '#BFE6D0' },
 ];
 
 interface Props {
@@ -65,7 +66,7 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
     <aside
       id="menu-principal"
       className={[
-        'fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] shrink-0 flex-col border-r border-ink-300/20 bg-surface-sidebar shadow-xl transition-[transform,visibility] duration-200',
+        'fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] shrink-0 flex-col border-r-2 border-ink-900 fondo-estrellas shadow-xl transition-[transform,visibility] duration-200',
         'lg:visible lg:static lg:w-64 lg:translate-x-0 lg:shadow-none',
         // Cerrado: fuera de la pantalla e invisible, para que el teclado no llegue a sus enlaces.
         abierto ? 'visible translate-x-0' : 'invisible -translate-x-full',
@@ -73,14 +74,14 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
     >
       {/* Logo / marca */}
       <div className="flex items-center gap-3 px-5 py-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white">
-          <GraduationCap size={20} />
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 bg-sol text-ink-900 shadow-[3px_3px_0_#7B6CF0]">
+          <GraduationCap size={22} />
         </div>
         <div>
-          <p className="text-[15px] font-semibold leading-tight text-ink-900">
+          <p className="font-[Fredoka] text-[17px] font-semibold leading-tight text-white">
             Software Educativo
           </p>
-          <p className="text-xs leading-tight text-ink-500">
+          <p className="text-xs leading-tight text-[#C9D0F2]">
             Apoyo docente · MINEDUC
           </p>
         </div>
@@ -88,52 +89,54 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
           type="button"
           onClick={onCerrar}
           aria-label="Cerrar menú"
-          className="ml-auto rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-300/10 lg:hidden"
+          className="ml-auto rounded-lg p-2 text-[#C9D0F2] transition-colors hover:bg-white/10 hover:text-white lg:hidden"
         >
           <X size={18} />
         </button>
       </div>
 
       {/* Navegación */}
-      <nav className="flex flex-1 flex-col gap-1 px-3">
-        {navItems.map(({ to, label, icon: Icon }) => (
+      <nav className="flex flex-1 flex-col gap-1.5 px-3">
+        {navItems.map(({ to, label, icon: Icon, color }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
               [
-                'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
+                'flex items-center gap-3 rounded-2xl border-2 px-2.5 py-2 text-[15px] font-bold transition',
                 isActive
-                  ? 'bg-brand-100 font-medium text-brand-700'
-                  : 'text-ink-700 hover:bg-ink-300/10',
+                  ? 'border-ink-900 bg-white text-ink-900 shadow-[4px_4px_0_#7B6CF0]'
+                  : 'border-transparent text-[#EEF1FF] hover:bg-white/10',
               ].join(' ')
             }
           >
-            <Icon size={18} />
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-ink-900" style={{ background: color }}>
+              <Icon size={17} />
+            </span>
             {label}
           </NavLink>
         ))}
       </nav>
 
       {/* Sesión del docente */}
-      <div className="border-t border-ink-300/20 px-3 py-3">
+      <div className="border-t border-white/15 px-3 py-3">
         {usuario ? (
           <div className="flex items-center gap-3 rounded-lg px-2 py-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-ink-900 bg-[#C5D9FB] font-[Fredoka] text-sm font-bold text-ink-900">
               {inicial}
             </div>
             <div className="min-w-0 flex-1">
               {usuario.nombre && (
-                <p className="truncate text-sm font-medium text-ink-900">{usuario.nombre}</p>
+                <p className="truncate text-sm font-bold text-white">{usuario.nombre}</p>
               )}
-              <p className="truncate text-xs text-ink-500">{usuario.email}</p>
+              <p className="truncate text-xs text-[#C9D0F2]">{usuario.email}</p>
             </div>
             <button
               onClick={salir}
               title="Cerrar sesión"
               aria-label="Cerrar sesión"
-              className="rounded-lg p-2 text-ink-500 transition-colors hover:bg-ink-300/10 hover:text-ink-900"
+              className="rounded-lg p-2 text-[#C9D0F2] transition-colors hover:bg-white/10 hover:text-white"
             >
               <LogOut size={16} />
             </button>
@@ -141,7 +144,7 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
         ) : (
           <Link
             to="/login"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-100"
+            className="flex items-center justify-center gap-2 rounded-full border-[2.5px] border-ink-900 bg-sol px-3 py-2.5 text-sm font-bold text-ink-900 shadow-[4px_4px_0_#7B6CF0] transition active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
             <LogIn size={18} />
             Iniciar sesión
@@ -150,8 +153,8 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
       </div>
 
       {/* Estado del proyecto */}
-      <div className="border-t border-ink-300/20 px-5 py-4">
-        <div className="flex items-center gap-2 text-xs text-ink-500">
+      <div className="border-t border-white/15 px-5 py-4">
+        <div className="flex items-center gap-2 text-xs text-[#C9D0F2]">
           <span className="h-2 w-2 rounded-full bg-amber-500" />
           Fase 2 · Desarrollo del proyecto
         </div>

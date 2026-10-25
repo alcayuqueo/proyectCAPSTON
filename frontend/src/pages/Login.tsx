@@ -72,7 +72,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={enviando}
-          className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:opacity-70"
+          className="mt-2 flex items-center justify-center gap-2 rounded-full border-[2.5px] border-ink-900 bg-sol px-4 py-2.5 text-sm font-bold text-ink-900 transition hover:bg-[#FFD35A] disabled:opacity-70 shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           {enviando && <Loader2 size={16} className="animate-spin" />}
           {enviando ? 'Ingresando…' : 'Iniciar sesión'}

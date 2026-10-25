@@ -47,7 +47,7 @@ export default function Modal({ abierto, titulo, onCerrar, bloqueado = false, ch
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-titulo"
-        className="max-h-[92vh] w-full overflow-y-auto rounded-t-card bg-white p-5 shadow-xl sm:max-w-lg sm:rounded-card sm:p-6"
+        className="max-h-[92vh] w-full overflow-y-auto rounded-t-card border-[3px] border-ink-900 bg-white p-5 shadow-sticker sm:max-w-lg sm:rounded-card sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-start justify-between gap-4">

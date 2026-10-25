@@ -31,23 +31,23 @@ function LayoutPrincipal() {
       <Sidebar abierto={menuAbierto} onCerrar={cerrarMenu} />
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Barra superior, solo en pantallas chicas */}
-        <header className="flex shrink-0 items-center gap-3 border-b border-ink-300/20 bg-surface-sidebar px-4 py-3 lg:hidden">
+        <header className="fondo-estrellas flex shrink-0 items-center gap-3 border-b-2 border-ink-900 px-4 py-3 lg:hidden">
           <button
             type="button"
             onClick={() => setMenuAbierto(true)}
             aria-label="Abrir menú"
             aria-expanded={menuAbierto}
             aria-controls="menu-principal"
-            className="-ml-1 rounded-lg p-2 text-ink-700 transition-colors hover:bg-ink-300/10"
+            className="-ml-1 rounded-lg p-2 text-white transition-colors hover:bg-white/10"
           >
             <Menu size={22} />
           </button>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
-            <GraduationCap size={16} />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-ink-900 bg-sol text-ink-900">
+            <GraduationCap size={18} />
           </div>
-          <p className="text-[15px] font-semibold text-ink-900">Software Educativo</p>
+          <p className="font-[Fredoka] text-[17px] font-semibold text-white">Software Educativo</p>
         </header>
-        <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <main className="fondo-universo flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           <Outlet />
         </main>
       </div>

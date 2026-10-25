@@ -30,7 +30,7 @@ function Seccion({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-card border border-ink-300/20 bg-white p-5 sm:p-6">
+    <section className="rounded-card border-2 border-ink-900 bg-white shadow-sticker-sm p-5 sm:p-6">
       <h2 className="flex items-center gap-3 font-semibold text-ink-900">
         <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-700">
           {numero}
@@ -225,8 +225,8 @@ export default function FormularioClase() {
 
   const claseCampo = (error?: string) =>
     [
-      'w-full rounded-lg border bg-white px-3 py-2.5 text-sm outline-none transition-colors',
-      error ? 'border-red-400 focus:border-red-500' : 'border-ink-300/40 focus:border-brand-500',
+      'w-full rounded-xl border-2 bg-white px-3 py-2.5 text-sm outline-none transition-colors',
+      error ? 'border-red-400 focus:border-red-500' : 'border-ink-300/70 focus:border-brand-500',
     ].join(' ');
 
   return (
@@ -396,7 +396,7 @@ export default function FormularioClase() {
                   <span
                     className={[
                       'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold',
-                      posicion >= 0 ? 'bg-brand-600 text-white' : 'bg-brand-100 text-brand-700',
+                      posicion >= 0 ? 'border-2 border-ink-900 bg-sol text-ink-900' : 'bg-brand-100 text-brand-700',
                     ].join(' ')}
                   >
                     {posicion >= 0 ? posicion + 1 : <Icono size={15} />}
@@ -445,7 +445,7 @@ export default function FormularioClase() {
                   <span
                     className={[
                       'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-bold',
-                      posicion >= 0 ? 'bg-brand-600 text-white' : 'border border-ink-300/50 text-ink-300',
+                      posicion >= 0 ? 'border-2 border-ink-900 bg-sol text-ink-900' : 'border border-ink-300/50 text-ink-300',
                     ].join(' ')}
                   >
                     {posicion >= 0 ? posicion + 1 : <Check size={14} />}
@@ -495,7 +495,7 @@ export default function FormularioClase() {
           <button
             type="submit"
             disabled={guardando}
-            className="flex items-center gap-2 whitespace-nowrap rounded-lg bg-brand-600 px-5 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-70"
+            className="flex items-center gap-2 whitespace-nowrap rounded-full border-[2.5px] border-ink-900 bg-sol px-5 py-2 text-sm font-bold text-ink-900 hover:bg-[#FFD35A] disabled:opacity-70 shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
             {guardando && <Loader2 size={15} className="animate-spin" />}
             {guardando ? 'Guardando…' : editando ? 'Guardar cambios' : 'Crear clase'}

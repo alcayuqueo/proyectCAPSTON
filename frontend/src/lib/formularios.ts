@@ -4,8 +4,8 @@ import type { Asignatura } from './tipos';
 /** Clases de Tailwind para un campo de formulario, con borde rojo si tiene error. */
 export function claseCampo(error?: string) {
   return [
-    'w-full rounded-lg border bg-white px-3 py-2.5 text-sm text-ink-900 outline-none transition-colors',
-    error ? 'border-red-400 focus:border-red-500' : 'border-ink-300/30 focus:border-brand-500',
+    'w-full rounded-xl border-2 bg-white px-3 py-2.5 text-sm text-ink-900 outline-none transition-colors',
+    error ? 'border-red-400 focus:border-red-500' : 'border-ink-300/70 focus:border-brand-500',
   ].join(' ');
 }
 
