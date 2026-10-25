@@ -1,0 +1,432 @@
+[
+  {
+    "asignatura": "Matemática", "nivel": "1° básico", "codigo": "OA09",
+    "tema": "Sumas y restas hasta 20",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "➕", "titulo": "Sumar es juntar, restar es quitar", "texto": "Cuando sumamos, juntamos grupos y contamos cuántos hay en total. Cuando restamos, quitamos algunos y contamos cuántos quedan.", "puntos": ["Sumar: 🍎🍎🍎 + 🍎🍎 = 5 manzanas", "Restar: 🎈🎈🎈🎈🎈 − 🎈🎈 = 3 globos"] },
+      { "tipo": "ejemplo", "emoji": "👣", "titulo": "Contamos hacia adelante y hacia atrás", "texto": "8 + 3: partimos en 8 y contamos 3 más: 9, 10, 11. ¡Son 11!", "puntos": ["Partimos del número mayor", "Para sumar, contamos hacia adelante", "Para restar, contamos hacia atrás: 12 − 2 → 11, 10"] },
+      { "tipo": "pregunta", "titulo": "Tengo 7 lápices y me regalan 5. ¿Cuántos lápices tengo?", "puntos": ["10", "12", "13"], "respuesta": "12 lápices, porque 7 + 5 = 12." },
+      { "tipo": "pregunta", "titulo": "Había 15 pájaros y se volaron 4. ¿Cuántos quedan?", "puntos": ["11", "9", "19"], "respuesta": "Quedan 11 pájaros, porque 15 − 4 = 11." }
+    ],
+    "videos": [
+      { "titulo": "Video: sumas y restas hasta 20", "url": "https://www.youtube.com/watch?v=toXyHn3zqiw" },
+      { "titulo": "Video AprendoTV: Matemática 1° básico", "url": "https://www.youtube.com/watch?v=rG_Y8X1LMLQ" }
+    ],
+    "actividad": { "titulo": "Carrera de sumas en la recta numérica", "descripcion": "Se proyecta una recta del 0 al 20. Un estudiante lanza dos dados, ubica el primer número y avanza tantos saltos como indica el segundo. El curso dice la suma en voz alta. Luego se repite restando, saltando hacia atrás.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "1° básico", "codigo": "OA11",
+    "tema": "Patrones que se repiten",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔁", "titulo": "¿Qué es un patrón?", "texto": "Un patrón es algo que se repite siempre en el mismo orden.", "puntos": ["🔴🔵🔴🔵🔴🔵 → rojo, azul, y se repite", "👏👏🦶 👏👏🦶 → también hay patrones de sonidos"] },
+      { "tipo": "ejemplo", "emoji": "🔎", "titulo": "Buscamos la parte que se repite", "texto": "Miramos con atención y buscamos el grupo que vuelve a empezar.", "puntos": ["⭐🌙🌙 ⭐🌙🌙 ⭐🌙🌙", "La parte que se repite es ⭐🌙🌙", "Patrón con números: 2, 4, 6, 8… vamos sumando 2"] },
+      { "tipo": "pregunta", "titulo": "¿Qué sigue? 🍌🍓🍌🍓🍌 …", "puntos": ["🍌", "🍓", "🍇"], "respuesta": "🍓 La frutilla: el patrón es plátano, frutilla." },
+      { "tipo": "pregunta", "titulo": "¿Qué número sigue? 5, 10, 15, 20, …", "puntos": ["21", "25", "30"], "respuesta": "25: vamos sumando 5." }
+    ],
+    "videos": [
+      { "titulo": "Video: patrones AB para niños", "url": "https://www.youtube.com/watch?v=lKYPN7ZKokM" },
+      { "titulo": "Canción: hagamos un patrón", "url": "https://www.youtube.com/watch?v=AcYO9XReDw4" }
+    ],
+    "actividad": { "titulo": "Patrones con el cuerpo", "descripcion": "El curso crea patrones de sonidos y movimientos (aplauso, salto, aplauso, salto) y los continúa en coro. Luego, en la pantalla, completan patrones de figuras arrastrando la que falta.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "1° básico", "codigo": "OA14",
+    "tema": "Figuras 2D y 3D en el entorno",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔷", "titulo": "Figuras planas y cuerpos", "texto": "Las figuras 2D son planas, como un dibujo en el papel. Las figuras 3D tienen volumen y las podemos tomar con las manos.", "puntos": ["2D: círculo, cuadrado, triángulo, rectángulo", "3D: esfera, cubo, cilindro, cono"] },
+      { "tipo": "ejemplo", "emoji": "🏫", "titulo": "Las encontramos en todas partes", "texto": "Mira a tu alrededor: ¡las figuras están en la sala!", "puntos": ["⚽ Una pelota es una esfera", "🎲 Un dado es un cubo", "🥫 Una lata es un cilindro", "🍦 Un barquillo es un cono"] },
+      { "tipo": "pregunta", "titulo": "¿Qué figura 3D es una caja de zapatos?", "puntos": ["Esfera", "Paralelepípedo", "Cono"], "respuesta": "Un paralelepípedo: sus caras tienen forma de rectángulo." },
+      { "tipo": "pregunta", "titulo": "Si apoyas un cubo en el papel y marcas su borde, ¿qué figura dibujas?", "puntos": ["Círculo", "Cuadrado", "Triángulo"], "respuesta": "Un cuadrado: las caras del cubo son cuadrados." }
+    ],
+    "videos": [
+      { "titulo": "Video: figuras planas y cuerpos geométricos", "url": "https://www.youtube.com/watch?v=zblBZbPdzIc" }
+    ],
+    "actividad": { "titulo": "Búsqueda del tesoro geométrico", "descripcion": "En grupos, los estudiantes buscan en la sala objetos con forma de esfera, cubo, cilindro y cono. Luego los muestran al curso y en la pantalla los arrastran a la figura que corresponde.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "1° básico", "codigo": "OA17",
+    "tema": "Días de la semana y meses del año",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📅", "titulo": "La semana tiene 7 días", "texto": "Los días se repiten siempre en el mismo orden.", "puntos": ["Lunes, martes, miércoles, jueves, viernes", "Sábado y domingo: el fin de semana"] },
+      { "tipo": "concepto", "emoji": "🗓️", "titulo": "El año tiene 12 meses", "texto": "Después de diciembre, vuelve a empezar enero.", "puntos": ["Enero, febrero, marzo, abril, mayo, junio", "Julio, agosto, septiembre, octubre, noviembre, diciembre", "En septiembre celebramos las Fiestas Patrias 🇨🇱"] },
+      { "tipo": "pregunta", "titulo": "Si hoy es martes, ¿qué día será mañana?", "puntos": ["Lunes", "Miércoles", "Jueves"], "respuesta": "Miércoles." },
+      { "tipo": "pregunta", "titulo": "¿Qué mes viene después de marzo?", "puntos": ["Febrero", "Abril", "Mayo"], "respuesta": "Abril." }
+    ],
+    "videos": [
+      { "titulo": "Video: días de la semana y meses del año", "url": "https://www.youtube.com/watch?v=CGC8slvdsL8" }
+    ],
+    "actividad": { "titulo": "El calendario del curso", "descripcion": "Se proyecta el calendario del mes. Los estudiantes marcan el día de hoy, cuentan cuántos días faltan para un evento del curso y ubican los cumpleaños del mes.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "1° básico", "codigo": "OA20",
+    "tema": "Pictogramas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📊", "titulo": "¿Qué es un pictograma?", "texto": "Es un gráfico que usa dibujos para mostrar cuántos hay de cada cosa.", "puntos": ["Cada dibujo representa una cantidad", "Tiene un título que dice de qué se trata"] },
+      { "tipo": "ejemplo", "emoji": "🍎", "titulo": "Nuestra fruta favorita", "texto": "Cada 🙂 es un estudiante.", "puntos": ["🍎 Manzana: 🙂🙂🙂🙂", "🍌 Plátano: 🙂🙂", "🍇 Uva: 🙂🙂🙂🙂🙂"] },
+      { "tipo": "pregunta", "titulo": "En el ejemplo, ¿qué fruta tiene más votos?", "puntos": ["Manzana", "Plátano", "Uva"], "respuesta": "La uva, con 5 votos." },
+      { "tipo": "pregunta", "titulo": "¿Cuántos votos más tiene la manzana que el plátano?", "puntos": ["1", "2", "6"], "respuesta": "2 votos más, porque 4 − 2 = 2." }
+    ],
+    "videos": [
+      { "titulo": "Video: los pictogramas para niños", "url": "https://www.youtube.com/watch?v=-evrPzheb-k" }
+    ],
+    "actividad": { "titulo": "Pictograma de mascotas", "descripcion": "Cada estudiante pega un círculo en la pizarra según su mascota favorita (perro, gato, pez u otra). Juntos le ponen título al pictograma y responden: ¿cuál tiene más votos?, ¿cuál tiene menos?", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "2° básico", "codigo": "OA11",
+    "tema": "La multiplicación",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "✖️", "titulo": "Multiplicar es sumar grupos iguales", "texto": "3 × 4 significa 3 grupos de 4.", "puntos": ["🍪🍪🍪🍪 | 🍪🍪🍪🍪 | 🍪🍪🍪🍪", "4 + 4 + 4 = 12", "3 × 4 = 12"] },
+      { "tipo": "ejemplo", "emoji": "🧦", "titulo": "Tablas del 2, del 5 y del 10", "puntos": ["2 × 3 = 6 → 3 pares de calcetines son 6 calcetines", "5 × 2 = 10 → 2 manos tienen 10 dedos", "10 × 3 = 30 → 3 monedas de $10 son $30"] },
+      { "tipo": "pregunta", "titulo": "¿Qué multiplicación representa 5 + 5 + 5?", "puntos": ["5 × 5", "3 × 5", "5 + 3"], "respuesta": "3 × 5 = 15: son 3 grupos de 5." },
+      { "tipo": "pregunta", "titulo": "Hay 4 autos y cada uno tiene 4 ruedas. ¿Cuántas ruedas hay?", "puntos": ["8", "12", "16"], "respuesta": "16 ruedas, porque 4 × 4 = 16." }
+    ],
+    "videos": [
+      { "titulo": "Video: la multiplicación para niños", "url": "https://www.youtube.com/watch?v=-d2BBu78NC8" },
+      { "titulo": "Video: aprende a multiplicar con el aprendiz de brujo", "url": "https://www.youtube.com/watch?v=WES-u3UPDRA" }
+    ],
+    "actividad": { "titulo": "Grupos iguales en la pantalla", "descripcion": "El docente proyecta grupos de objetos. Los estudiantes escriben en la pizarra la suma repetida y la multiplicación que los representa. Luego forman con fichas sus propios grupos iguales y los presentan.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "2° básico", "codigo": "OA12",
+    "tema": "Patrones numéricos",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔢", "titulo": "Patrones con números", "texto": "En un patrón numérico, los números cambian siempre de la misma forma.", "puntos": ["10, 20, 30, 40 → sumamos 10", "50, 45, 40, 35 → restamos 5"] },
+      { "tipo": "ejemplo", "emoji": "🧩", "titulo": "¿Cómo encontramos la regla?", "texto": "Ejemplo: 3, 6, 9, 12 → cada vez sumamos 3.", "puntos": ["Miramos dos números seguidos", "Calculamos cuánto aumenta o disminuye", "Revisamos que pase lo mismo en todo el patrón"] },
+      { "tipo": "pregunta", "titulo": "¿Qué número falta? 2, 4, __, 8, 10", "puntos": ["5", "6", "7"], "respuesta": "6: el patrón suma 2." },
+      { "tipo": "pregunta", "titulo": "¿Cuál es la regla? 100, 90, 80, 70", "puntos": ["Sumar 10", "Restar 10", "Restar 20"], "respuesta": "Restar 10." }
+    ],
+    "videos": [
+      { "titulo": "Video: patrones y secuencias numéricas", "url": "https://www.youtube.com/watch?v=8m9KuigpRW4" }
+    ],
+    "actividad": { "titulo": "El número escondido", "descripcion": "En una tabla del 100 proyectada se tapan algunos números de un patrón. Por turnos, los estudiantes descubren el número escondido y explican la regla que usaron.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "2° básico", "codigo": "OA15",
+    "tema": "Figuras 2D: lados y vértices",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔺", "titulo": "Lados y vértices", "texto": "Las figuras 2D se diferencian por sus lados (líneas) y sus vértices (esquinas).", "puntos": ["Triángulo: 3 lados y 3 vértices", "Cuadrado: 4 lados iguales", "Rectángulo: 4 lados, dos largos y dos cortos", "Círculo: no tiene lados ni vértices"] },
+      { "tipo": "ejemplo", "emoji": "📐", "titulo": "Comparamos figuras", "puntos": ["El cuadrado y el rectángulo tienen 4 lados", "El cuadrado tiene todos sus lados iguales", "El rectángulo tiene lados de dos medidas distintas"] },
+      { "tipo": "pregunta", "titulo": "¿Qué figura tiene 3 vértices?", "puntos": ["Cuadrado", "Triángulo", "Círculo"], "respuesta": "El triángulo." },
+      { "tipo": "pregunta", "titulo": "Tengo 4 lados iguales. ¿Quién soy?", "puntos": ["Rectángulo", "Cuadrado", "Triángulo"], "respuesta": "El cuadrado." }
+    ],
+    "videos": [
+      { "titulo": "Video: las figuras geométricas planas", "url": "https://www.youtube.com/watch?v=SXONzObzFk0" }
+    ],
+    "actividad": { "titulo": "Construimos figuras con palitos", "descripcion": "Con palitos de helado y plasticina, los estudiantes construyen triángulos, cuadrados y rectángulos. Cuentan sus lados y vértices y comparan sus construcciones con las de sus compañeros.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "2° básico", "codigo": "OA18",
+    "tema": "La hora: en punto y media",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🕒", "titulo": "El reloj tiene dos manecillas", "puntos": ["La manecilla corta marca la hora", "La manecilla larga marca los minutos", "En punto: la larga apunta al 12", "Y media: la larga apunta al 6"] },
+      { "tipo": "ejemplo", "emoji": "⌚", "titulo": "En el reloj digital", "puntos": ["7:00 → siete en punto", "7:30 → siete y media", "Los dos puntos separan las horas de los minutos"] },
+      { "tipo": "pregunta", "titulo": "Un reloj digital marca 4:30. ¿Qué hora es?", "puntos": ["Cuatro en punto", "Cuatro y media", "Tres y media"], "respuesta": "Cuatro y media." },
+      { "tipo": "pregunta", "titulo": "La clase empieza a las 8:00 y dura media hora. ¿A qué hora termina?", "puntos": ["8:15", "8:30", "9:00"], "respuesta": "A las 8:30." }
+    ],
+    "videos": [
+      { "titulo": "Video: la hora en punto y y media", "url": "https://www.youtube.com/watch?v=4NWqMu7q4oE" },
+      { "titulo": "Video: ¿qué hora es? Aprender a decir la hora", "url": "https://www.youtube.com/watch?v=VIKnShZHmbk" }
+    ],
+    "actividad": { "titulo": "La rutina del día", "descripcion": "Se proyectan escenas del día (despertar, almuerzo, recreo, dormir). Los estudiantes marcan la hora en punto o y media en un reloj de cartón y luego la escriben como en un reloj digital.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "2° básico", "codigo": "OA22",
+    "tema": "Gráficos de barra simple",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📊", "titulo": "El gráfico de barra simple", "texto": "Muestra datos con barras: mientras más alta la barra, mayor es la cantidad.", "puntos": ["Tiene un título", "Un eje con las categorías", "Un eje con los números (la escala)"] },
+      { "tipo": "ejemplo", "emoji": "⚽", "titulo": "Deporte favorito del 2° A", "texto": "La barra del fútbol es la más alta.", "puntos": ["⚽ Fútbol: 9", "🏀 Básquetbol: 5", "🏐 Vóleibol: 3"] },
+      { "tipo": "pregunta", "titulo": "En el ejemplo, ¿cuántos estudiantes votaron en total?", "puntos": ["14", "17", "19"], "respuesta": "17, porque 9 + 5 + 3 = 17." },
+      { "tipo": "pregunta", "titulo": "En un pictograma cada ⭐ vale 2. ¿Cuánto valen 4 ⭐?", "puntos": ["4", "6", "8"], "respuesta": "8, porque 2 + 2 + 2 + 2 = 8." }
+    ],
+    "videos": [
+      { "titulo": "Video: leemos y elaboramos un gráfico de barras", "url": "https://www.youtube.com/watch?v=mUo0XC84D7s" },
+      { "titulo": "Video: gráfico de barras para niños", "url": "https://www.youtube.com/watch?v=Kjdt_cT6LbM" }
+    ],
+    "actividad": { "titulo": "Lanzamos el dado y graficamos", "descripcion": "En parejas lanzan un dado 20 veces y registran los resultados en una tabla. Luego construyen entre todos un gráfico de barras en la pantalla y comentan qué número salió más veces.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "3° básico", "codigo": "OA11",
+    "tema": "Fracciones de uso común",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🍕", "titulo": "¿Qué es una fracción?", "texto": "Una fracción representa partes iguales de un entero.", "puntos": ["Denominador (abajo): en cuántas partes iguales se divide", "Numerador (arriba): cuántas partes tomamos"] },
+      { "tipo": "ejemplo", "emoji": "🍫", "titulo": "Fracciones de uso común", "puntos": ["1/2 → un medio: dividimos en 2 y tomamos 1", "1/4 → un cuarto · 3/4 → tres cuartos", "1/3 → un tercio · 2/3 → dos tercios"] },
+      { "tipo": "pregunta", "titulo": "Una pizza se corta en 4 partes iguales y comemos 3. ¿Qué fracción comimos?", "puntos": ["1/4", "3/4", "4/3"], "respuesta": "3/4 (tres cuartos)." },
+      { "tipo": "pregunta", "titulo": "¿Qué es más grande: 1/2 o 1/4 de la misma pizza?", "puntos": ["1/2", "1/4", "Son iguales"], "respuesta": "1/2: mientras en menos partes se divide el entero, más grande es cada parte." }
+    ],
+    "videos": [
+      { "titulo": "Video: las fracciones con pizza", "url": "https://www.youtube.com/watch?v=c9cTIjBqFTw" },
+      { "titulo": "Video: introducción a las fracciones", "url": "https://www.youtube.com/watch?v=25KSllumxjs" }
+    ],
+    "actividad": { "titulo": "Doblamos papel", "descripcion": "Cada estudiante dobla hojas para obtener medios, cuartos y tercios. Pinta la fracción que indica el docente y la compara con la de su compañero: ¿cuál es mayor?", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "3° básico", "codigo": "OA12",
+    "tema": "Patrones en la tabla del 100",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "💯", "titulo": "Patrones en la tabla del 100", "texto": "En la tabla del 100 los números se ordenan en filas de 10. ¡Ahí aparecen muchos patrones!", "puntos": ["Bajando una fila: sumamos 10", "Avanzando a la derecha: sumamos 1", "Los números que terminan en 5 forman una columna"] },
+      { "tipo": "ejemplo", "emoji": "🖍️", "titulo": "Pintamos de 5 en 5", "puntos": ["5, 10, 15, 20, 25…", "Quedan pintadas dos columnas: la del 5 y la del 0"] },
+      { "tipo": "pregunta", "titulo": "En la tabla del 100, ¿qué número está justo debajo del 37?", "puntos": ["38", "47", "36"], "respuesta": "47: bajar una fila suma 10." },
+      { "tipo": "pregunta", "titulo": "¿Qué sigue? 12, 22, 32, 42, …", "puntos": ["43", "52", "62"], "respuesta": "52: el patrón suma 10." }
+    ],
+    "videos": [
+      { "titulo": "Video: reconocer patrones (3° básico)", "url": "https://www.youtube.com/watch?v=UQeyeH58qtI" }
+    ],
+    "actividad": { "titulo": "Detectives de la tabla del 100", "descripcion": "Se proyecta la tabla del 100. Cada grupo recibe una regla (sumar 3, sumar 4, sumar 9) y pinta los números del patrón en su tabla. Luego describen el dibujo que se forma y lo comparan.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "3° básico", "codigo": "OA18",
+    "tema": "El concepto de ángulo",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📐", "titulo": "¿Qué es un ángulo?", "texto": "Es la abertura entre dos líneas que se unen en un punto llamado vértice.", "puntos": ["Recto: como la esquina de un cuaderno (90°)", "Agudo: más cerrado que un recto", "Obtuso: más abierto que un recto"] },
+      { "tipo": "ejemplo", "emoji": "🏫", "titulo": "Ángulos a nuestro alrededor", "puntos": ["La esquina de la pizarra → recto", "Las manecillas del reloj a la 1:00 → agudo", "Un abanico muy abierto → obtuso"] },
+      { "tipo": "pregunta", "titulo": "¿Qué tipo de ángulo forma la esquina de una hoja?", "puntos": ["Agudo", "Recto", "Obtuso"], "respuesta": "Un ángulo recto." },
+      { "tipo": "pregunta", "titulo": "Unas tijeras casi cerradas forman un ángulo…", "puntos": ["Agudo", "Recto", "Obtuso"], "respuesta": "Agudo: es más cerrado que un recto." }
+    ],
+    "videos": [
+      { "titulo": "Video: los ángulos para niños", "url": "https://www.youtube.com/watch?v=6wscEyBlPLA" }
+    ],
+    "actividad": { "titulo": "Ángulos con el cuerpo", "descripcion": "Los estudiantes forman con los brazos el ángulo que nombra el docente (recto, agudo u obtuso). Luego buscan ángulos en una foto proyectada de la sala y los marcan en la pantalla.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "3° básico", "codigo": "OA21",
+    "tema": "El perímetro",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📏", "titulo": "¿Qué es el perímetro?", "texto": "Es la medida del contorno de una figura: sumamos todos sus lados.", "puntos": ["Imagina que caminas por todo el borde", "Se mide en centímetros (cm) o metros (m)"] },
+      { "tipo": "ejemplo", "emoji": "▭", "titulo": "Calculamos el perímetro", "puntos": ["Rectángulo de 5 cm de largo y 3 cm de ancho", "5 + 3 + 5 + 3 = 16", "Perímetro: 16 cm"] },
+      { "tipo": "pregunta", "titulo": "Un cuadrado tiene lados de 4 cm. ¿Cuál es su perímetro?", "puntos": ["8 cm", "12 cm", "16 cm"], "respuesta": "16 cm, porque 4 + 4 + 4 + 4 = 16." },
+      { "tipo": "pregunta", "titulo": "Un triángulo tiene lados de 3 cm, 4 cm y 5 cm. ¿Cuál es su perímetro?", "puntos": ["12 cm", "10 cm", "60 cm"], "respuesta": "12 cm, porque 3 + 4 + 5 = 12." }
+    ],
+    "videos": [
+      { "titulo": "Video: ¿qué es el perímetro?", "url": "https://www.youtube.com/watch?v=d3rI0ONOMMY" },
+      { "titulo": "Video: conociendo el perímetro (3° básico)", "url": "https://www.youtube.com/watch?v=aJTO1MYtSWM" }
+    ],
+    "actividad": { "titulo": "Medimos el contorno", "descripcion": "En grupos miden con regla o huincha el contorno de su cuaderno, su mesa y la pizarra. Registran las medidas en una tabla y calculan el perímetro de cada objeto.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "3° básico", "codigo": "OA23",
+    "tema": "Encuestas y gráficos de barra",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🗳️", "titulo": "Hacemos una encuesta", "texto": "Una encuesta es hacer la misma pregunta a muchas personas para conocer su opinión.", "puntos": ["1. Elegimos una pregunta", "2. Registramos las respuestas en una tabla de conteo", "3. Mostramos los datos en un gráfico de barras"] },
+      { "tipo": "ejemplo", "emoji": "🐶", "titulo": "Tabla de conteo: mascota favorita", "texto": "Cada grupo de 5 marcas se cierra con una línea cruzada.", "puntos": ["Perro: 7", "Gato: 5", "Pez: 2"] },
+      { "tipo": "pregunta", "titulo": "Según la tabla, ¿cuántas personas respondieron la encuesta?", "puntos": ["12", "14", "15"], "respuesta": "14, porque 7 + 5 + 2 = 14." },
+      { "tipo": "pregunta", "titulo": "¿Para qué sirve el título de un gráfico?", "puntos": ["Para decorarlo", "Para saber de qué tratan los datos", "Para contar"], "respuesta": "Para saber de qué tratan los datos." }
+    ],
+    "videos": [
+      { "titulo": "Video: pictograma y gráfico de barras (3° básico)", "url": "https://www.youtube.com/watch?v=vdhsE6bPDA8" }
+    ],
+    "actividad": { "titulo": "Encuesta del curso", "descripcion": "El curso elige una pregunta (por ejemplo, el juego favorito del recreo), cada estudiante responde y se completa una tabla de conteo. Luego construyen el gráfico de barras en la pantalla y escriben dos conclusiones.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "4° básico", "codigo": "OA11",
+    "tema": "Décimos y centésimos",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔟", "titulo": "Los números decimales", "texto": "Los decimales expresan partes de un entero usando la coma.", "puntos": ["0,1 → un décimo = 1/10", "0,01 → un centésimo = 1/100", "La coma separa los enteros de las partes"] },
+      { "tipo": "ejemplo", "emoji": "📏", "titulo": "Decimales en la vida diaria", "puntos": ["1,5 m → un metro y cinco décimos", "Un entero dividido en 10 partes: cada parte es 0,1", "0,25 → veinticinco centésimos"] },
+      { "tipo": "pregunta", "titulo": "¿Cómo se escribe 3/10 como número decimal?", "puntos": ["0,3", "3,10", "0,03"], "respuesta": "0,3 (tres décimos)." },
+      { "tipo": "pregunta", "titulo": "¿Qué número es mayor: 0,5 o 0,45?", "puntos": ["0,5", "0,45", "Son iguales"], "respuesta": "0,5: cinco décimos equivalen a 50 centésimos, y 50 es mayor que 45." }
+    ],
+    "videos": [
+      { "titulo": "Video: unidad, décima y centésima", "url": "https://www.youtube.com/watch?v=RsXOs4vETlY" }
+    ],
+    "actividad": { "titulo": "Cuadrícula de 100", "descripcion": "Se proyecta una cuadrícula de 10 × 10. Los estudiantes pintan la cantidad que indica el docente (0,3; 0,07; 0,45) y escriben el decimal y la fracción que corresponde.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "4° básico", "codigo": "OA13",
+    "tema": "Patrones numéricos en tablas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "⚙️", "titulo": "Patrones en tablas", "texto": "Una tabla puede mostrar una regla que transforma un número en otro.", "puntos": ["Entrada → regla → salida", "Ejemplo de regla: «multiplicar por 3»"] },
+      { "tipo": "ejemplo", "emoji": "📋", "titulo": "Regla: multiplicar por 3", "puntos": ["1 → 3", "2 → 6", "3 → 9", "4 → 12"] },
+      { "tipo": "pregunta", "titulo": "Entradas 5, 6, 7 y salidas 10, 12, 14. ¿Cuál es la regla?", "puntos": ["Sumar 5", "Multiplicar por 2", "Sumar 2"], "respuesta": "Multiplicar por 2." },
+      { "tipo": "pregunta", "titulo": "Con la regla «sumar 25», ¿qué sale si entra 50?", "puntos": ["70", "75", "100"], "respuesta": "75." }
+    ],
+    "videos": [
+      { "titulo": "Video: patrón y secuencia (4° básico)", "url": "https://www.youtube.com/watch?v=iJdZRmghWlw" }
+    ],
+    "actividad": { "titulo": "La máquina de números", "descripcion": "El docente hace de máquina secreta: los estudiantes dicen un número de entrada y la máquina responde la salida. Registran todo en una tabla hasta descubrir la regla.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "4° básico", "codigo": "OA17",
+    "tema": "Simetría",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🦋", "titulo": "La línea de simetría", "texto": "Una figura es simétrica si al doblarla por una línea sus dos mitades coinciden exactamente.", "puntos": ["La línea de doblez es el eje de simetría", "Una mariposa tiene un eje de simetría", "Un cuadrado tiene 4 ejes de simetría"] },
+      { "tipo": "ejemplo", "emoji": "🔠", "titulo": "Letras simétricas", "puntos": ["A, M, T → eje vertical", "B, E, C → eje horizontal", "F, G, J → no tienen eje de simetría"] },
+      { "tipo": "pregunta", "titulo": "¿Cuántos ejes de simetría tiene un rectángulo que no es cuadrado?", "puntos": ["1", "2", "4"], "respuesta": "2: uno vertical y uno horizontal." },
+      { "tipo": "pregunta", "titulo": "¿Cuál de estas letras es simétrica?", "puntos": ["F", "H", "P"], "respuesta": "La H: tiene un eje vertical y uno horizontal." }
+    ],
+    "videos": [
+      { "titulo": "Video: la simetría para niños", "url": "https://www.youtube.com/watch?v=N9oiohC6bKk" }
+    ],
+    "actividad": { "titulo": "Mariposas simétricas", "descripcion": "Cada estudiante dobla una hoja, pinta con témpera solo una mitad y la cierra para obtener una figura simétrica. Luego marcan el eje de simetría y completan figuras en una cuadrícula proyectada.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "4° básico", "codigo": "OA23",
+    "tema": "Área del rectángulo y del cuadrado",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "⬛", "titulo": "¿Qué es el área?", "texto": "Es la medida de la superficie que ocupa una figura. Se mide en cuadrados, como el cm².", "puntos": ["Contamos cuántos cuadraditos caben dentro", "Área del rectángulo = largo × ancho", "Área del cuadrado = lado × lado"] },
+      { "tipo": "ejemplo", "emoji": "🧮", "titulo": "Calculamos el área", "puntos": ["Rectángulo de 6 cm por 4 cm", "6 × 4 = 24", "Área = 24 cm²"] },
+      { "tipo": "pregunta", "titulo": "Un cuadrado tiene lados de 5 cm. ¿Cuál es su área?", "puntos": ["20 cm²", "25 cm²", "10 cm²"], "respuesta": "25 cm², porque 5 × 5 = 25." },
+      { "tipo": "pregunta", "titulo": "¿En qué se diferencian el área y el perímetro?", "puntos": ["Son lo mismo", "El área mide la superficie; el perímetro, el contorno", "El perímetro se mide en cm²"], "respuesta": "El área mide la superficie y el perímetro mide el contorno." }
+    ],
+    "videos": [
+      { "titulo": "Video: el área del rectángulo", "url": "https://www.youtube.com/watch?v=wpdVVY9UwPM" },
+      { "titulo": "Video: área del cuadrado y del rectángulo", "url": "https://www.youtube.com/watch?v=5b5kAuhbvLU" }
+    ],
+    "actividad": { "titulo": "Diseñamos un huerto", "descripcion": "En papel cuadriculado, cada grupo diseña un huerto rectangular de 24 cuadraditos de área. Comparan los diseños distintos que tienen la misma área y calculan el perímetro de cada uno.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "4° básico", "codigo": "OA27",
+    "tema": "Leer gráficos con escala",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📈", "titulo": "Gráficos con escala", "texto": "En algunos gráficos cada línea de la escala vale más de 1: puede valer 2, 5 o 10.", "puntos": ["Primero leemos el título", "Revisamos cuánto vale cada línea de la escala", "Leemos la altura de cada barra"] },
+      { "tipo": "ejemplo", "emoji": "📚", "titulo": "Libros leídos en el mes (escala de 5 en 5)", "texto": "Conclusión: el 4° A leyó 15 libros más que el 4° B.", "puntos": ["4° A: 35 libros", "4° B: 20 libros", "4° C: 25 libros"] },
+      { "tipo": "pregunta", "titulo": "En el ejemplo, ¿cuántos libros leyeron entre los tres cursos?", "puntos": ["75", "80", "70"], "respuesta": "80, porque 35 + 20 + 25 = 80." },
+      { "tipo": "pregunta", "titulo": "En un pictograma cada 📘 vale 10 libros. ¿Cuánto valen 3 📘 y media?", "puntos": ["35", "30", "13"], "respuesta": "35 libros." }
+    ],
+    "videos": [
+      { "titulo": "Video: pictogramas y gráficos de barra (4° básico)", "url": "https://www.youtube.com/watch?v=7ZlIg4Sw0GE" }
+    ],
+    "actividad": { "titulo": "Periodistas de datos", "descripcion": "Se proyecta un gráfico de barras con datos del colegio. En parejas escriben tres preguntas que se respondan leyendo el gráfico y se las intercambian con otra pareja para responderlas.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "5° básico", "codigo": "OA07",
+    "tema": "Fracciones propias",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🥧", "titulo": "Fracciones propias", "texto": "Una fracción es propia cuando el numerador es menor que el denominador: representa menos que un entero.", "puntos": ["2/5, 3/8 y 7/10 son fracciones propias", "En la recta numérica siempre están entre 0 y 1"] },
+      { "tipo": "ejemplo", "emoji": "🟰", "titulo": "Fracciones equivalentes", "puntos": ["1/2 = 2/4 = 4/8", "Multiplicamos numerador y denominador por el mismo número", "Representan la misma cantidad"] },
+      { "tipo": "pregunta", "titulo": "¿Cuál de estas fracciones es propia?", "puntos": ["7/4", "3/5", "9/9"], "respuesta": "3/5: el numerador es menor que el denominador." },
+      { "tipo": "pregunta", "titulo": "¿Qué fracción es equivalente a 2/3?", "puntos": ["4/6", "3/4", "2/6"], "respuesta": "4/6: multiplicamos por 2 el numerador y el denominador." }
+    ],
+    "videos": [
+      { "titulo": "Video: fracción propia, impropia y unidad", "url": "https://www.youtube.com/watch?v=7TshNkQIZxo" },
+      { "titulo": "Video: fracciones equivalentes", "url": "https://www.youtube.com/watch?v=Wtqd-1gHpe4" }
+    ],
+    "actividad": { "titulo": "Fracciones en la recta numérica", "descripcion": "Se proyecta una recta del 0 al 1. Cada estudiante recibe una tarjeta con una fracción propia, la ubica en la recta y el curso verifica cuáles fracciones son equivalentes porque quedan en el mismo punto.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "5° básico", "codigo": "OA14",
+    "tema": "La regla de una sucesión",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔮", "titulo": "Descubrir la regla de una sucesión", "texto": "Una sucesión es una lista de números que sigue una regla. Si descubrimos la regla, podemos predecir los números que vienen.", "puntos": ["Comparamos cada número con el anterior", "La regla puede sumar, restar, multiplicar…"] },
+      { "tipo": "ejemplo", "emoji": "📐", "titulo": "Sucesión: 3, 7, 11, 15, …", "puntos": ["La diferencia es +4 cada vez", "El quinto término es 19", "El décimo término es 3 + 4 × 9 = 39"] },
+      { "tipo": "pregunta", "titulo": "¿Qué número sigue? 2, 6, 18, 54, …", "puntos": ["108", "162", "58"], "respuesta": "162: cada número se multiplica por 3." },
+      { "tipo": "pregunta", "titulo": "Una sucesión empieza en 50 y resta 6 cada vez. ¿Cuál es el cuarto término?", "puntos": ["32", "38", "26"], "respuesta": "32: 50, 44, 38, 32." }
+    ],
+    "videos": [
+      { "titulo": "Video: sucesiones numéricas y su regla", "url": "https://www.youtube.com/watch?v=tgG-PE_a0aA" }
+    ],
+    "actividad": { "titulo": "Torres de cubos", "descripcion": "Los estudiantes construyen torres que crecen siguiendo una regla (1, 3, 5, 7 cubos…), registran la sucesión en una tabla y predicen cuántos cubos tendrá la torre número 10. Luego comprueban su predicción.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "5° básico", "codigo": "OA16",
+    "tema": "El plano cartesiano",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🗺️", "titulo": "El plano cartesiano", "texto": "Son dos rectas numéricas que se cruzan: el eje X (horizontal) y el eje Y (vertical). Se cruzan en el origen (0, 0).", "puntos": ["Cada punto tiene un par ordenado (x, y)", "Primero avanzamos en X y después subimos en Y"] },
+      { "tipo": "ejemplo", "emoji": "📍", "titulo": "Ubicamos el punto (4, 2)", "puntos": ["Partimos en el origen (0, 0)", "Avanzamos 4 hacia la derecha", "Subimos 2", "¡Marcamos el punto!"] },
+      { "tipo": "pregunta", "titulo": "En el par ordenado (3, 5), ¿cuánto avanzamos en el eje X?", "puntos": ["5", "3", "8"], "respuesta": "3: el primer número corresponde al eje X." },
+      { "tipo": "pregunta", "titulo": "¿Qué par ordenado corresponde al origen?", "puntos": ["(1, 1)", "(0, 0)", "(0, 1)"], "respuesta": "(0, 0)." }
+    ],
+    "videos": [
+      { "titulo": "Video: localizar objetos en el primer cuadrante (5° básico)", "url": "https://www.youtube.com/watch?v=860jnJ463KU" },
+      { "titulo": "Video: coordenadas cartesianas para niños", "url": "https://www.youtube.com/watch?v=od-fDDLPcas" }
+    ],
+    "actividad": { "titulo": "Batalla naval cartesiana", "descripcion": "En parejas, cada estudiante esconde 3 barcos en una cuadrícula del primer cuadrante. Por turnos dicen pares ordenados para encontrar los barcos del compañero y marcan sus disparos.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "5° básico", "codigo": "OA22",
+    "tema": "Área del triángulo y del paralelogramo",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔺", "titulo": "El área del triángulo", "texto": "Un triángulo es la mitad de un rectángulo que tiene su misma base y altura.", "puntos": ["Área del triángulo = (base × altura) : 2", "La altura es perpendicular a la base", "Área del paralelogramo = base × altura"] },
+      { "tipo": "ejemplo", "emoji": "🧮", "titulo": "Calculamos", "puntos": ["Base 8 cm y altura 5 cm", "8 × 5 = 40", "40 : 2 = 20", "Área = 20 cm²"] },
+      { "tipo": "pregunta", "titulo": "Un triángulo tiene base 6 cm y altura 4 cm. ¿Cuál es su área?", "puntos": ["24 cm²", "12 cm²", "10 cm²"], "respuesta": "12 cm², porque (6 × 4) : 2 = 12." },
+      { "tipo": "pregunta", "titulo": "Un paralelogramo tiene base 7 cm y altura 3 cm. ¿Cuál es su área?", "puntos": ["21 cm²", "10,5 cm²", "20 cm²"], "respuesta": "21 cm², porque 7 × 3 = 21." }
+    ],
+    "videos": [
+      { "titulo": "Video: el área del triángulo", "url": "https://www.youtube.com/watch?v=Su1VGs3_Bmw" }
+    ],
+    "actividad": { "titulo": "Recortamos rectángulos", "descripcion": "Cada estudiante dibuja un rectángulo en papel cuadriculado, traza una diagonal y lo recorta en dos triángulos. Comprueban, superponiéndolos, que cada triángulo tiene la mitad del área del rectángulo.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "5° básico", "codigo": "OA23",
+    "tema": "El promedio",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "⚖️", "titulo": "¿Qué es el promedio?", "texto": "Es un valor que representa a un grupo de datos: lo que le tocaría a cada uno si repartiéramos en partes iguales.", "puntos": ["1. Sumamos todos los datos", "2. Dividimos por la cantidad de datos"] },
+      { "tipo": "ejemplo", "emoji": "📝", "titulo": "Notas de Sofía: 6,0 · 5,0 · 7,0", "puntos": ["6,0 + 5,0 + 7,0 = 18,0", "18,0 : 3 = 6,0", "Su promedio es 6,0"] },
+      { "tipo": "pregunta", "titulo": "¿Cuál es el promedio de 4, 6 y 8?", "puntos": ["5", "6", "18"], "respuesta": "6, porque (4 + 6 + 8) : 3 = 6." },
+      { "tipo": "pregunta", "titulo": "Un equipo hizo 2, 3, 1 y 6 goles en 4 partidos. ¿Cuál es su promedio de goles?", "puntos": ["3", "4", "12"], "respuesta": "3 goles por partido, porque 12 : 4 = 3." }
+    ],
+    "videos": [
+      { "titulo": "Video: la media o promedio", "url": "https://www.youtube.com/watch?v=8M9qysu1qd4" }
+    ],
+    "actividad": { "titulo": "El promedio del grupo", "descripcion": "Cada grupo cuenta cuántos saltos da cada integrante en 30 segundos, calcula el promedio del grupo y lo compara con el de los demás grupos en una tabla proyectada.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "6° básico", "codigo": "OA04",
+    "tema": "El porcentaje",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "💯", "titulo": "¿Qué es un porcentaje?", "texto": "Porcentaje significa «de cada 100». El 25 % es 25 de cada 100.", "puntos": ["50 % = la mitad", "25 % = un cuarto", "100 % = el total"] },
+      { "tipo": "ejemplo", "emoji": "🧮", "titulo": "El 20 % de 50", "puntos": ["20 % = 20/100 = 1/5", "50 : 5 = 10", "El 20 % de 50 es 10"] },
+      { "tipo": "pregunta", "titulo": "¿Cuánto es el 50 % de 80?", "puntos": ["40", "50", "8"], "respuesta": "40: la mitad de 80." },
+      { "tipo": "pregunta", "titulo": "Una polera de $10.000 tiene un 10 % de descuento. ¿Cuánto descuentan?", "puntos": ["$100", "$1.000", "$9.000"], "respuesta": "$1.000, que es el 10 % de $10.000." }
+    ],
+    "videos": [
+      { "titulo": "Video: ¿qué es un porcentaje?", "url": "https://www.youtube.com/watch?v=pM2zZlSGTWI" }
+    ],
+    "actividad": { "titulo": "Banderas de porcentajes", "descripcion": "En una cuadrícula de 10 × 10, los estudiantes diseñan una bandera usando colores en porcentajes dados (por ejemplo, 40 % azul, 35 % blanco y 25 % rojo) y verifican que sumen 100 %.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "6° básico", "codigo": "OA11",
+    "tema": "Ecuaciones de primer grado",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "⚖️", "titulo": "Ecuaciones de primer grado", "texto": "Una ecuación es una igualdad con un valor desconocido, la incógnita. Por ejemplo: x + 5 = 12.", "puntos": ["Es como una balanza en equilibrio", "Lo que hacemos en un lado, lo hacemos también en el otro"] },
+      { "tipo": "ejemplo", "emoji": "🧮", "titulo": "Resolvemos x + 5 = 12", "puntos": ["Restamos 5 a ambos lados", "x + 5 − 5 = 12 − 5", "x = 7", "Comprobamos: 7 + 5 = 12 ✔"] },
+      { "tipo": "pregunta", "titulo": "Resuelve: 3x = 18", "puntos": ["x = 6", "x = 15", "x = 21"], "respuesta": "x = 6: dividimos ambos lados por 3." },
+      { "tipo": "pregunta", "titulo": "Resuelve: x − 4 = 10", "puntos": ["x = 6", "x = 14", "x = 40"], "respuesta": "x = 14: sumamos 4 a ambos lados." }
+    ],
+    "videos": [
+      { "titulo": "Video: ecuación de primer grado con balanza (6° básico)", "url": "https://www.youtube.com/watch?v=bKeRToPxfqI" }
+    ],
+    "actividad": { "titulo": "La balanza misteriosa", "descripcion": "Se proyecta una balanza con cajas misteriosas y pesas. Los estudiantes escriben la ecuación que representa la balanza, la resuelven quitando lo mismo de ambos lados y comprueban el resultado.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "6° básico", "codigo": "OA17",
+    "tema": "Ángulos interiores del triángulo",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔺", "titulo": "La suma de los ángulos de un triángulo", "texto": "En todo triángulo, los tres ángulos interiores suman 180°.", "puntos": ["Si recortamos las tres esquinas y las juntamos, forman un ángulo extendido (180°)", "En un cuadrilátero, los ángulos interiores suman 360°"] },
+      { "tipo": "ejemplo", "emoji": "🧮", "titulo": "Calculamos el ángulo que falta", "puntos": ["Dos ángulos miden 50° y 70°", "50° + 70° = 120°", "180° − 120° = 60°", "El tercer ángulo mide 60°"] },
+      { "tipo": "pregunta", "titulo": "Un triángulo tiene ángulos de 90° y 30°. ¿Cuánto mide el tercero?", "puntos": ["60°", "90°", "120°"], "respuesta": "60°, porque 180° − 90° − 30° = 60°." },
+      { "tipo": "pregunta", "titulo": "¿Puede un triángulo tener dos ángulos rectos?", "puntos": ["Sí", "No"], "respuesta": "No: 90° + 90° ya suman 180° y no queda nada para el tercer ángulo." }
+    ],
+    "videos": [
+      { "titulo": "Video: la suma de los ángulos internos es 180°", "url": "https://www.youtube.com/watch?v=1K-uIAHB7vk" }
+    ],
+    "actividad": { "titulo": "Recortamos esquinas", "descripcion": "Cada estudiante dibuja un triángulo cualquiera, recorta sus tres esquinas y las junta sobre una línea recta. Comparan con sus compañeros y concluyen que siempre forman 180°.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "6° básico", "codigo": "OA19",
+    "tema": "Volumen de cubos y paralelepípedos",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🧊", "titulo": "¿Qué es el volumen?", "texto": "Es el espacio que ocupa un cuerpo. Se mide en cubos, como el cm³ o el m³.", "puntos": ["Volumen del paralelepípedo = largo × ancho × alto", "Volumen del cubo = arista × arista × arista"] },
+      { "tipo": "ejemplo", "emoji": "📦", "titulo": "Una caja de 5 cm × 3 cm × 2 cm", "puntos": ["5 × 3 = 15 cubos en cada capa", "15 × 2 capas = 30", "Volumen = 30 cm³"] },
+      { "tipo": "pregunta", "titulo": "Un cubo tiene aristas de 3 cm. ¿Cuál es su volumen?", "puntos": ["9 cm³", "27 cm³", "12 cm³"], "respuesta": "27 cm³, porque 3 × 3 × 3 = 27." },
+      { "tipo": "pregunta", "titulo": "¿Qué unidad usarías para medir el volumen de una sala?", "puntos": ["cm²", "m³", "km"], "respuesta": "m³ (metros cúbicos)." }
+    ],
+    "videos": [
+      { "titulo": "Video: volumen de cubo y paralelepípedo (6° básico)", "url": "https://www.youtube.com/watch?v=3rrfvkIIvBw" }
+    ],
+    "actividad": { "titulo": "Llenamos cajas con cubos", "descripcion": "En grupos llenan cajas pequeñas con cubos de 1 cm, cuentan cuántos caben y comparan el resultado con el cálculo largo × ancho × alto.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Matemática", "nivel": "6° básico", "codigo": "OA24",
+    "tema": "Gráficos circulares y de barra doble",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🥧", "titulo": "El gráfico circular", "texto": "Muestra cómo se reparte un total: el círculo completo es el 100 %.", "puntos": ["Cada sector es una parte del total", "Mientras más grande el sector, mayor es el porcentaje", "Medio círculo = 50 %"] },
+      { "tipo": "concepto", "emoji": "📊", "titulo": "El gráfico de barra doble", "puntos": ["Compara dos grupos en cada categoría", "Ejemplo: deportes favoritos del 6° A y del 6° B", "Cada grupo tiene su propio color"] },
+      { "tipo": "pregunta", "titulo": "Si un sector ocupa un cuarto del círculo, ¿qué porcentaje representa?", "puntos": ["25 %", "50 %", "75 %"], "respuesta": "25 %." },
+      { "tipo": "pregunta", "titulo": "En una encuesta a 200 estudiantes, el 30 % prefiere fútbol. ¿Cuántos son?", "puntos": ["30", "60", "170"], "respuesta": "60 estudiantes: el 30 % de 200." }
+    ],
+    "videos": [
+      { "titulo": "Video: gráficos circulares y porcentaje", "url": "https://www.youtube.com/watch?v=sTzXWoe5qvQ" }
+    ],
+    "actividad": { "titulo": "Gráfico circular del curso", "descripcion": "El curso responde cómo llega al colegio (a pie, en bus, en auto u otro). Calculan el porcentaje de cada respuesta y construyen un gráfico circular con una herramienta digital o con un círculo dividido en 10 partes.", "duracionMinutos": 25 }
+  }
+]

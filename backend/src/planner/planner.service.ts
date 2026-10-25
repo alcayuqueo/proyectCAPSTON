@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { visiblesPara } from '../common/catalogo';
+import { leerMaterial } from '../common/material';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
 
@@ -31,6 +32,9 @@ export class PlannerService {
       titulo: p.titulo,
       fecha: p.fecha.toISOString().slice(0, 10),
       notas: p.notas ?? '',
+      usarMaterial: p.usarMaterial,
+      // Diapositivas de contenido del OA (null si el OA no tiene material o la clase no lo usa).
+      material: p.usarMaterial ? leerMaterial(p.objetivo.material) : null,
       objetivo: {
         id: p.objetivo.id,
         codigo: p.objetivo.codigo,
@@ -128,6 +132,7 @@ export class PlannerService {
         titulo: dto.titulo.trim(),
         fecha: new Date(dto.fecha),
         notas: dto.notas?.trim() || null,
+        usarMaterial: dto.usarMaterial ?? true,
         docenteId,
         objetivoId: dto.objetivoId,
         recursos: { create: this.recursosAnidados(dto.recursoIds) },
@@ -147,6 +152,7 @@ export class PlannerService {
         titulo: dto.titulo?.trim(),
         fecha: dto.fecha ? new Date(dto.fecha) : undefined,
         notas: dto.notas !== undefined ? dto.notas.trim() || null : undefined,
+        usarMaterial: dto.usarMaterial,
         objetivoId: dto.objetivoId,
         // Si se envía la lista, reemplaza por completo la anterior (y su orden).
         recursos: dto.recursoIds
@@ -168,6 +174,7 @@ export class PlannerService {
         titulo: `${original.titulo} (copia)`.slice(0, 120),
         fecha: original.fecha,
         notas: original.notas,
+        usarMaterial: original.usarMaterial,
         docenteId,
         objetivoId: original.objetivoId,
         recursos: {

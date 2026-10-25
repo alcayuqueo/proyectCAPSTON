@@ -26,6 +26,8 @@ export class ActivitiesService {
       asignaturaId: a.asignaturaId,
       asignatura: a.asignatura.nombre,
       nivel: a.asignatura.nivel,
+      /** OA para el que se sugiere (material listo); null si sirve para toda la asignatura. */
+      objetivoId: a.objetivoId ?? null,
       /** true si la creó el docente con sesión (puede editarla y eliminarla). */
       propio: !!docenteId && a.autorId === docenteId,
       /** En cuántas clases se usa. */

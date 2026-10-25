@@ -152,11 +152,14 @@ npm install
 npx prisma migrate deploy
 npx prisma db seed           # solo la primera vez
 npm run curriculum:cargar    # currículum oficial; se puede repetir sin duplicar datos
+npm run material:cargar      # material listo por OA; se puede repetir sin duplicar datos
 ```
 
 El seed carga datos de ejemplo (recursos y actividades de Matemática y Ciencias Naturales, 5° básico). Ejecutarlo una sola vez para no duplicar datos.
 
 `npm run curriculum:cargar` carga los **324 Objetivos de Aprendizaje oficiales** de Matemática y Lenguaje y Comunicación de 1° a 6° básico, con su eje temático, más 24 actividades de ejemplo. El texto de cada OA se extrajo de las [Bases Curriculares Primero a Sexto Básico](https://www.curriculumnacional.cl/614/articles-22394_bases.pdf) (MINEDUC, 2018) y está en `backend/prisma/data/oa-basica-1-6.json`. El script no duplica datos: si el OA ya existe, actualiza su texto y eje.
+
+`npm run material:cargar` carga el **material listo para usar** de 48 OA (uno por cada eje y nivel de Matemática y Lenguaje, 1° a 6° básico): por cada OA, diapositivas de explicación con preguntas para el curso, uno o dos videos de YouTube y una actividad sugerida (192 diapositivas, 63 videos y 48 actividades). El contenido está en `backend/prisma/data/material-matematica.json` y `material-lenguaje.json`; el script valida los archivos antes de cargar y solo modifica elementos del catálogo. Para revisar que los videos sigan disponibles e incrustables: `npm run material:verificar` (no necesita la base de datos). Para los OA sin material, la app ofrece un botón **Buscar videos** que abre una búsqueda en YouTube con las palabras clave del OA.
 
 ### 4. Levantar el backend
 
@@ -241,6 +244,7 @@ En Android Studio: **Build → Generate App Bundles or APKs → Generate APKs**.
 | GET | `/api/curriculum/asignaturas` | Lista asignaturas y niveles | No |
 | GET | `/api/curriculum/objetivos?q=&asignatura=&nivel=&eje=` | Busca objetivos de aprendizaje | No |
 | GET | `/api/curriculum/ejes?asignatura=` | Ejes de una asignatura | No |
+| GET | `/api/curriculum/objetivos/:id/material` | Material listo del OA: diapositivas, videos y actividad sugerida | No |
 | GET | `/api/resources` | Lista el catálogo y, con sesión, los recursos propios | Opcional |
 | POST | `/api/resources` | Crea un recurso propio (título, tipo, enlace, unidad, asignatura) | Sí |
 | PATCH | `/api/resources/:id` | Edita un recurso propio | Sí |
@@ -251,7 +255,7 @@ En Android Studio: **Build → Generate App Bundles or APKs → Generate APKs**.
 | DELETE | `/api/activities/:id` | Elimina una actividad propia | Sí |
 | GET | `/api/planner` | Lista las clases del docente, con objetivo, recursos y actividades | Sí |
 | GET | `/api/planner/:id` | Obtiene una clase | Sí |
-| POST | `/api/planner` | Crea una clase (título, fecha, objetivo, recursos, actividades y notas) | Sí |
+| POST | `/api/planner` | Crea una clase (título, fecha, objetivo, recursos, actividades, notas y si usa las diapositivas del OA) | Sí |
 | PATCH | `/api/planner/:id` | Edita una clase | Sí |
 | POST | `/api/planner/:id/duplicar` | Duplica una clase | Sí |
 | DELETE | `/api/planner/:id` | Elimina una clase | Sí |
@@ -322,6 +326,8 @@ El proyecto se gestiona con **Kanban**:
 | Currículum oficial: Matemática y Lenguaje, 1° a 6° básico (324 OA con eje) | ✅ |
 | Currículum oficial: otras asignaturas y niveles | ⏳ |
 | Modo presentación para pantalla interactiva: diapositivas, videos y cronómetro | ✅ |
+| Material listo para 48 OA: diapositivas de contenido, preguntas, videos y actividad sugerida | ✅ |
+| Sugerencia de videos (búsqueda en YouTube) para los OA sin material | ✅ |
 | Roles y panel de administración del establecimiento | ⏳ |
 | App Android (APK) con Capacitor | ✅ |
 | Almacenamiento de archivos (MinIO) | ⏳ |

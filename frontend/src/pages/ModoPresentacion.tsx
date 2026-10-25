@@ -7,7 +7,10 @@ import {
   ExternalLink,
   FileText,
   Flag,
+  Eye,
+  HelpCircle,
   Image as ImageIcon,
+  Lightbulb,
   Loader2,
   Maximize,
   Minimize,
@@ -23,7 +26,7 @@ import {
 import { api, mensajeDeError } from '../lib/api';
 import { fechaLarga } from '../lib/fechas';
 import { medioDe } from '../lib/medios';
-import type { Clase } from '../lib/tipos';
+import type { Clase, DiapositivaContenido } from '../lib/tipos';
 import { temaDe, variablesTema } from '../lib/temas';
 
 type RecursoClase = Clase['recursos'][number];
@@ -31,6 +34,8 @@ type ActividadClase = Clase['actividades'][number];
 
 type Diapositiva =
   | { tipo: 'portada' }
+  | { tipo: 'contenido'; contenido: DiapositivaContenido; numero: number; total: number }
+  | { tipo: 'pregunta'; contenido: DiapositivaContenido; numero: number; total: number }
   | { tipo: 'recurso'; recurso: RecursoClase; numero: number; total: number }
   | { tipo: 'actividad'; actividad: ActividadClase; numero: number; total: number }
   | { tipo: 'cierre' };
@@ -53,9 +58,10 @@ function formatoTiempo(ms: number) {
 
 /**
  * Modo presentación: muestra una clase del planificador en pantalla completa, pensada para
- * la pantalla interactiva. Diapositivas: objetivo de la clase, cada recurso (videos de
- * YouTube, imágenes y archivos de Drive se ven dentro de la diapositiva), cada actividad
- * con su cronómetro y un cierre. Se avanza con los botones, las flechas del teclado,
+ * la pantalla interactiva. Diapositivas: objetivo de la clase, la explicación del material
+ * listo del OA (si tiene), cada recurso (videos de YouTube, imágenes y archivos de Drive se
+ * ven dentro de la diapositiva), las preguntas para el curso, cada actividad con su
+ * cronómetro y un cierre. Se avanza con los botones, las flechas del teclado,
  * un control de presentaciones o deslizando el dedo. El diseño es lúdico y toma el color
  * de la asignatura, porque lo ven los estudiantes en la sala.
  */
@@ -92,14 +98,20 @@ export default function ModoPresentacion() {
 
   const diapositivas = useMemo<Diapositiva[]>(() => {
     if (!clase) return [];
+    // Material listo del OA: la explicación va antes de los recursos y las preguntas después.
+    const contenido = clase.material?.diapositivas ?? [];
+    const explicacion = contenido.filter((d) => d.tipo !== 'pregunta');
+    const preguntas = contenido.filter((d) => d.tipo === 'pregunta');
     return [
       { tipo: 'portada' },
+      ...explicacion.map((d, i) => ({ tipo: 'contenido' as const, contenido: d, numero: i + 1, total: explicacion.length })),
       ...clase.recursos.map((recurso, i) => ({
         tipo: 'recurso' as const,
         recurso,
         numero: i + 1,
         total: clase.recursos.length,
       })),
+      ...preguntas.map((d, i) => ({ tipo: 'pregunta' as const, contenido: d, numero: i + 1, total: preguntas.length })),
       ...clase.actividades.map((actividad, i) => ({
         tipo: 'actividad' as const,
         actividad,
@@ -303,6 +315,8 @@ export default function ModoPresentacion() {
       >
         <div key={indice} className="mx-auto flex w-full max-w-6xl flex-1 flex-col animate-[aparecer_.3s_ease-out]">
           {actual.tipo === 'portada' && <Portada clase={clase} />}
+          {actual.tipo === 'contenido' && <DiapositivaExplicacion {...actual} />}
+          {actual.tipo === 'pregunta' && <DiapositivaPregunta {...actual} />}
           {actual.tipo === 'recurso' && <DiapositivaRecurso {...actual} />}
           {actual.tipo === 'actividad' && (
             <DiapositivaActividad
@@ -380,6 +394,7 @@ function nombreDiapositiva(d: Diapositiva) {
   if (d.tipo === 'portada') return 'Objetivo de la clase';
   if (d.tipo === 'cierre') return 'Cierre';
   if (d.tipo === 'recurso') return d.recurso.titulo;
+  if (d.tipo === 'contenido' || d.tipo === 'pregunta') return d.contenido.titulo;
   return d.actividad.titulo;
 }
 
@@ -494,8 +509,16 @@ function TextoObjetivo({ texto, grande = false }: { texto: string; grande?: bool
 }
 
 function Portada({ clase }: { clase: Clase }) {
+  const contenido = clase.material?.diapositivas ?? [];
+  const nPreguntas = contenido.filter((d) => d.tipo === 'pregunta').length;
   const agenda = [
+    ...(clase.material && contenido.length > nPreguntas
+      ? [{ id: 'explicacion', icono: Lightbulb, texto: `Aprendemos: ${clase.material.tema}`, min: null as number | null, actividad: false }]
+      : []),
     ...clase.recursos.map((r) => ({ id: r.id, icono: ICONO_RECURSO[r.tipo], texto: r.titulo, min: null as number | null, actividad: false })),
+    ...(nPreguntas > 0
+      ? [{ id: 'preguntas', icono: HelpCircle, texto: `¡A pensar! ${nPreguntas} ${nPreguntas === 1 ? 'pregunta' : 'preguntas'}`, min: null as number | null, actividad: false }]
+      : []),
     ...clase.actividades.map((a) => ({ id: a.id, icono: Puzzle, texto: a.titulo, min: a.duracionMinutos, actividad: true })),
   ];
   return (
@@ -547,6 +570,92 @@ function Portada({ clase }: { clase: Clase }) {
           </ol>
         </section>
       )}
+    </div>
+  );
+}
+
+/** Explicación del material listo: concepto o ejemplo, con viñetas grandes. */
+function DiapositivaExplicacion({ contenido, numero, total }: { contenido: DiapositivaContenido; numero: number; total: number }) {
+  const esEjemplo = contenido.tipo === 'ejemplo';
+  return (
+    <div className="flex flex-1 flex-col justify-center gap-5">
+      <Etiqueta icono={Lightbulb}>
+        {esEjemplo ? 'Ejemplo' : 'Aprendemos'} · {numero} de {total}
+      </Etiqueta>
+      <div className="flex items-center gap-4">
+        {contenido.emoji && (
+          <span aria-hidden="true" className="flex h-20 w-20 shrink-0 items-center justify-center rounded-[24px] border-[3px] border-tinta bg-white text-5xl shadow-sticker-sm sm:h-24 sm:w-24 sm:text-6xl">
+            {contenido.emoji}
+          </span>
+        )}
+        <h2 className="font-infantil text-3xl font-bold leading-tight sm:text-5xl">{contenido.titulo}</h2>
+      </div>
+      {contenido.texto && (
+        <p className="rounded-[28px] border-[3px] border-tinta bg-white p-5 text-xl font-semibold leading-relaxed shadow-sticker sm:p-6 sm:text-[1.7rem] sm:leading-snug">
+          {contenido.texto}
+        </p>
+      )}
+      {contenido.puntos && (
+        <ul className="grid gap-3">
+          {contenido.puntos.map((p, i) => (
+            <li key={i} className="flex items-start gap-3 rounded-2xl bg-white px-5 py-3 text-lg font-bold sm:text-2xl">
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--tema-oscuro)] font-infantil text-base text-white sm:h-9 sm:w-9 sm:text-lg">
+                {i + 1}
+              </span>
+              <span className="min-w-0">{p}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+/** Pregunta para el curso: las opciones se pueden marcar y la respuesta aparece al tocar «Ver respuesta». */
+function DiapositivaPregunta({ contenido, numero, total }: { contenido: DiapositivaContenido; numero: number; total: number }) {
+  const [elegida, setElegida] = useState<number | null>(null);
+  const [verRespuesta, setVerRespuesta] = useState(false);
+  const letras = 'ABCDEF';
+  return (
+    <div className="flex flex-1 flex-col justify-center gap-5">
+      <Etiqueta icono={HelpCircle} color="sol">
+        ¡A pensar! · Pregunta {numero} de {total}
+      </Etiqueta>
+      <h2 className="font-infantil text-3xl font-bold leading-tight sm:text-5xl">{contenido.titulo}</h2>
+      {contenido.puntos && (
+        <div className="grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones">
+          {contenido.puntos.map((p, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setElegida(i)}
+              aria-pressed={elegida === i}
+              className={[
+                'flex min-h-[4.5rem] items-center gap-3 rounded-[24px] border-[3px] border-tinta px-4 py-3 text-left text-xl font-bold transition sm:text-2xl',
+                elegida === i ? 'bg-[var(--tema-suave)] shadow-none ring-4 ring-[var(--tema-fuerte)]' : 'bg-white shadow-sticker-sm',
+              ].join(' ')}
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sol font-infantil text-xl">{letras[i]}</span>
+              <span className="min-w-0">{p}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <div className="flex flex-col items-start gap-3">
+        {verRespuesta ? (
+          <p role="status" className="w-full rounded-[28px] border-[3px] border-tinta bg-[#E6F7EC] p-5 text-xl font-bold leading-relaxed text-[#14532D] shadow-sticker sm:p-6 sm:text-2xl">
+            ✅ {contenido.respuesta}
+          </p>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setVerRespuesta(true)}
+            className="flex h-14 items-center gap-2 rounded-full border-[3px] border-tinta bg-white px-6 font-infantil text-xl font-bold shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+          >
+            <Eye size={22} /> Ver respuesta
+          </button>
+        )}
+      </div>
     </div>
   );
 }

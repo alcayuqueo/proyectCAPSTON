@@ -11,6 +11,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts",
     "curriculum:cargar": "ts-node prisma/cargar-curriculum.ts",
+    "material:cargar": "ts-node prisma/cargar-material.ts",
+    "material:verificar": "ts-node prisma/verificar-videos.ts",
     "test": "jest",
     "test:cov": "jest --coverage"
   },

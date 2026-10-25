@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
 import { CurriculumService } from './curriculum.service';
 
 @Controller('curriculum')
@@ -14,6 +14,12 @@ export class CurriculumController {
     @Query('eje') eje?: string,
   ) {
     return this.curriculumService.buscarObjetivos({ q, asignatura, nivel, eje });
+  }
+
+  /** Material listo para usar del OA: diapositivas de contenido, videos y actividad sugerida. */
+  @Get('objetivos/:id/material')
+  obtenerMaterial(@Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 404 })) id: string) {
+    return this.curriculumService.obtenerMaterial(id);
   }
 
   @Get('asignaturas')

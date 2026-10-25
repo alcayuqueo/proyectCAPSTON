@@ -6,6 +6,7 @@
 | `prueba_api_recursos_actividades.py` | API: crear, editar y eliminar recursos y actividades; validaciones (enlaces seguros, duración); catálogo de solo lectura; aislamiento entre docentes; uso en el planificador | 22 |
 | `prueba_rendimiento.mjs` / `.py` | Carga de la API: 1, 10, 25 y 50 docentes simultáneos con consultas de lectura; tiempos p50/p95/p99 (se puede ejecutar contra producción). Misma prueba en Node.js (`node pruebas/prueba_rendimiento.mjs`) y en Python | 4 niveles |
 | `prueba_datos_curriculum.py` | Datos del currículum oficial: cantidad de OA por nivel según las Bases Curriculares, códigos sin saltos, ejes válidos y texto sin restos de la extracción del PDF | 35 |
+| `prueba_interfaz_material.mjs` | Material listo por OA (Playwright, API simulada con el material real): explorador con filtro y vista previa, crear clase con el material, OA sin material y búsqueda de videos, diapositivas de explicación y preguntas en el modo presentación (escritorio, celular y 1080p) | 30 |
 | `prueba_interfaz_planificador.py` | Interfaz en el navegador (Playwright): registro, formulario de clase, validaciones, edición, duplicar, eliminar con confirmación y sesión | 18 |
 
 **Pruebas unitarias del backend (Jest):** están junto al código (`backend/src/**/*.spec.ts`) y no necesitan base de datos.
@@ -22,6 +23,7 @@ npm test
 | `common/validacion.spec.ts` | Reglas de validación: campos obligatorios, tipos, enlaces inseguros y duración | 12 |
 | `test/seguridad.spec.ts` | **Seguridad de la API completa:** tokens (sin firma, falsos, vencidos, alterados), fuerza bruta (429), encabezados, CORS, inyección SQL, asignación masiva, cuerpos grandes y acceso a datos ajenos | 21 |
 | `auth/secreto-jwt.spec.ts` | Chequeo del `JWT_SECRET` en producción | 3 |
+| `common/material.spec.ts` | Material listo: formato de los 48 OA, que correspondan a OA oficiales, un OA por eje y nivel, videos de YouTube válidos y sin repetir, y lectura defensiva del material | 9 |
 
 ## Cómo ejecutarlas
 

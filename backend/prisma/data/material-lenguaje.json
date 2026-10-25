@@ -1,0 +1,259 @@
+[
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "1° básico", "codigo": "OA03",
+    "tema": "Sílabas y sonidos de las palabras",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "👂", "titulo": "Las palabras tienen sonidos", "texto": "Las palabras están formadas por sílabas y sonidos. ¡Podemos separarlas con aplausos!", "puntos": ["ma-ri-po-sa → 4 aplausos", "ga-to → 2 aplausos", "sol → 1 aplauso"] },
+      { "tipo": "ejemplo", "emoji": "🐸", "titulo": "¿Con qué sonido empieza?", "puntos": ["🐸 Rana → empieza con /r/", "🍎 Manzana → empieza con /m/", "☀️ Sol → empieza con /s/"] },
+      { "tipo": "pregunta", "titulo": "¿Cuántas sílabas tiene la palabra «pelota»?", "puntos": ["2", "3", "4"], "respuesta": "3 sílabas: pe-lo-ta." },
+      { "tipo": "pregunta", "titulo": "¿Qué palabra empieza con el mismo sonido que «mesa»?", "puntos": ["Luna", "Mano", "Pato"], "respuesta": "Mano: las dos empiezan con /m/." }
+    ],
+    "videos": [
+      { "titulo": "Video: la sílaba inicial (conciencia fonológica)", "url": "https://www.youtube.com/watch?v=rrqqe1BXe10" },
+      { "titulo": "Video: juegos con rimas", "url": "https://www.youtube.com/watch?v=JwPKW1jUVlY" }
+    ],
+    "actividad": { "titulo": "Aplausos silábicos", "descripcion": "Se proyectan imágenes de objetos y animales. Los estudiantes dicen el nombre, lo separan en sílabas con aplausos y agrupan las imágenes según su cantidad de sílabas o según su sonido inicial.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "1° básico", "codigo": "OA14",
+    "tema": "Escribimos oraciones completas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "✏️", "titulo": "¿Qué es una oración?", "texto": "Es un grupo de palabras ordenadas que tiene sentido completo.", "puntos": ["Empieza con mayúscula", "Termina con punto", "Dice quién y qué hace"] },
+      { "tipo": "ejemplo", "emoji": "🐕", "titulo": "Ordenamos las palabras", "puntos": ["❌ perro el corre", "✅ El perro corre en el parque.", "¿Quién? el perro · ¿Qué hace? corre"] },
+      { "tipo": "pregunta", "titulo": "¿Cuál es una oración completa?", "puntos": ["la niña", "La niña lee un cuento.", "lee cuento la"], "respuesta": "«La niña lee un cuento.»" },
+      { "tipo": "pregunta", "titulo": "Ordena las palabras: come · gato · El · pescado", "puntos": ["El gato come pescado.", "Gato el come pescado.", "Pescado come el gato"], "respuesta": "«El gato come pescado.»" }
+    ],
+    "videos": [
+      { "titulo": "Video: la oración, el sujeto y el predicado", "url": "https://www.youtube.com/watch?v=mITp3m3JCqg" }
+    ],
+    "actividad": { "titulo": "Oraciones desordenadas", "descripcion": "Se proyectan tarjetas con palabras desordenadas. En parejas, los estudiantes las ordenan para formar oraciones con sentido, las escriben con mayúscula inicial y punto final, y las leen al curso.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "1° básico", "codigo": "OA26",
+    "tema": "Rimas, trabalenguas y adivinanzas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🎤", "titulo": "Jugamos con las palabras", "puntos": ["Rimas: palabras que terminan igual (sol – caracol)", "Trabalenguas: frases difíciles de decir rápido", "Adivinanzas: pistas para descubrir algo"] },
+      { "tipo": "ejemplo", "emoji": "🐯", "titulo": "Un trabalenguas tradicional", "texto": "«Tres tristes tigres tragaban trigo en un trigal.»", "puntos": ["Primero lo decimos lento", "Después, cada vez más rápido", "¡Cuidamos que se entienda cada palabra!"] },
+      { "tipo": "pregunta", "titulo": "Adivinanza: «Tengo agujas y no sé coser, tengo números y no sé leer». ¿Qué soy?", "puntos": ["Un libro", "Un reloj", "Un erizo"], "respuesta": "¡Un reloj!" },
+      { "tipo": "pregunta", "titulo": "¿Qué palabra rima con «ratón»?", "puntos": ["Camión", "Mesa", "Perro"], "respuesta": "Camión: ra-TÓN, ca-MIÓN." }
+    ],
+    "videos": [
+      { "titulo": "Video: a jugar con trabalenguas y adivinanzas", "url": "https://www.youtube.com/watch?v=4FQ5ZAkTaYw" }
+    ],
+    "actividad": { "titulo": "Festival de trabalenguas", "descripcion": "Cada grupo practica un trabalenguas o una adivinanza tradicional y lo presenta al curso con buena pronunciación y entonación. El curso adivina la respuesta o repite el trabalenguas en coro.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "2° básico", "codigo": "OA05",
+    "tema": "Comprendemos narraciones",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📖", "titulo": "Las partes de un cuento", "puntos": ["Inicio: se presentan los personajes y el lugar", "Desarrollo: ocurre un problema", "Final: el problema se resuelve"] },
+      { "tipo": "concepto", "emoji": "🧙", "titulo": "Personajes y ambiente", "puntos": ["Personajes: quiénes participan en la historia", "Ambiente: dónde y cuándo ocurre", "Acciones: qué hacen los personajes"] },
+      { "tipo": "pregunta", "titulo": "¿En qué parte del cuento suele aparecer «Había una vez…»?", "puntos": ["Inicio", "Desarrollo", "Final"], "respuesta": "En el inicio." },
+      { "tipo": "pregunta", "titulo": "En «Caperucita Roja», ¿qué ocurre en el desarrollo?", "puntos": ["Conocemos a Caperucita y a su mamá", "El lobo engaña a Caperucita", "Caperucita vuelve feliz a su casa"], "respuesta": "El lobo engaña a Caperucita: ese es el problema de la historia." }
+    ],
+    "videos": [
+      { "titulo": "Video: el cuento y sus partes", "url": "https://www.youtube.com/watch?v=T1VCFBBfQb0" }
+    ],
+    "actividad": { "titulo": "Ordenamos la historia", "descripcion": "Se proyectan escenas desordenadas de un cuento conocido. Los estudiantes las ordenan en inicio, desarrollo y final, y luego vuelven a narrar la historia con sus propias palabras.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "2° básico", "codigo": "OA19",
+    "tema": "Artículos, sustantivos y adjetivos",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🏷️", "titulo": "Sustantivos y adjetivos", "puntos": ["Sustantivo: nombra personas, animales, cosas o lugares (niña, perro, mesa)", "Adjetivo: dice cómo es el sustantivo (alegre, grande, roja)", "Artículo: acompaña al sustantivo (el, la, un, una)"] },
+      { "tipo": "ejemplo", "emoji": "🐈‍⬛", "titulo": "Analizamos una oración", "texto": "«El gato negro duerme.»", "puntos": ["Artículo: el", "Sustantivo: gato", "Adjetivo: negro"] },
+      { "tipo": "pregunta", "titulo": "En «la flor amarilla», ¿cuál es el adjetivo?", "puntos": ["la", "flor", "amarilla"], "respuesta": "Amarilla: dice cómo es la flor." },
+      { "tipo": "pregunta", "titulo": "¿Cuál de estas palabras es un sustantivo?", "puntos": ["Rápido", "Escuela", "Bonita"], "respuesta": "Escuela: nombra un lugar." }
+    ],
+    "videos": [
+      { "titulo": "Video: sustantivos, verbos y adjetivos", "url": "https://www.youtube.com/watch?v=4RGi3ox0BHs" },
+      { "titulo": "Video: ¿qué son los adjetivos?", "url": "https://www.youtube.com/watch?v=ATeRIGN4Qns" }
+    ],
+    "actividad": { "titulo": "Describimos al monstruo", "descripcion": "Se proyecta un monstruo dibujado. Los estudiantes nombran sus partes con sustantivos (ojos, patas, cola) y las describen con adjetivos (verdes, peludas, larga). Luego escriben juntos la descripción completa.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "2° básico", "codigo": "OA22",
+    "tema": "Las fábulas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🦊", "titulo": "¿Qué es una fábula?", "texto": "Es un relato breve en que los personajes suelen ser animales que hablan y actúan como personas.", "puntos": ["Enseña una lección", "Termina con una moraleja"] },
+      { "tipo": "ejemplo", "emoji": "🦁", "titulo": "El león y el ratón", "texto": "Un león perdona la vida a un ratón. Tiempo después, el ratón lo libera de la red de unos cazadores royendo las cuerdas.", "puntos": ["Moraleja: nadie es tan pequeño como para no poder ayudar"] },
+      { "tipo": "pregunta", "titulo": "¿Qué es la moraleja?", "puntos": ["El título de la fábula", "La enseñanza de la fábula", "El personaje principal"], "respuesta": "La enseñanza de la fábula." },
+      { "tipo": "pregunta", "titulo": "¿Por qué el ratón ayudó al león?", "puntos": ["Porque tenía miedo", "Porque el león antes lo había perdonado", "Porque quería su comida"], "respuesta": "Porque el león antes lo había perdonado: le devolvió el favor." }
+    ],
+    "videos": [
+      { "titulo": "Video: el león y el ratón (fábula)", "url": "https://www.youtube.com/watch?v=jQ5AYsRMIoA" }
+    ],
+    "actividad": { "titulo": "Inventamos una moraleja", "descripcion": "Después de escuchar una fábula, los grupos conversan sobre lo que enseña y escriben su propia moraleja. Luego la comparan con la moraleja original y explican si se parecen.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "3° básico", "codigo": "OA05",
+    "tema": "Lenguaje figurado en los poemas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🌙", "titulo": "El lenguaje figurado", "texto": "En los poemas, las palabras pueden decir algo distinto de su significado literal para crear imágenes.", "puntos": ["Comparación: usa «como» (sus ojos brillan como estrellas)", "Personificación: cosas que actúan como personas (el viento canta)"] },
+      { "tipo": "ejemplo", "emoji": "❄️", "titulo": "¿Literal o figurado?", "puntos": ["Literal: «Hace mucho frío»", "Figurado: «El frío muerde mis manos»", "El frío no tiene dientes: es una imagen"] },
+      { "tipo": "pregunta", "titulo": "¿Qué recurso hay en «el sol sonríe en la mañana»?", "puntos": ["Comparación", "Personificación", "Rima"], "respuesta": "Personificación: el sol hace algo que hacen las personas." },
+      { "tipo": "pregunta", "titulo": "Completa la comparación: «Blanco como…»", "puntos": ["la nieve", "el carbón", "la noche"], "respuesta": "«Blanco como la nieve»." }
+    ],
+    "videos": [
+      { "titulo": "Video: la comparación y la personificación", "url": "https://www.youtube.com/watch?v=AufHWJs2prc" },
+      { "titulo": "Video: lenguaje figurado en los poemas", "url": "https://www.youtube.com/watch?v=5Jny92I8UiE" }
+    ],
+    "actividad": { "titulo": "Detectives de imágenes poéticas", "descripcion": "Se proyecta un poema infantil. Los estudiantes subrayan las comparaciones y personificaciones, explican qué imagen crean y escriben una comparación propia sobre su colegio.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "3° básico", "codigo": "OA21",
+    "tema": "Los pronombres",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "👥", "titulo": "Los pronombres", "texto": "Reemplazan al sustantivo para no repetirlo.", "puntos": ["Yo, tú, él, ella", "Nosotros, nosotras, ustedes", "Ellos, ellas"] },
+      { "tipo": "ejemplo", "emoji": "🔁", "titulo": "Evitamos repetir", "puntos": ["Sin pronombre: Pedro juega. Pedro ríe.", "Con pronombre: Pedro juega. Él ríe."] },
+      { "tipo": "pregunta", "titulo": "¿Qué pronombre reemplaza a «Ana y yo»?", "puntos": ["Ellas", "Nosotros o nosotras", "Ustedes"], "respuesta": "Nosotros o nosotras: incluye a quien habla." },
+      { "tipo": "pregunta", "titulo": "«Los niños llegaron. Ellos traían pelotas.» ¿A quién reemplaza «ellos»?", "puntos": ["A las pelotas", "A los niños", "A nosotros"], "respuesta": "A los niños." }
+    ],
+    "videos": [
+      { "titulo": "Video: los pronombres personales", "url": "https://www.youtube.com/watch?v=V01daV5ro0I" }
+    ],
+    "actividad": { "titulo": "Texto sin repeticiones", "descripcion": "Se proyecta un texto breve en que el nombre de un personaje se repite muchas veces. Los estudiantes proponen dónde usar pronombres y leen en voz alta la versión mejorada.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "3° básico", "codigo": "OA24",
+    "tema": "La noticia",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📰", "titulo": "La noticia", "texto": "Informa sobre un hecho real y reciente.", "puntos": ["Titular: llama la atención", "Bajada: resume lo más importante", "Cuerpo: cuenta los detalles"] },
+      { "tipo": "concepto", "emoji": "❓", "titulo": "Las preguntas de la noticia", "puntos": ["¿Qué pasó?", "¿Quiénes participaron?", "¿Dónde y cuándo ocurrió?", "¿Cómo y por qué?"] },
+      { "tipo": "pregunta", "titulo": "«¡Curso de 3° básico gana concurso de reciclaje!» ¿Qué parte de la noticia es?", "puntos": ["El titular", "El cuerpo", "La firma"], "respuesta": "El titular." },
+      { "tipo": "pregunta", "titulo": "Una noticia cuenta hechos…", "puntos": ["Reales", "Inventados"], "respuesta": "Reales: por eso informa." }
+    ],
+    "videos": [
+      { "titulo": "Video: la noticia y sus partes", "url": "https://www.youtube.com/watch?v=8ZbP4VfyOy4" }
+    ],
+    "actividad": { "titulo": "Noticiero del curso", "descripcion": "Después de ver una noticia breve, los estudiantes responden qué pasó, quiénes participaron, dónde y cuándo. Luego, en grupos, preparan y presentan oralmente una noticia sobre algo que ocurrió en el colegio.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "4° básico", "codigo": "OA06",
+    "tema": "La biografía",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "👩‍🏫", "titulo": "La biografía", "texto": "Es un texto que cuenta la vida de una persona real, escrito por otra persona.", "puntos": ["Se narra en tercera persona (él, ella)", "Sigue el orden de los hechos en el tiempo", "Incluye fechas y lugares"] },
+      { "tipo": "ejemplo", "emoji": "📜", "titulo": "Gabriela Mistral", "puntos": ["Nació en Vicuña en 1889", "Fue profesora y poeta", "En 1945 recibió el Premio Nobel de Literatura"] },
+      { "tipo": "pregunta", "titulo": "¿En qué se diferencia una biografía de una autobiografía?", "puntos": ["No hay diferencia", "En la autobiografía la persona escribe sobre su propia vida", "La biografía es inventada"], "respuesta": "En la autobiografía, la persona escribe sobre su propia vida." },
+      { "tipo": "pregunta", "titulo": "¿Qué palabras ayudan a ordenar una biografía?", "puntos": ["Había una vez", "Primero, luego, años después", "Ingredientes, preparación"], "respuesta": "«Primero, luego, años después»: marcan el paso del tiempo." }
+    ],
+    "videos": [
+      { "titulo": "Video: la biografía para niños", "url": "https://www.youtube.com/watch?v=1m-ImciJMtw" }
+    ],
+    "actividad": { "titulo": "Línea de tiempo de una vida", "descripcion": "Después de leer una biografía breve, los estudiantes ordenan los hechos principales en una línea de tiempo proyectada. Luego escriben una biografía corta de un familiar o vecino.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "4° básico", "codigo": "OA20",
+    "tema": "Los verbos",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🏃", "titulo": "El verbo", "texto": "Indica acciones o estados: correr, leer, ser, estar.", "puntos": ["Pasado: ayer jugué", "Presente: hoy juego", "Futuro: mañana jugaré"] },
+      { "tipo": "ejemplo", "emoji": "🎶", "titulo": "El verbo concuerda con el sujeto", "texto": "El verbo cambia según quién realiza la acción.", "puntos": ["Yo canto · Tú cantas · Ella canta", "Nosotros cantamos · Ellos cantan"] },
+      { "tipo": "pregunta", "titulo": "¿Cuál es el verbo en «Los pájaros vuelan alto»?", "puntos": ["pájaros", "vuelan", "alto"], "respuesta": "Vuelan." },
+      { "tipo": "pregunta", "titulo": "Completa: «Mis amigas ___ al parque.»", "puntos": ["fue", "fueron", "fui"], "respuesta": "Fueron: el sujeto, «mis amigas», es plural." }
+    ],
+    "videos": [
+      { "titulo": "Video: el verbo (persona, número, tiempo y modo)", "url": "https://www.youtube.com/watch?v=i0dmY2qa_Zo" },
+      { "titulo": "Video: tiempos verbales presente, pasado y futuro", "url": "https://www.youtube.com/watch?v=87tIER6pi1s" }
+    ],
+    "actividad": { "titulo": "Mímica de verbos", "descripcion": "Un estudiante representa una acción con mímica y el curso adivina el verbo. Luego escriben oraciones con ese verbo en pasado, presente y futuro, cuidando que concuerde con el sujeto.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "4° básico", "codigo": "OA29",
+    "tema": "Caracterizamos personajes",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🎭", "titulo": "El texto dramático", "texto": "Es un texto escrito para ser representado en un escenario.", "puntos": ["Diálogos: lo que dicen los personajes", "Acotaciones: indicaciones entre paréntesis sobre cómo hablan o se mueven", "Se organiza en actos y escenas"] },
+      { "tipo": "ejemplo", "emoji": "🧥", "titulo": "Caracterizar a un personaje", "puntos": ["La voz: ¿cómo habla?", "Los gestos y movimientos", "Un vestuario sencillo"] },
+      { "tipo": "pregunta", "titulo": "«ZORRO: (con voz dulce) ¡Qué hermoso canta usted!» ¿Qué es lo que está entre paréntesis?", "puntos": ["Un diálogo", "Una acotación", "El título"], "respuesta": "Una acotación." },
+      { "tipo": "pregunta", "titulo": "¿Para qué sirven las acotaciones?", "puntos": ["Para indicar cómo actuar", "Para numerar las páginas", "Para escribir la moraleja"], "respuesta": "Para indicar a los actores cómo actuar." }
+    ],
+    "videos": [
+      { "titulo": "Video: obras de teatro, características y elementos", "url": "https://www.youtube.com/watch?v=Pf2u-yWv4rU" }
+    ],
+    "actividad": { "titulo": "Teatro leído", "descripcion": "En grupos, los estudiantes leen una escena breve repartiendo los personajes, ensayan voces y gestos siguiendo las acotaciones y la representan frente al curso.", "duracionMinutos": 30 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "5° básico", "codigo": "OA08",
+    "tema": "La idea principal",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "💡", "titulo": "La idea principal", "texto": "Es lo más importante que dice un párrafo. Las ideas secundarias la explican o la ejemplifican.", "puntos": ["¿De qué trata el párrafo?", "¿Qué es lo más importante que dice?", "Si la quitamos, el párrafo pierde sentido"] },
+      { "tipo": "ejemplo", "emoji": "🐝", "titulo": "Analizamos un párrafo", "texto": "«Las abejas son muy importantes. Polinizan las flores, producen miel y ayudan a que crezcan las frutas.»", "puntos": ["Idea principal: las abejas son muy importantes", "Ideas secundarias: polinizan, producen miel y ayudan a las frutas"] },
+      { "tipo": "pregunta", "titulo": "«El agua es esencial para la vida. Las plantas la necesitan para crecer y los animales para vivir.» ¿Cuál es la idea principal?", "puntos": ["Las plantas crecen", "El agua es esencial para la vida", "Los animales beben agua"], "respuesta": "El agua es esencial para la vida." },
+      { "tipo": "pregunta", "titulo": "¿Para qué sirve identificar la idea principal?", "puntos": ["Para decorar el texto", "Para resumir y estudiar", "Para alargar el texto"], "respuesta": "Para resumir y estudiar mejor." }
+    ],
+    "videos": [
+      { "titulo": "Video: idea principal y secundaria de un párrafo", "url": "https://www.youtube.com/watch?v=pYhAaEOoTRQ" }
+    ],
+    "actividad": { "titulo": "Resumen en tres líneas", "descripcion": "Los estudiantes leen un artículo informativo breve, subrayan la idea principal de cada párrafo y escriben un resumen de máximo tres líneas. Luego comparan sus resúmenes en parejas.", "duracionMinutos": 25 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "5° básico", "codigo": "OA20",
+    "tema": "Sinónimos y sus matices",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🔤", "titulo": "Los sinónimos", "texto": "Son palabras con significado parecido. Ayudan a no repetir y a decir las cosas con más precisión.", "puntos": ["Contento – alegre – feliz", "Caminar – andar – pasear", "Grande – enorme – gigante"] },
+      { "tipo": "ejemplo", "emoji": "🌡️", "titulo": "Los matices", "puntos": ["«Grande» y «gigantesco» se parecen…", "…pero «gigantesco» es mucho más grande", "Elegimos el sinónimo según lo que queremos expresar"] },
+      { "tipo": "pregunta", "titulo": "¿Cuál es sinónimo de «rápido»?", "puntos": ["Lento", "Veloz", "Tranquilo"], "respuesta": "Veloz." },
+      { "tipo": "pregunta", "titulo": "¿Qué palabra expresa más intensidad?", "puntos": ["Molesto", "Furioso", "Serio"], "respuesta": "Furioso." }
+    ],
+    "videos": [
+      { "titulo": "Video: sinónimos y antónimos", "url": "https://www.youtube.com/watch?v=VSIOhQjZ0eI" }
+    ],
+    "actividad": { "titulo": "La escalera de palabras", "descripcion": "En grupos ordenan sinónimos de menor a mayor intensidad (tibio, caliente, hirviendo; contento, feliz, eufórico) y escriben oraciones usando el sinónimo más preciso para cada situación.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "5° básico", "codigo": "OA28",
+    "tema": "La exposición oral",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🎙️", "titulo": "La exposición oral", "texto": "Es presentar un tema a un público para informar.", "puntos": ["Introducción: presento el tema", "Desarrollo: explico con ejemplos y datos", "Cierre: resumo y agradezco"] },
+      { "tipo": "concepto", "emoji": "👀", "titulo": "Consejos para exponer", "puntos": ["Mirar al público", "Hablar fuerte y claro", "Usar apoyo visual (imágenes, láminas)", "Practicar antes"] },
+      { "tipo": "pregunta", "titulo": "¿Qué parte de la exposición presenta el tema?", "puntos": ["Introducción", "Desarrollo", "Cierre"], "respuesta": "La introducción." },
+      { "tipo": "pregunta", "titulo": "¿Qué conviene hacer durante una exposición?", "puntos": ["Leer todo de una hoja", "Mirar al público y usar apoyo visual", "Hablar muy rápido"], "respuesta": "Mirar al público y usar apoyo visual." }
+    ],
+    "videos": [
+      { "titulo": "Video: cómo hacer una exposición oral", "url": "https://www.youtube.com/watch?v=a6j5h7vFuPc" }
+    ],
+    "actividad": { "titulo": "Mini exposiciones de 2 minutos", "descripcion": "Cada grupo prepara una exposición breve sobre un animal nativo de Chile, con introducción, desarrollo y cierre, apoyada en una imagen proyectada. El curso entrega retroalimentación con una pauta simple.", "duracionMinutos": 30 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "6° básico", "codigo": "OA07",
+    "tema": "Hechos y opiniones",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "🧐", "titulo": "Hechos y opiniones", "puntos": ["Hecho: se puede comprobar (Chile tiene 16 regiones)", "Opinión: es lo que alguien piensa o siente (el invierno es la mejor estación)", "Palabras que delatan opiniones: creo, pienso, mejor, peor"] },
+      { "tipo": "ejemplo", "emoji": "🔍", "titulo": "Evaluamos una fuente", "puntos": ["¿Quién escribió el texto?", "¿Con qué propósito lo escribió?", "¿Los datos se pueden comprobar en otra fuente?"] },
+      { "tipo": "pregunta", "titulo": "«La Tierra gira alrededor del Sol» es…", "puntos": ["Un hecho", "Una opinión"], "respuesta": "Un hecho: se puede comprobar." },
+      { "tipo": "pregunta", "titulo": "«Ese es el mejor libro del mundo» es…", "puntos": ["Un hecho", "Una opinión"], "respuesta": "Una opinión: depende de quién lo dice." }
+    ],
+    "videos": [
+      { "titulo": "Video: ¿qué es un hecho y qué es una opinión?", "url": "https://www.youtube.com/watch?v=Z0TgsYfjSWs" },
+      { "titulo": "Video: hechos y opiniones en un texto", "url": "https://www.youtube.com/watch?v=3Ng5wabtNOA" }
+    ],
+    "actividad": { "titulo": "¿Hecho u opinión?", "descripcion": "Se proyectan frases tomadas de noticias y comentarios. Los estudiantes las clasifican levantando una tarjeta verde (hecho) o amarilla (opinión) y justifican su respuesta.", "duracionMinutos": 15 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "6° básico", "codigo": "OA22",
+    "tema": "Acentuación: agudas, graves y esdrújulas",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "✍️", "titulo": "Agudas, graves y esdrújulas", "texto": "Se clasifican según dónde está la sílaba que suena más fuerte (la sílaba tónica).", "puntos": ["Agudas: la última sílaba (can-CIÓN, re-LOJ)", "Graves: la penúltima (ÁR-bol, ME-sa)", "Esdrújulas: la antepenúltima (MÚ-si-ca, PÁ-ja-ro)"] },
+      { "tipo": "ejemplo", "emoji": "📌", "titulo": "¿Cuándo llevan tilde?", "puntos": ["Agudas: si terminan en n, s o vocal (camión, compás, café)", "Graves: si NO terminan en n, s o vocal (lápiz, árbol)", "Esdrújulas: siempre (teléfono)"] },
+      { "tipo": "pregunta", "titulo": "«Lámpara» es una palabra…", "puntos": ["Aguda", "Grave", "Esdrújula"], "respuesta": "Esdrújula: LÁM-pa-ra." },
+      { "tipo": "pregunta", "titulo": "¿Cuál palabra está bien escrita?", "puntos": ["Raton", "Ratón", "Rátón"], "respuesta": "Ratón: es aguda y termina en n." }
+    ],
+    "videos": [
+      { "titulo": "Video: palabras agudas, graves y esdrújulas", "url": "https://www.youtube.com/watch?v=BhgaaOkm56A" }
+    ],
+    "actividad": { "titulo": "Clasificamos palabras", "descripcion": "Se proyecta un texto sin tildes. En parejas identifican la sílaba tónica de las palabras destacadas, las clasifican en agudas, graves o esdrújulas y agregan las tildes que faltan.", "duracionMinutos": 20 }
+  },
+  {
+    "asignatura": "Lenguaje y Comunicación", "nivel": "6° básico", "codigo": "OA25",
+    "tema": "Mensajes publicitarios",
+    "diapositivas": [
+      { "tipo": "concepto", "emoji": "📺", "titulo": "Los mensajes publicitarios", "texto": "Buscan convencernos de comprar un producto o usar un servicio.", "puntos": ["Emisor: quién hace el aviso", "Propósito: qué quiere que hagamos", "Eslogan: frase fácil de recordar"] },
+      { "tipo": "ejemplo", "emoji": "🎯", "titulo": "¿Cómo intentan convencernos?", "puntos": ["Imágenes llamativas y colores", "Personas felices o famosas", "Promesas exageradas", "Música pegajosa"] },
+      { "tipo": "pregunta", "titulo": "¿Cuál es el propósito principal de un aviso publicitario?", "puntos": ["Informar sobre la historia", "Convencer al público", "Entretener con un cuento"], "respuesta": "Convencer al público." },
+      { "tipo": "pregunta", "titulo": "«¡Con Zapatillas Rayo correrás más rápido que nadie!» es…", "puntos": ["Un dato comprobado", "Una promesa exagerada", "Una noticia"], "respuesta": "Una promesa exagerada." }
+    ],
+    "videos": [
+      { "titulo": "Video: la publicidad para niños", "url": "https://www.youtube.com/watch?v=hxC1uZxnSSQ" }
+    ],
+    "actividad": { "titulo": "Analistas de avisos", "descripcion": "Se proyectan dos avisos publicitarios. En grupos identifican el emisor, el propósito, el eslogan y las estrategias para convencer. Luego crean un aviso honesto para un producto inventado.", "duracionMinutos": 25 }
+  }
+]

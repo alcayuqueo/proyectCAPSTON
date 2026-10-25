@@ -29,6 +29,8 @@ export class ResourcesService {
       asignaturaId: r.asignaturaId,
       asignatura: r.asignatura.nombre,
       nivel: r.asignatura.nivel,
+      /** OA para el que se sugiere (material listo); null si sirve para toda la asignatura. */
+      objetivoId: r.objetivoId ?? null,
       /** true si lo creó el docente con sesión (puede editarlo y eliminarlo). */
       propio: !!docenteId && r.autorId === docenteId,
       /** En cuántas clases se usa. */

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   ArrowLeft,
   Check,
@@ -7,10 +7,13 @@ import {
   FileText,
   Image as ImageIcon,
   Loader2,
+  Search,
+  Sparkles,
   Video,
 } from 'lucide-react';
 import { api, mensajeDeError } from '../lib/api';
 import { hoyISO } from '../lib/fechas';
+import { urlBusquedaVideos } from '../lib/material';
 import type { Actividad, Asignatura, Clase, DatosClase, Objetivo, Recurso } from '../lib/tipos';
 
 const iconoRecurso = { video: Video, documento: FileText, imagen: ImageIcon };
@@ -52,6 +55,9 @@ export default function FormularioClase() {
   const { id } = useParams<{ id: string }>();
   const editando = !!id;
   const navigate = useNavigate();
+  // Desde el explorador curricular: /planificador/nueva?objetivo=ID abre la clase con el material del OA.
+  const [parametros] = useSearchParams();
+  const objetivoInicial = editando ? null : parametros.get('objetivo');
 
   // Catálogos
   const [asignaturas, setAsignaturas] = useState<Asignatura[]>([]);
@@ -67,6 +73,7 @@ export default function FormularioClase() {
   const [recursoIds, setRecursoIds] = useState<string[]>([]);
   const [actividadIds, setActividadIds] = useState<string[]>([]);
   const [notas, setNotas] = useState('');
+  const [usarMaterial, setUsarMaterial] = useState(true);
 
   const [cargando, setCargando] = useState(true);
   const [errorCarga, setErrorCarga] = useState<string | null>(null);
@@ -97,6 +104,16 @@ export default function FormularioClase() {
           setRecursoIds(c.data.recursos.map((x) => x.id));
           setActividadIds(c.data.actividades.map((x) => x.id));
           setNotas(c.data.notas);
+          setUsarMaterial(c.data.usarMaterial ?? true);
+        } else if (objetivoInicial && o.data.some((x) => x.id === objetivoInicial)) {
+          const oa = o.data.find((x) => x.id === objetivoInicial)!;
+          setAsignaturaId(oa.asignaturaId);
+          setObjetivoId(oa.id);
+          if (oa.tieneMaterial) {
+            setRecursoIds(r.data.filter((x) => x.objetivoId === oa.id).map((x) => x.id));
+            setActividadIds(act.data.filter((x) => x.objetivoId === oa.id).map((x) => x.id));
+            if (oa.tema) setTitulo(oa.tema);
+          }
         } else if (a.data.length === 1) {
           setAsignaturaId(a.data[0].id);
         }
@@ -110,7 +127,7 @@ export default function FormularioClase() {
         ),
       )
       .finally(() => setCargando(false));
-  }, [editando, id]);
+  }, [editando, id, objetivoInicial]);
 
   // Solo se muestran los objetivos, recursos y actividades de la asignatura elegida.
   const objetivosAsignatura = useMemo(
@@ -126,14 +143,34 @@ export default function FormularioClase() {
     }
     return [...grupos.entries()];
   }, [objetivosAsignatura]);
+  const objetivoElegido = objetivos.find((o) => o.id === objetivoId) ?? null;
+  // Primero lo sugerido para el OA elegido (material listo), después el resto de la asignatura.
+  const sugeridoPrimero = <T extends { objetivoId: string | null }>(lista: T[]) =>
+    [...lista].sort((a, b) => Number(b.objetivoId === objetivoId && !!objetivoId) - Number(a.objetivoId === objetivoId && !!objetivoId));
   const recursosAsignatura = useMemo(
-    () => recursos.filter((r) => r.asignaturaId === asignaturaId),
-    [recursos, asignaturaId],
+    () => sugeridoPrimero(recursos.filter((r) => r.asignaturaId === asignaturaId)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [recursos, asignaturaId, objetivoId],
   );
   const actividadesAsignatura = useMemo(
-    () => actividades.filter((a) => a.asignaturaId === asignaturaId),
-    [actividades, asignaturaId],
+    () => sugeridoPrimero(actividades.filter((a) => a.asignaturaId === asignaturaId)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [actividades, asignaturaId, objetivoId],
   );
+  const recursosSugeridos = recursos.filter((r) => objetivoId && r.objetivoId === objetivoId);
+  const actividadesSugeridas = actividades.filter((a) => objetivoId && a.objetivoId === objetivoId);
+  const materialAgregado =
+    recursosSugeridos.every((r) => recursoIds.includes(r.id)) &&
+    actividadesSugeridas.every((a) => actividadIds.includes(a.id));
+
+  /** Agrega a la clase los videos y la actividad sugeridos para el OA (sin quitar lo ya elegido). */
+  function usarMaterialSugerido() {
+    if (!objetivoElegido) return;
+    setRecursoIds((ids) => [...ids, ...recursosSugeridos.map((r) => r.id).filter((x) => !ids.includes(x))]);
+    setActividadIds((ids) => [...ids, ...actividadesSugeridas.map((a) => a.id).filter((x) => !ids.includes(x))]);
+    if (!titulo.trim() && objetivoElegido.tema) setTitulo(objetivoElegido.tema);
+    setUsarMaterial(true);
+  }
   const duracionTotal = actividades
     .filter((a) => actividadIds.includes(a.id))
     .reduce((t, a) => t + a.duracionMinutos, 0);
@@ -171,6 +208,7 @@ export default function FormularioClase() {
       fecha,
       objetivoId,
       notas: notas.trim(),
+      usarMaterial,
       recursoIds,
       actividadIds,
     };
@@ -347,8 +385,15 @@ export default function FormularioClase() {
                           }}
                           className="mt-0.5 accent-brand-600"
                         />
-                        <span className="shrink-0 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700">
-                          {o.codigo}
+                        <span className="flex shrink-0 flex-col items-start gap-1">
+                          <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-semibold text-brand-700">
+                            {o.codigo}
+                          </span>
+                          {o.tieneMaterial && (
+                            <span title="Tiene diapositivas, videos y actividad listos" className="flex items-center gap-0.5 rounded-full bg-sol px-1.5 py-0.5 text-[10px] font-bold text-ink-900">
+                              <Sparkles size={10} /> Listo
+                            </span>
+                          )}
                         </span>
                         <span className="whitespace-pre-line text-ink-700">{o.descripcion}</span>
                       </label>
@@ -359,6 +404,73 @@ export default function FormularioClase() {
             </fieldset>
           )}
           {errores.objetivo && <p className="text-xs text-red-600">{errores.objetivo}</p>}
+
+          {objetivoElegido && (
+            <div
+              aria-live="polite"
+              className={[
+                'rounded-xl border-2 p-4 text-sm',
+                objetivoElegido.tieneMaterial ? 'border-ink-900 bg-[#FFF6D6]' : 'border-dashed border-ink-300/60 bg-surface-muted',
+              ].join(' ')}
+            >
+              {objetivoElegido.tieneMaterial ? (
+                <>
+                  <p className="flex items-center gap-2 font-bold text-ink-900">
+                    <Sparkles size={16} className="shrink-0" />
+                    Material listo: {objetivoElegido.tema}
+                  </p>
+                  <p className="mt-1 text-ink-700">
+                    Diapositivas de explicación y preguntas para el curso, {recursosSugeridos.length}{' '}
+                    {recursosSugeridos.length === 1 ? 'video' : 'videos'} y{' '}
+                    {actividadesSugeridas.length === 1 ? 'una actividad sugerida' : `${actividadesSugeridas.length} actividades sugeridas`}.
+                  </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={usarMaterialSugerido}
+                      disabled={materialAgregado}
+                      className="flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-sol px-4 py-1.5 font-bold text-ink-900 shadow-sticker-sm disabled:border-ink-300 disabled:bg-white disabled:text-ink-500 disabled:shadow-none"
+                    >
+                      {materialAgregado ? <Check size={15} /> : <Sparkles size={15} />}
+                      {materialAgregado ? 'Videos y actividad agregados' : 'Usar material sugerido'}
+                    </button>
+                    <a
+                      href={urlBusquedaVideos(objetivoElegido)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 rounded-full border-2 border-ink-300/70 bg-white px-3 py-1.5 font-semibold text-ink-700 hover:border-ink-900"
+                    >
+                      <Search size={14} /> Buscar más videos
+                    </a>
+                  </div>
+                  <label className="mt-3 flex cursor-pointer items-center gap-2 text-ink-700">
+                    <input
+                      type="checkbox"
+                      checked={usarMaterial}
+                      onChange={(e) => setUsarMaterial(e.target.checked)}
+                      className="h-4 w-4 accent-brand-600"
+                    />
+                    Mostrar las diapositivas de contenido en el modo presentación
+                  </label>
+                </>
+              ) : (
+                <>
+                  <p className="font-semibold text-ink-700">Este OA aún no tiene material listo.</p>
+                  <p className="mt-1 text-ink-500">
+                    Puedes buscar videos para este objetivo y agregarlos como recursos con su enlace de YouTube.
+                  </p>
+                  <a
+                    href={urlBusquedaVideos(objetivoElegido)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-white px-4 py-1.5 font-bold text-ink-900 shadow-sticker-sm"
+                  >
+                    <Search size={14} /> Buscar videos para este OA
+                  </a>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </Seccion>
 
@@ -404,6 +516,11 @@ export default function FormularioClase() {
                   <span>
                     <span className="block font-medium text-ink-900">{r.titulo}</span>
                     <span className="text-xs text-ink-500">{r.unidad}</span>
+                    {objetivoId && r.objetivoId === objetivoId && (
+                      <span className="mt-1 flex w-fit items-center gap-0.5 rounded-full bg-sol px-1.5 py-0.5 text-[10px] font-bold text-ink-900">
+                        <Sparkles size={10} /> Sugerido para este OA
+                      </span>
+                    )}
                   </span>
                 </label>
               );
@@ -453,6 +570,11 @@ export default function FormularioClase() {
                   <span className="flex-1">
                     <span className="block font-medium text-ink-900">{a.titulo}</span>
                     <span className="text-ink-500">{a.descripcion}</span>
+                    {objetivoId && a.objetivoId === objetivoId && (
+                      <span className="mt-1 flex w-fit items-center gap-0.5 rounded-full bg-sol px-1.5 py-0.5 text-[10px] font-bold text-ink-900">
+                        <Sparkles size={10} /> Sugerida para este OA
+                      </span>
+                    )}
                   </span>
                   <span className="flex shrink-0 items-center gap-1 text-xs text-ink-500">
                     <Clock size={13} />

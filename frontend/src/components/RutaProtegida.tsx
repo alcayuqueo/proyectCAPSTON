@@ -8,7 +8,7 @@ export default function RutaProtegida({ children }: { children: ReactNode }) {
   const location = useLocation();
 
   if (!usuario) {
-    return <Navigate to="/login" replace state={{ desde: location.pathname }} />;
+    return <Navigate to="/login" replace state={{ desde: location.pathname + location.search }} />;
   }
   return <>{children}</>;
 }

@@ -41,9 +41,14 @@ model Objetivo {
   codigo       String // ej: "OA05"
   descripcion  String
   eje          String? // ej: "Números y Operaciones", "Lectura"
+  // Material listo para usar: { tema, diapositivas[] }. Vacío si el OA aún no tiene material.
+  material     Json?
   asignatura   Asignatura @relation(fields: [asignaturaId], references: [id])
   asignaturaId String
   planes       Plan[]
+  // Videos y actividades del catálogo pensados para este OA.
+  recursos     Recurso[]
+  actividades  Actividad[]
 
   @@unique([asignaturaId, codigo])
 }
@@ -65,10 +70,14 @@ model Recurso {
   // Docente que lo creó. Vacío = recurso del catálogo, compartido y de solo lectura.
   autor        Usuario?      @relation(fields: [autorId], references: [id], onDelete: Cascade)
   autorId      String?
+  // OA para el que se sugiere (material listo). Vacío = sirve para toda la asignatura.
+  objetivo     Objetivo?     @relation(fields: [objetivoId], references: [id], onDelete: SetNull)
+  objetivoId   String?
   createdAt    DateTime      @default(now())
   planes       PlanRecurso[]
 
   @@index([autorId])
+  @@index([objetivoId])
 }
 
 model Actividad {
@@ -81,10 +90,14 @@ model Actividad {
   // Docente que la creó. Vacío = actividad del catálogo, compartida y de solo lectura.
   autor           Usuario?        @relation(fields: [autorId], references: [id], onDelete: Cascade)
   autorId         String?
+  // OA para el que se sugiere (material listo). Vacío = sirve para toda la asignatura.
+  objetivo        Objetivo?       @relation(fields: [objetivoId], references: [id], onDelete: SetNull)
+  objetivoId      String?
   createdAt       DateTime        @default(now())
   planes          PlanActividad[]
 
   @@index([autorId])
+  @@index([objetivoId])
 }
 
 model Plan {
@@ -92,6 +105,8 @@ model Plan {
   titulo      String
   fecha       DateTime
   notas       String?
+  // Si es true, el modo presentación incluye las diapositivas de contenido del OA.
+  usarMaterial Boolean        @default(true)
   docente     Usuario         @relation(fields: [docenteId], references: [id])
   docenteId   String
   objetivo    Objetivo        @relation(fields: [objetivoId], references: [id])

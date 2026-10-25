@@ -1,6 +1,7 @@
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsDateString,
   IsNotEmpty,
   IsOptional,
@@ -41,4 +42,8 @@ export class UpdatePlanDto {
   @ArrayMaxSize(20, { message: 'Una clase puede tener como máximo 20 actividades.' })
   @IsString({ each: true, message: 'Las actividades seleccionadas no son válidas.' })
   actividadIds?: string[];
+
+  @IsOptional()
+  @IsBoolean({ message: 'La opción de material debe ser verdadero o falso.' })
+  usarMaterial?: boolean;
 }

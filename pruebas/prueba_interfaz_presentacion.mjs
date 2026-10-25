@@ -33,10 +33,10 @@ async function nueva(w,h){
   const p=await ctx.newPage(); p.on('pageerror',e=>errores.push(e.message)); p.on('console',m=>{if(m.type()==='error'&&!/youtube|example/.test(m.text()))errores.push(m.text())});
   return p;
 }
-const URL='http://localhost:4173/planificador/c1/presentar';
+const URL_CLASE='http://localhost:4173/planificador/c1/presentar';
 // ---- Escritorio 1280x720 (Ciencias)
 let p=await nueva(1280,720);
-await p.goto(URL); await p.getByText('¡Hoy vamos a descubrir!').waitFor();
+await p.goto(URL_CLASE); await p.getByText('¡Hoy vamos a descubrir!').waitFor();
 await p.waitForTimeout(400);
 await p.screenshot({path:`${OUT}/01_portada_ciencias.png`});
 chk(await p.getByText('Nuestra meta · OA03').isVisible(),'meta visible');
@@ -67,7 +67,7 @@ await p.keyboard.press('Home'); chk(await p.getByText('¡Hoy vamos a descubrir!'
 await p.getByRole('button',{name:/Ir a la diapositiva 4/}).click(); chk(await p.getByRole('heading',{name:'Mapa del cuerpo'}).isVisible(),'puntos');
 await p.context().close();
 // ---- Tiempo cumplido con reloj simulado
-p=await nueva(1280,720); await p.clock.install(); await p.goto(URL); await p.getByText('¡Hoy vamos a descubrir!').waitFor();
+p=await nueva(1280,720); await p.clock.install(); await p.goto(URL_CLASE); await p.getByText('¡Hoy vamos a descubrir!').waitFor();
 await p.keyboard.press('End'); await p.keyboard.press('ArrowLeft'); await p.getByRole('button',{name:'Iniciar'}).click();
 await p.clock.runFor(119_000); await p.waitForTimeout(100);
 await p.clock.runFor(1500); await p.waitForTimeout(300);
@@ -75,18 +75,18 @@ chk(await p.getByText('¡Tiempo!').isVisible(),'tiempo cumplido');
 await p.screenshot({path:`${OUT}/06_actividad_tiempo.png`});
 await p.context().close();
 // ---- Pantalla interactiva Full HD y colores de otras asignaturas
-p=await nueva(1920,1080); await p.goto(URL); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
+p=await nueva(1920,1080); await p.goto(URL_CLASE); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
 await p.screenshot({path:`${OUT}/08_pantalla_interactiva_1080p.png`});
 actual=clase('Matemática','3° básico',{titulo:'Fracciones en la vida diaria',objetivo:{id:'o2',codigo:'OA11',descripcion:'Demostrar que comprenden las fracciones de uso común: 1/4, 1/3, 1/2, 2/3, 3/4.'}});
-await p.goto(URL); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
+await p.goto(URL_CLASE); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
 await p.screenshot({path:`${OUT}/09_portada_matematica.png`});
 actual=clase('Lenguaje y Comunicación','2° básico',{titulo:'Leemos un cuento',objetivo:{id:'o3',codigo:'OA05',descripcion:'Demostrar comprensión de las narraciones leídas.'}});
-await p.goto(URL); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
+await p.goto(URL_CLASE); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
 await p.screenshot({path:`${OUT}/10_portada_lenguaje.png`});
 await p.context().close();
 // ---- Celular
 actual=clase('Ciencias Naturales','5° básico');
-p=await nueva(390,844); await p.goto(URL); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
+p=await nueva(390,844); await p.goto(URL_CLASE); await p.getByText('¡Hoy vamos a descubrir!').waitFor(); await p.waitForTimeout(300);
 chk(await p.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'sin scroll horizontal movil');
 await p.screenshot({path:`${OUT}/11_movil_portada.png`});
 await p.keyboard.press('End'); await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(300);

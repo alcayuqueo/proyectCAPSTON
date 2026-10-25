@@ -11,6 +11,7 @@ import {
   Play,
   Plus,
   Puzzle,
+  Sparkles,
   Trash2,
 } from 'lucide-react';
 import { api, mensajeDeError } from '../lib/api';
@@ -134,6 +135,11 @@ export default function Planificador() {
             <span className="line-clamp-1">{c.objetivo.descripcion}</span>
           </p>
           <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-500">
+            {c.material && (
+              <span className="flex items-center gap-1 font-bold text-ink-900">
+                <Sparkles size={13} /> {c.material.diapositivas.length} diapositivas de contenido
+              </span>
+            )}
             <span className="flex items-center gap-1">
               <Layers size={13} /> {c.recursos.length}{' '}
               {c.recursos.length === 1 ? 'recurso' : 'recursos'}
