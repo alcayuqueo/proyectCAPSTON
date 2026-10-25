@@ -7,9 +7,9 @@ Evidencia de los requisitos no funcionales que pide el Instructivo CAPSTONE (seg
 | Requisito | Criterio | Cómo se cumple | Evidencia | Estado |
 |---|---|---|---|---|
 | **Seguridad** | Solo el docente accede a sus datos; contraseñas protegidas; sin vulnerabilidades altas ni críticas en producción | JWT HS256 con vencimiento, bcrypt, guards por ruta, permisos por autor, límite de intentos, encabezados HTTP, CORS restringido, CSP, validación de entradas, Row Level Security | 21 pruebas automáticas de seguridad; `npm audit` | ✅ |
-| **Rendimiento** | Carga inicial < 2,5 s (LCP) en celular; p95 de la API < 1 s con 50 docentes simultáneos | Build optimizado de Vite (103 KiB comprimido), caché de 1 año para los archivos con hash, índices en las claves de búsqueda (correo, código de OA, autor) | Lighthouse 99–100; prueba de carga | ✅ frontend · ⏳ API (ver abajo) |
+| **Rendimiento** | Carga inicial < 2,5 s (LCP) en celular; p95 de la API < 1 s con 50 docentes simultáneos | Build optimizado de Vite (103 KiB comprimido), caché de 1 año para los archivos con hash, índices en las claves de búsqueda, pool de 5 conexiones a la base de datos | Lighthouse 99–100; prueba de carga: 0 errores con 50 usuarios simultáneos y p95 de 762 ms con 25 | ✅ frontend · ✅ API hasta 25 usuarios simultáneos sin pausa (con 50: p95 de 1,25 s, límite del plan gratuito) |
 | **Escalabilidad** | Crecer en usuarios y contenido sin rediseñar | API sin estado (JWT), base de datos gestionada, frontend en CDN, nuevas asignaturas se cargan con un script sin tocar el código | Diagrama de despliegue; `npm run curriculum:cargar` | ✅ |
-| **Disponibilidad** | Accesible en línea; despliegue automático | Vercel (CDN) + Render + Supabase; cada `git push` publica | Aplicación en línea | ✅ (plan gratuito de Render: arranque en frío de hasta 1 min tras inactividad) |
+| **Disponibilidad** | Accesible en línea; despliegue automático | Vercel (CDN) + Render + Supabase; cada `git push` publica | Aplicación en línea; 0 errores en la prueba de carga | ✅ (plan gratuito de Render: arranque en frío de hasta 1 min tras inactividad) |
 | **Portabilidad** | Funciona en navegador, pantalla interactiva y celular; se puede levantar en otro equipo | Diseño adaptable (390 px a 1920 px), Docker y docker-compose, app Android con Capacitor (planificada) | Capturas paso 14 y 16; `docker compose up` | ✅ |
 | **Usabilidad y accesibilidad** | Usable en pantalla táctil y con teclado | Botones grandes, navegación con teclado y gestos, mensajes en español | Lighthouse accesibilidad 100 | ✅ |
 | **Mantenibilidad** | Código probado y documentado | 54 pruebas unitarias y de seguridad (Jest) + pruebas de API, datos e interfaz; diagramas UML | `npm test`; `docs/diagramas` | ✅ |
@@ -91,6 +91,36 @@ Build de producción servido con los mismos encabezados y compresión que Vercel
 
 ### 2.2 API (prueba de carga)
 
-Script `pruebas/prueba_rendimiento.py`. Simula 1, 10, 25 y 50 docentes navegando a la vez con 7 consultas de lectura (currículum, búsqueda, recursos y actividades), 200 solicitudes por nivel, y mide el promedio, p50, p95, p99 y máximo. Solo lee datos, así que se puede ejecutar contra producción.
+Script `pruebas/prueba_rendimiento.mjs` (Node.js; hay una versión equivalente en Python, `prueba_rendimiento.py`). Simula 1, 10, 25 y 50 docentes navegando a la vez con 7 consultas de lectura (currículum, búsqueda, recursos y actividades), 200 solicitudes por nivel, y mide el promedio, p50, p95, p99 y máximo. Solo lee datos, así que se puede ejecutar contra producción. Se ejecutó desde Santiago de Chile contra la API publicada en Render (Virginia, EE. UU.) con la base de datos en Supabase (plan gratuito), el 24 de octubre de 2026.
 
-**Resultado en producción (Render + Supabase):** *pendiente de ejecutar; el script guarda la tabla en `pruebas/resultado_rendimiento.md`.*
+**Medición 1 · línea base**
+
+| Docentes simultáneos | Correctas | Solicitudes/s | p50 | p95 | p99 | Máximo |
+|---|---|---|---|---|---|---|
+| 1 | 200/200 | 5,5 | 180 ms | 197 ms | 214 ms | 317 ms |
+| 10 | 200/200 | 39,2 | 235 ms | 430 ms | 527 ms | 583 ms |
+| 25 | 200/200 | 35,8 | 598 ms | 1.017 ms | 1.105 ms | 1.169 ms |
+| 50 | 200/200 | 37,2 | 1.181 ms | 1.495 ms | 1.658 ms | 1.693 ms |
+
+**Diagnóstico:** la capacidad se estancaba en unas 37 solicitudes por segundo sin importar la cantidad de usuarios, señal de que las solicitudes se atendían de a una. La causa era la cadena de conexión a la base de datos (`DATABASE_URL`), configurada con `connection_limit=1`: Prisma usaba una sola conexión para todos los usuarios. Ese valor se recomienda para funciones *serverless*, pero Render ejecuta un servidor permanente.
+
+**Optimización:** `connection_limit=5` en la variable `DATABASE_URL` de Render (el pooler de Supabase admite varias conexiones simultáneas).
+
+**Medición 2 · después de la optimización**
+
+| Docentes simultáneos | Correctas | Solicitudes/s | p50 | p95 | p99 | Máximo |
+|---|---|---|---|---|---|---|
+| 1 | 200/200 | 5,7 | 175 ms | **189 ms** | 200 ms | 269 ms |
+| 10 | 200/200 | 47,2 | 190 ms | **345 ms** | 467 ms | 533 ms |
+| 25 | 200/200 | 46,8 | 458 ms | **762 ms** | 928 ms | 1.709 ms |
+| 50 | 200/200 | 44,1 | 966 ms | **1.245 ms** | 1.381 ms | 1.421 ms |
+
+**Conclusiones**
+
+- **Estabilidad:** 0 errores en 1.600 solicitudes (dos mediciones de 800), incluso con 50 usuarios simultáneos.
+- **Mejora:** capacidad +20 a 30 % (de ~37 a ~45 solicitudes por segundo) y p95 entre 20 y 25 % menor con 10 a 50 usuarios.
+- **Requisito «p95 < 1 s»:** se cumple hasta **25 docentes haciendo solicitudes sin pausa**; con 50, el p95 es de 1,25 s.
+- **Límite actual:** la capacidad se estabiliza cerca de 45 solicitudes por segundo, cerca de 2.700 por minuto, por la CPU del plan gratuito de Render (una fracción de núcleo). Un docente que planifica una clase genera del orden de 5 a 10 solicitudes por minuto, por lo que esa capacidad alcanza para **varios cientos de docentes usando la plataforma al mismo tiempo**. La prueba es más exigente que el uso real porque cada usuario virtual hace clic sin pausa.
+- Los ~180 ms con un solo usuario corresponden principalmente a la distancia de red entre Chile y los servidores en EE. UU.
+
+**Mejoras posibles para escalar:** caché en memoria del currículum (no cambia salvo al cargar un currículum nuevo), plan pagado de Render con CPU dedicada y varias instancias (la API no guarda estado, gracias a JWT), y servidores en la región de São Paulo para reducir la latencia desde Chile.

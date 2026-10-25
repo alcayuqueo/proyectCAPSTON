@@ -136,7 +136,7 @@ cd backend
 cp .env.example .env
 ```
 
-**Opción A – Supabase:** en Supabase, botón **Connect → ORM → Prisma**, copia `DATABASE_URL` (Transaction pooler, puerto 6543) y `DIRECT_URL` (Session pooler, puerto 5432) en `backend/.env`, reemplazando `[YOUR-PASSWORD]` por la contraseña del proyecto. Agrega `&connection_limit=1` al final de `DATABASE_URL`.
+**Opción A – Supabase:** en Supabase, botón **Connect → ORM → Prisma**, copia `DATABASE_URL` (Transaction pooler, puerto 6543) y `DIRECT_URL` (Session pooler, puerto 5432) en `backend/.env`, reemplazando `[YOUR-PASSWORD]` por la contraseña del proyecto. Agrega `&connection_limit=5` al final de `DATABASE_URL` (con 1 conexión, las solicitudes se atienden de a una; ver `docs/pruebas`).
 
 **Opción B – Docker:** desde la raíz del repositorio, levanta PostgreSQL en local. Los valores por defecto de `.env.example` ya apuntan a esta base de datos.
 

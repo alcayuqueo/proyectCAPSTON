@@ -4,7 +4,7 @@
 |---|---|---|
 | `prueba_api_planificador.py` | API: registro, login, perfil, validaciones en español y planificador (crear, listar, editar, duplicar, eliminar y aislamiento entre docentes) | 25 |
 | `prueba_api_recursos_actividades.py` | API: crear, editar y eliminar recursos y actividades; validaciones (enlaces seguros, duración); catálogo de solo lectura; aislamiento entre docentes; uso en el planificador | 22 |
-| `prueba_rendimiento.py` | Carga de la API: 1, 10, 25 y 50 docentes simultáneos con consultas de lectura; tiempos p50/p95/p99 (se puede ejecutar contra producción) | 4 niveles |
+| `prueba_rendimiento.mjs` / `.py` | Carga de la API: 1, 10, 25 y 50 docentes simultáneos con consultas de lectura; tiempos p50/p95/p99 (se puede ejecutar contra producción). Misma prueba en Node.js (`node pruebas/prueba_rendimiento.mjs`) y en Python | 4 niveles |
 | `prueba_datos_curriculum.py` | Datos del currículum oficial: cantidad de OA por nivel según las Bases Curriculares, códigos sin saltos, ejes válidos y texto sin restos de la extracción del PDF | 35 |
 | `prueba_interfaz_planificador.py` | Interfaz en el navegador (Playwright): registro, formulario de clase, validaciones, edición, duplicar, eliminar con confirmación y sesión | 18 |
 
@@ -62,3 +62,4 @@ Las URL se pueden cambiar con las variables `API_URL` y `APP_URL`.
 - Modo presentación (Playwright, con API simulada): **25/25** aprobadas.
 - Unitarias y de seguridad (Jest): **54/54** aprobadas.
 - Lighthouse del frontend: rendimiento 99–100, accesibilidad 100, buenas prácticas 100 y SEO 100 (ver `docs/pruebas`).
+- Carga en producción: **0 errores en 1.600 solicitudes**; p95 de 345 ms con 10 docentes, 762 ms con 25 y 1,25 s con 50 (ver `docs/pruebas`).
