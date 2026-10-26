@@ -159,7 +159,7 @@ El seed carga datos de ejemplo (recursos y actividades de Matemática y Ciencias
 
 `npm run curriculum:cargar` carga los **324 Objetivos de Aprendizaje oficiales** de Matemática y Lenguaje y Comunicación de 1° a 6° básico, con su eje temático, más 24 actividades de ejemplo. El texto de cada OA se extrajo de las [Bases Curriculares Primero a Sexto Básico](https://www.curriculumnacional.cl/614/articles-22394_bases.pdf) (MINEDUC, 2018) y está en `backend/prisma/data/oa-basica-1-6.json`. El script no duplica datos: si el OA ya existe, actualiza su texto y eje.
 
-`npm run material:cargar` carga el **material listo para usar** de 48 OA (uno por cada eje y nivel de Matemática y Lenguaje, 1° a 6° básico): por cada OA, diapositivas de explicación con preguntas para el curso, uno o dos videos de YouTube y una actividad sugerida (192 diapositivas, 63 videos y 48 actividades). El contenido está en `backend/prisma/data/material-matematica.json` y `material-lenguaje.json`; el script valida los archivos antes de cargar y solo modifica elementos del catálogo. Para revisar que los videos sigan disponibles e incrustables: `npm run material:verificar` (no necesita la base de datos). Para los OA sin material, la app ofrece un botón **Buscar videos** que abre una búsqueda en YouTube con las palabras clave del OA.
+`npm run material:cargar` carga **48 clases listas de 45 minutos** (una por cada eje y nivel de Matemática y Lenguaje, 1° a 6° básico). Cada clase trae: inicio (activación), explicación y ejemplo, uno o dos videos de YouTube, práctica guiada con soluciones, dos preguntas para el curso, dos actividades (15 y 10 min), ticket de salida y una nota de preparación para el docente (336 diapositivas, 63 videos y 96 actividades). En el **Planificador**, la pestaña **Clases listas** permite presentarlas de inmediato o agregarlas a las clases del docente eligiendo la fecha. El contenido está en `backend/prisma/data/material-matematica.json` y `material-lenguaje.json`; el script valida los archivos antes de cargar y solo modifica elementos del catálogo. Para revisar que los videos sigan disponibles e incrustables: `npm run material:verificar` (no necesita la base de datos). Para los OA sin material, la app ofrece un botón **Buscar videos** que abre una búsqueda en YouTube con las palabras clave del OA.
 
 ### 4. Levantar el backend
 
@@ -244,7 +244,9 @@ En Android Studio: **Build → Generate App Bundles or APKs → Generate APKs**.
 | GET | `/api/curriculum/asignaturas` | Lista asignaturas y niveles | No |
 | GET | `/api/curriculum/objetivos?q=&asignatura=&nivel=&eje=` | Busca objetivos de aprendizaje | No |
 | GET | `/api/curriculum/ejes?asignatura=` | Ejes de una asignatura | No |
-| GET | `/api/curriculum/objetivos/:id/material` | Material listo del OA: diapositivas, videos y actividad sugerida | No |
+| GET | `/api/curriculum/objetivos/:id/material` | Material listo del OA: diapositivas, videos, actividades y preparación | No |
+| GET | `/api/curriculum/clases-listas?asignatura=&nivel=` | Galería de clases listas (tema, diapositivas, videos, actividades y duración) | No |
+| GET | `/api/curriculum/objetivos/:id/clase` | Clase lista de un OA, con el formato de una clase del planificador | No |
 | GET | `/api/resources` | Lista el catálogo y, con sesión, los recursos propios | Opcional |
 | POST | `/api/resources` | Crea un recurso propio (título, tipo, enlace, unidad, asignatura) | Sí |
 | PATCH | `/api/resources/:id` | Edita un recurso propio | Sí |
@@ -326,7 +328,8 @@ El proyecto se gestiona con **Kanban**:
 | Currículum oficial: Matemática y Lenguaje, 1° a 6° básico (324 OA con eje) | ✅ |
 | Currículum oficial: otras asignaturas y niveles | ⏳ |
 | Modo presentación para pantalla interactiva: diapositivas, videos y cronómetro | ✅ |
-| Material listo para 48 OA: diapositivas de contenido, preguntas, videos y actividad sugerida | ✅ |
+| Material listo para 48 OA: diapositivas de contenido, preguntas, videos y actividades | ✅ |
+| Clases listas de 45 min en el planificador: presentar ahora o agregar a mis clases | ✅ |
 | Sugerencia de videos (búsqueda en YouTube) para los OA sin material | ✅ |
 | Roles y panel de administración del establecimiento | ⏳ |
 | App Android (APK) con Capacitor | ✅ |

@@ -12,6 +12,9 @@ import {
   Image as ImageIcon,
   Lightbulb,
   Loader2,
+  PencilLine,
+  Rocket,
+  Ticket,
   Maximize,
   Minimize,
   Pause,
@@ -34,8 +37,8 @@ type ActividadClase = Clase['actividades'][number];
 
 type Diapositiva =
   | { tipo: 'portada' }
-  | { tipo: 'contenido'; contenido: DiapositivaContenido; numero: number; total: number }
-  | { tipo: 'pregunta'; contenido: DiapositivaContenido; numero: number; total: number }
+  | { tipo: 'contenido'; contenido: DiapositivaContenido; etiqueta: string }
+  | { tipo: 'pregunta'; contenido: DiapositivaContenido; etiqueta: string }
   | { tipo: 'recurso'; recurso: RecursoClase; numero: number; total: number }
   | { tipo: 'actividad'; actividad: ActividadClase; numero: number; total: number }
   | { tipo: 'cierre' };
@@ -66,7 +69,9 @@ function formatoTiempo(ms: number) {
  * de la asignatura, porque lo ven los estudiantes en la sala.
  */
 export default function ModoPresentacion() {
-  const { id } = useParams<{ id: string }>();
+  // Clase del docente (/planificador/:id/presentar) o clase lista de un OA (/clases-listas/:objetivoId/presentar).
+  const { id, objetivoId } = useParams<{ id: string; objetivoId: string }>();
+  const volverA = objetivoId ? '/planificador?vista=listas' : '/planificador';
   const navigate = useNavigate();
   const [clase, setClase] = useState<Clase | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -78,10 +83,10 @@ export default function ModoPresentacion() {
 
   useEffect(() => {
     api
-      .get<Clase>(`/planner/${id}`)
+      .get<Clase>(objetivoId ? `/curriculum/objetivos/${objetivoId}/clase` : `/planner/${id}`)
       .then((res) => setClase(res.data))
       .catch((err) => setError(mensajeDeError(err, 'No se pudo cargar la clase.')));
-  }, [id]);
+  }, [id, objetivoId]);
 
   // En pantallas grandes (pantalla interactiva Full HD o 4K) todo se agranda en proporción.
   useEffect(() => {
@@ -98,26 +103,33 @@ export default function ModoPresentacion() {
 
   const diapositivas = useMemo<Diapositiva[]>(() => {
     if (!clase) return [];
-    // Material listo del OA: la explicación va antes de los recursos y las preguntas después.
+    // Material listo del OA, en orden pedagógico: inicio y explicación antes de los recursos;
+    // práctica y preguntas después; el ticket de salida al final, antes del cierre.
     const contenido = clase.material?.diapositivas ?? [];
-    const explicacion = contenido.filter((d) => d.tipo !== 'pregunta');
-    const preguntas = contenido.filter((d) => d.tipo === 'pregunta');
+    const de = (...tipos: DiapositivaContenido['tipo'][]) => contenido.filter((d) => tipos.includes(d.tipo));
+    const explicacion = de('concepto', 'ejemplo');
+    const preguntas = de('pregunta');
+    const comoContenido = (d: DiapositivaContenido, etiqueta: string) => ({ tipo: 'contenido' as const, contenido: d, etiqueta });
+    const comoPregunta = (d: DiapositivaContenido, etiqueta: string) => ({ tipo: 'pregunta' as const, contenido: d, etiqueta });
     return [
       { tipo: 'portada' },
-      ...explicacion.map((d, i) => ({ tipo: 'contenido' as const, contenido: d, numero: i + 1, total: explicacion.length })),
+      ...de('inicio').map((d) => comoContenido(d, 'Para empezar')),
+      ...explicacion.map((d, i) => comoContenido(d, `${d.tipo === 'ejemplo' ? 'Ejemplo' : 'Aprendemos'} · ${i + 1} de ${explicacion.length}`)),
       ...clase.recursos.map((recurso, i) => ({
         tipo: 'recurso' as const,
         recurso,
         numero: i + 1,
         total: clase.recursos.length,
       })),
-      ...preguntas.map((d, i) => ({ tipo: 'pregunta' as const, contenido: d, numero: i + 1, total: preguntas.length })),
+      ...de('practica').map((d) => comoPregunta(d, 'Práctica guiada')),
+      ...preguntas.map((d, i) => comoPregunta(d, `¡A pensar! · Pregunta ${i + 1} de ${preguntas.length}`)),
       ...clase.actividades.map((actividad, i) => ({
         tipo: 'actividad' as const,
         actividad,
         numero: i + 1,
         total: clase.actividades.length,
       })),
+      ...de('cierre').map((d) => comoContenido(d, 'Cierre de la clase')),
       { tipo: 'cierre' },
     ];
   }, [clase]);
@@ -128,8 +140,8 @@ export default function ModoPresentacion() {
   const anterior = useCallback(() => ir(indice - 1), [ir, indice]);
   const salir = useCallback(() => {
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-    navigate('/planificador');
-  }, [navigate]);
+    navigate(volverA);
+  }, [navigate, volverA]);
 
   // ---- Pantalla completa ----
   const puedePantallaCompleta = typeof document !== 'undefined' && !!document.fullscreenEnabled;
@@ -249,7 +261,7 @@ export default function ModoPresentacion() {
         <p role="alert" className="text-lg text-ink-900">
           {error}
         </p>
-        <Link to="/planificador" className="mt-6 rounded-lg bg-brand-600 px-5 py-2.5 font-medium text-white hover:bg-brand-700">
+        <Link to={volverA} className="mt-6 rounded-lg bg-brand-600 px-5 py-2.5 font-medium text-white hover:bg-brand-700">
           Volver al planificador
         </Link>
       </PantallaMensaje>
@@ -510,19 +522,24 @@ function TextoObjetivo({ texto, grande = false }: { texto: string; grande?: bool
 
 function Portada({ clase }: { clase: Clase }) {
   const contenido = clase.material?.diapositivas ?? [];
+  const hay = (...tipos: DiapositivaContenido['tipo'][]) => contenido.some((d) => tipos.includes(d.tipo));
   const nPreguntas = contenido.filter((d) => d.tipo === 'pregunta').length;
+  const item = (id: string, icono: typeof Lightbulb, texto: string) => ({ id, icono, texto, min: null as number | null, actividad: false });
   const agenda = [
-    ...(clase.material && contenido.length > nPreguntas
-      ? [{ id: 'explicacion', icono: Lightbulb, texto: `Aprendemos: ${clase.material.tema}`, min: null as number | null, actividad: false }]
-      : []),
-    ...clase.recursos.map((r) => ({ id: r.id, icono: ICONO_RECURSO[r.tipo], texto: r.titulo, min: null as number | null, actividad: false })),
-    ...(nPreguntas > 0
-      ? [{ id: 'preguntas', icono: HelpCircle, texto: `¡A pensar! ${nPreguntas} ${nPreguntas === 1 ? 'pregunta' : 'preguntas'}`, min: null as number | null, actividad: false }]
-      : []),
+    ...(clase.material && hay('inicio', 'concepto', 'ejemplo') ? [item('explicacion', Lightbulb, `Aprendemos: ${clase.material.tema}`)] : []),
+    ...clase.recursos.map((r) => item(r.id, ICONO_RECURSO[r.tipo], r.titulo)),
+    ...(hay('practica') && nPreguntas > 0
+      ? [item('preguntas', HelpCircle, '¡A practicar y a pensar!')]
+      : hay('practica')
+        ? [item('preguntas', PencilLine, '¡A practicar!')]
+        : nPreguntas > 0
+          ? [item('preguntas', HelpCircle, `¡A pensar! ${nPreguntas} ${nPreguntas === 1 ? 'pregunta' : 'preguntas'}`)]
+          : []),
     ...clase.actividades.map((a) => ({ id: a.id, icono: Puzzle, texto: a.titulo, min: a.duracionMinutos, actividad: true })),
+    ...(hay('cierre') ? [item('ticket', Ticket, 'Ticket de salida')] : []),
   ];
   return (
-    <div className="flex flex-1 flex-col justify-center gap-7">
+    <div className="flex flex-1 flex-col justify-center gap-7 [@media(max-height:800px)]:gap-4">
       <div>
         <p className="font-infantil text-xl font-semibold text-[var(--tema-oscuro)] sm:text-2xl">¡Hoy vamos a descubrir!</p>
         <h1 className="mt-1 font-infantil text-4xl font-bold leading-[1.05] sm:text-6xl">{clase.titulo}</h1>
@@ -545,15 +562,27 @@ function Portada({ clase }: { clase: Clase }) {
         <section>
           <p className="mb-3 flex flex-wrap items-center gap-2 font-infantil text-xl font-semibold">
             Lo que haremos hoy
-            {clase.duracionTotalMinutos > 0 && (
+            {clase.material && clase.duracionTotalMinutos > 0 ? (
               <span className="flex items-center gap-1 font-ronda text-base font-bold text-tinta-suave">
-                · <Clock size={16} /> {clase.duracionTotalMinutos} min de actividades
+                · <Clock size={16} /> unos {20 + clase.duracionTotalMinutos} min de clase
               </span>
+            ) : (
+              clase.duracionTotalMinutos > 0 && (
+                <span className="flex items-center gap-1 font-ronda text-base font-bold text-tinta-suave">
+                  · <Clock size={16} /> {clase.duracionTotalMinutos} min de actividades
+                </span>
+              )
             )}
           </p>
-          <ol className="grid gap-3 sm:grid-cols-2">
+          <ol className={['grid gap-3 sm:grid-cols-2', agenda.length > 6 ? 'lg:grid-cols-3 [@media(max-height:800px)]:gap-2' : ''].join(' ')}>
             {agenda.map(({ id, icono: Icono, texto, min, actividad }, i) => (
-              <li key={id} className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-base font-bold sm:text-lg">
+              <li
+                key={id}
+                className={[
+                  'flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-base font-bold sm:text-lg',
+                  agenda.length > 6 ? '[@media(max-height:800px)]:py-2 [@media(max-height:800px)]:text-base' : '',
+                ].join(' ')}
+              >
                 <span
                   className={[
                     'flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-infantil text-lg font-bold',
@@ -575,12 +604,12 @@ function Portada({ clase }: { clase: Clase }) {
 }
 
 /** Explicación del material listo: concepto o ejemplo, con viñetas grandes. */
-function DiapositivaExplicacion({ contenido, numero, total }: { contenido: DiapositivaContenido; numero: number; total: number }) {
-  const esEjemplo = contenido.tipo === 'ejemplo';
+function DiapositivaExplicacion({ contenido, etiqueta }: { contenido: DiapositivaContenido; etiqueta: string }) {
+  const icono = contenido.tipo === 'inicio' ? Rocket : contenido.tipo === 'cierre' ? Ticket : Lightbulb;
   return (
     <div className="flex flex-1 flex-col justify-center gap-5">
-      <Etiqueta icono={Lightbulb}>
-        {esEjemplo ? 'Ejemplo' : 'Aprendemos'} · {numero} de {total}
+      <Etiqueta icono={icono} color={contenido.tipo === 'inicio' || contenido.tipo === 'cierre' ? 'sol' : 'tema'}>
+        {etiqueta}
       </Etiqueta>
       <div className="flex items-center gap-4">
         {contenido.emoji && (
@@ -611,18 +640,35 @@ function DiapositivaExplicacion({ contenido, numero, total }: { contenido: Diapo
   );
 }
 
-/** Pregunta para el curso: las opciones se pueden marcar y la respuesta aparece al tocar «Ver respuesta». */
-function DiapositivaPregunta({ contenido, numero, total }: { contenido: DiapositivaContenido; numero: number; total: number }) {
+/**
+ * Pregunta para el curso (las alternativas se pueden marcar y la respuesta aparece al tocar
+ * «Ver respuesta») o práctica guiada (ejercicios numerados y «Ver soluciones»).
+ */
+function DiapositivaPregunta({ contenido, etiqueta }: { contenido: DiapositivaContenido; etiqueta: string }) {
   const [elegida, setElegida] = useState<number | null>(null);
   const [verRespuesta, setVerRespuesta] = useState(false);
   const letras = 'ABCDEF';
+  const esPractica = contenido.tipo === 'practica';
   return (
     <div className="flex flex-1 flex-col justify-center gap-5">
-      <Etiqueta icono={HelpCircle} color="sol">
-        ¡A pensar! · Pregunta {numero} de {total}
+      <Etiqueta icono={esPractica ? PencilLine : HelpCircle} color="sol">
+        {etiqueta}
       </Etiqueta>
       <h2 className="font-infantil text-3xl font-bold leading-tight sm:text-5xl">{contenido.titulo}</h2>
-      {contenido.puntos && (
+      {esPractica && contenido.texto && (
+        <p className="rounded-2xl bg-white px-5 py-3 text-lg font-bold sm:text-2xl">{contenido.texto}</p>
+      )}
+      {esPractica && contenido.puntos && (
+        <ol className="grid gap-3 sm:grid-cols-3">
+          {contenido.puntos.map((p, i) => (
+            <li key={i} className="flex min-h-[4.5rem] items-center gap-3 rounded-[24px] border-[3px] border-tinta bg-white px-4 py-3 text-xl font-bold shadow-sticker-sm sm:text-2xl">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--tema-oscuro)] font-infantil text-xl text-white">{i + 1}</span>
+              <span className="min-w-0">{p}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+      {!esPractica && contenido.puntos && (
         <div className="grid gap-3 sm:grid-cols-3" role="group" aria-label="Opciones">
           {contenido.puntos.map((p, i) => (
             <button
@@ -652,7 +698,7 @@ function DiapositivaPregunta({ contenido, numero, total }: { contenido: Diaposit
             onClick={() => setVerRespuesta(true)}
             className="flex h-14 items-center gap-2 rounded-full border-[3px] border-tinta bg-white px-6 font-infantil text-xl font-bold shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
           >
-            <Eye size={22} /> Ver respuesta
+            <Eye size={22} /> {esPractica ? 'Ver soluciones' : 'Ver respuesta'}
           </button>
         )}
       </div>

@@ -70,6 +70,8 @@ export interface Clase {
   recursos: Pick<Recurso, 'id' | 'titulo' | 'tipo' | 'url' | 'unidad'>[];
   actividades: Pick<Actividad, 'id' | 'titulo' | 'descripcion' | 'duracionMinutos'>[];
   duracionTotalMinutos: number;
+  /** Solo en clases listas: duración estimada de la clase completa (contenido + actividades). */
+  duracionEstimadaMinutos?: number;
 }
 
 /** Datos que se envían al crear o editar una clase. */
@@ -85,18 +87,21 @@ export interface DatosClase {
 
 /** Diapositiva de contenido del material listo de un OA. */
 export interface DiapositivaContenido {
-  tipo: 'concepto' | 'ejemplo' | 'pregunta';
+  /** inicio, concepto/ejemplo (explicación), practica, pregunta y cierre (ticket de salida). */
+  tipo: 'inicio' | 'concepto' | 'ejemplo' | 'practica' | 'pregunta' | 'cierre';
   titulo: string;
   texto?: string;
-  /** Viñetas (concepto y ejemplo) u opciones de respuesta (pregunta). */
+  /** Viñetas, ejercicios (práctica), alternativas (pregunta) o preguntas del ticket (cierre). */
   puntos?: string[];
-  /** Solo en preguntas: se muestra al tocar «Ver respuesta». */
+  /** Solo en práctica y preguntas: se muestra al tocar «Ver soluciones» o «Ver respuesta». */
   respuesta?: string;
   emoji?: string;
 }
 
 export interface MaterialObjetivo {
   tema: string;
+  /** Qué preparar antes de la clase (solo para el docente). */
+  preparacion?: string;
   diapositivas: DiapositivaContenido[];
 }
 
@@ -105,7 +110,25 @@ export interface MaterialOa {
   objetivo: { id: string; codigo: string; descripcion: string; eje: string | null; asignatura: string; nivel: string };
   /** null si el OA aún no tiene material listo. */
   tema: string | null;
+  preparacion: string | null;
   diapositivas: DiapositivaContenido[];
   recursos: Pick<Recurso, 'id' | 'titulo' | 'tipo' | 'url' | 'unidad'>[];
   actividades: Pick<Actividad, 'id' | 'titulo' | 'descripcion' | 'duracionMinutos'>[];
+}
+
+/** Resumen de una clase lista (una por OA con material), de /api/curriculum/clases-listas. */
+export interface ClaseLista {
+  objetivoId: string;
+  codigo: string;
+  descripcion: string;
+  eje: string | null;
+  tema: string;
+  preparacion: string | null;
+  asignaturaId: string;
+  asignatura: string;
+  nivel: string;
+  diapositivas: number;
+  videos: number;
+  actividades: number;
+  duracionMinutos: number;
 }

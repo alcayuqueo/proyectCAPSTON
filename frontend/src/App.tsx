@@ -71,6 +71,14 @@ export default function App() {
           </RutaProtegida>
         }
       />
+      <Route
+        path="/clases-listas/:objetivoId/presentar"
+        element={
+          <RutaProtegida>
+            <ModoPresentacion />
+          </RutaProtegida>
+        }
+      />
 
       <Route element={<LayoutPrincipal />}>
         <Route path="/" element={<Home />} />

@@ -1,6 +1,6 @@
 /**
- * Carga el material listo para usar de los OA (diapositivas de contenido, videos de YouTube
- * y una actividad sugerida por OA) desde prisma/data/material-matematica.json y
+ * Carga el material listo para usar de los OA (clases completas de 45 minutos: diapositivas
+ * de contenido, videos de YouTube y dos actividades por OA) desde prisma/data/material-matematica.json y
  * prisma/data/material-lenguaje.json.
  *
  * Requisito: haber cargado antes el currículum (npm run curriculum:cargar).
@@ -11,7 +11,7 @@
  *    catálogo, se actualiza su título y su OA; si no, se crean.
  *  - Los videos del catálogo que ya no están en el archivo se quitan del OA (se eliminan si
  *    ninguna clase los usa).
- *  - La actividad se identifica por su título dentro de la asignatura.
+ *  - Las actividades se identifican por su título dentro de la asignatura.
  *  - Solo se tocan elementos del catálogo (sin autor), nunca los creados por docentes.
  *
  * Uso:  npm run material:cargar
@@ -56,7 +56,7 @@ async function main() {
 
     await prisma.objetivo.update({
       where: { id: objetivo.id },
-      data: { material: { tema: e.tema, diapositivas: e.diapositivas } as object },
+      data: { material: { tema: e.tema, preparacion: e.preparacion, diapositivas: e.diapositivas } as object },
     });
     oas++;
 
@@ -88,25 +88,26 @@ async function main() {
       videosQuitados++;
     }
 
-    const a = e.actividad;
-    const actividad = await prisma.actividad.findFirst({
-      where: { asignaturaId: objetivo.asignaturaId, titulo: a.titulo, autorId: null },
-    });
-    const datosActividad = { descripcion: a.descripcion, duracionMinutos: a.duracionMinutos, objetivoId: objetivo.id };
-    if (actividad) {
-      await prisma.actividad.update({ where: { id: actividad.id }, data: datosActividad });
-    } else {
-      await prisma.actividad.create({
-        data: { ...datosActividad, titulo: a.titulo, asignaturaId: objetivo.asignaturaId },
+    for (const a of e.actividades) {
+      const actividad = await prisma.actividad.findFirst({
+        where: { asignaturaId: objetivo.asignaturaId, titulo: a.titulo, autorId: null },
       });
-      actividadesNuevas++;
+      const datosActividad = { descripcion: a.descripcion, duracionMinutos: a.duracionMinutos, objetivoId: objetivo.id };
+      if (actividad) {
+        await prisma.actividad.update({ where: { id: actividad.id }, data: datosActividad });
+      } else {
+        await prisma.actividad.create({
+          data: { ...datosActividad, titulo: a.titulo, asignaturaId: objetivo.asignaturaId },
+        });
+        actividadesNuevas++;
+      }
     }
   }
 
   console.log(`OA con material listo: ${oas} de ${entradas.length}`);
   console.log(`Videos nuevos en el catálogo: ${videosNuevos}`);
   if (videosQuitados) console.log(`Videos reemplazados quitados del material: ${videosQuitados}`);
-  console.log(`Actividades sugeridas nuevas: ${actividadesNuevas}`);
+  console.log(`Actividades nuevas: ${actividadesNuevas}`);
   if (faltantes.length) {
     console.warn(`No se encontraron estos OA (¿falta ejecutar npm run curriculum:cargar?):\n- ${faltantes.join('\n- ')}`);
   }

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { leerMaterial } from '../common/material';
+import { leerMaterial, MINUTOS_CONTENIDO } from '../common/material';
 
 export interface FiltrosObjetivos {
   q?: string;
@@ -87,6 +87,7 @@ export class CurriculumService {
         nivel: objetivo.asignatura.nivel,
       },
       tema: material?.tema ?? null,
+      preparacion: material?.preparacion ?? null,
       diapositivas: material?.diapositivas ?? [],
       recursos: objetivo.recursos.map((r) => ({
         id: r.id,
@@ -101,6 +102,76 @@ export class CurriculumService {
         descripcion: a.descripcion,
         duracionMinutos: a.duracionMinutos,
       })),
+    };
+  }
+
+  /**
+   * Clases listas: una por cada OA con material. Resumen para la galería del planificador
+   * (tema, cantidad de diapositivas, videos y actividades, y duración estimada).
+   */
+  async listarClasesListas(filtros: { asignatura?: string; nivel?: string } = {}) {
+    const objetivos = await this.prisma.objetivo.findMany({
+      where: {
+        material: { not: Prisma.DbNull },
+        ...(filtros.asignatura || filtros.nivel
+          ? { asignatura: { is: { ...(filtros.asignatura && { nombre: filtros.asignatura }), ...(filtros.nivel && { nivel: filtros.nivel }) } } }
+          : {}),
+      },
+      include: {
+        asignatura: true,
+        recursos: { where: { autorId: null }, select: { id: true } },
+        actividades: { where: { autorId: null }, select: { duracionMinutos: true } },
+      },
+      orderBy: [{ asignatura: { nombre: 'asc' } }, { asignatura: { nivel: 'asc' } }, { codigo: 'asc' }],
+    });
+    return objetivos.flatMap((o) => {
+      const material = leerMaterial(o.material);
+      if (!material) return [];
+      const minutosActividades = o.actividades.reduce((t, a) => t + a.duracionMinutos, 0);
+      return [
+        {
+          objetivoId: o.id,
+          codigo: o.codigo,
+          descripcion: o.descripcion,
+          eje: o.eje,
+          tema: material.tema,
+          preparacion: material.preparacion ?? null,
+          asignaturaId: o.asignaturaId,
+          asignatura: o.asignatura.nombre,
+          nivel: o.asignatura.nivel,
+          diapositivas: material.diapositivas.length,
+          videos: o.recursos.length,
+          actividades: o.actividades.length,
+          duracionMinutos: MINUTOS_CONTENIDO + minutosActividades,
+        },
+      ];
+    });
+  }
+
+  /**
+   * Clase lista de un OA, con el mismo formato que una clase del planificador, para
+   * presentarla sin guardarla o para copiarla a las clases del docente.
+   */
+  async obtenerClaseLista(id: string) {
+    const m = await this.obtenerMaterial(id);
+    if (!m.tema || m.diapositivas.length === 0) {
+      throw new NotFoundException('Este objetivo aún no tiene una clase lista.');
+    }
+    const objetivo = await this.prisma.objetivo.findUniqueOrThrow({ where: { id }, include: { asignatura: true } });
+    const duracionActividades = m.actividades.reduce((t, a) => t + a.duracionMinutos, 0);
+    return {
+      id: `lista-${id}`,
+      titulo: m.tema,
+      fecha: new Date().toISOString().slice(0, 10),
+      notas: m.preparacion ?? '',
+      usarMaterial: true,
+      material: { tema: m.tema, ...(m.preparacion && { preparacion: m.preparacion }), diapositivas: m.diapositivas },
+      objetivo: { id, codigo: objetivo.codigo, descripcion: objetivo.descripcion },
+      asignatura: { id: objetivo.asignatura.id, nombre: objetivo.asignatura.nombre, nivel: objetivo.asignatura.nivel },
+      recursos: m.recursos,
+      actividades: m.actividades,
+      duracionTotalMinutos: duracionActividades,
+      duracionEstimadaMinutos: MINUTOS_CONTENIDO + duracionActividades,
     };
   }
 

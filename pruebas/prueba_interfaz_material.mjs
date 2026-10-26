@@ -1,5 +1,5 @@
-// Prueba de interfaz del material listo por OA (explorador, formulario de clase y modo
-// presentación) con la API simulada. Usa el material real de backend/prisma/data.
+// Prueba de interfaz del material listo por OA (explorador, clases listas del planificador,
+// formulario de clase y modo presentación) con la API simulada. Usa el material real de backend/prisma/data.
 // Uso (desde la raíz del repo, con el frontend compilado: cd frontend && npm run build):
 //   npm install --no-save playwright && npx playwright install chromium
 //   node pruebas/prueba_interfaz_material.mjs capturas_salida
@@ -37,22 +37,27 @@ const recursos = [
 ];
 const actividades = [
   { id: 'ag', titulo: 'Pizarra interactiva: ordenar fracciones', descripcion: 'Los estudiantes arrastran fracciones a una recta numérica proyectada.', duracionMinutos: 15, asignaturaId: 'mat5', asignatura: 'Matemática', nivel: '5° básico', objetivoId: null, propio: false, usos: 0 },
-  { id: 'as', ...fr.actividad, asignaturaId: 'mat5', asignatura: 'Matemática', nivel: '5° básico', objetivoId: 'o7', propio: false, usos: 0 },
+  ...fr.actividades.map((a, i) => ({ id: `as${i + 1}`, ...a, asignaturaId: 'mat5', asignatura: 'Matemática', nivel: '5° básico', objetivoId: 'o7', propio: false, usos: 0 })),
 ];
 const materialOa = {
   objetivo: { id: 'o7', codigo: 'OA07', descripcion: objetivos[0].descripcion, eje: 'Números y Operaciones', asignatura: 'Matemática', nivel: '5° básico' },
-  tema: fr.tema, diapositivas: fr.diapositivas,
+  tema: fr.tema, preparacion: fr.preparacion, diapositivas: fr.diapositivas,
   recursos: recursos.slice(1).map(({ id, titulo, tipo, url, unidad }) => ({ id, titulo, tipo, url, unidad })),
-  actividades: [actividades[1]].map(({ id, titulo, descripcion, duracionMinutos }) => ({ id, titulo, descripcion, duracionMinutos })),
+  actividades: actividades.slice(1).map(({ id, titulo, descripcion, duracionMinutos }) => ({ id, titulo, descripcion, duracionMinutos })),
 };
 const clase = (usarMaterial) => ({
   id: 'c1', titulo: fr.tema, fecha: '2026-10-30', notas: '', usarMaterial,
-  material: usarMaterial ? { tema: fr.tema, diapositivas: fr.diapositivas } : null,
+  material: usarMaterial ? { tema: fr.tema, preparacion: fr.preparacion, diapositivas: fr.diapositivas } : null,
   objetivo: { id: 'o7', codigo: 'OA07', descripcion: objetivos[0].descripcion },
   asignatura: asignaturas[0],
-  recursos: materialOa.recursos, actividades: materialOa.actividades, duracionTotalMinutos: fr.actividad.duracionMinutos,
+  recursos: materialOa.recursos, actividades: materialOa.actividades, duracionTotalMinutos: 25,
 });
+// Clases listas: resumen para la galería y la clase completa de un OA.
+const resumen = (e, id, asigId) => ({ objetivoId: id, codigo: e.codigo, descripcion: '…', eje: id === 'p5' ? 'Lectura' : 'Números y Operaciones', tema: e.tema, preparacion: e.preparacion, asignaturaId: asigId, asignatura: e.asignatura, nivel: e.nivel, diapositivas: e.diapositivas.length, videos: e.videos.length, actividades: e.actividades.length, duracionMinutos: 45 });
+const clasesListas = [resumen(fr, 'o7', 'mat5'), resumen(poemas, 'p5', 'len3')];
+const claseLista = { ...clase(true), id: 'lista-o7', notas: fr.preparacion, duracionEstimadaMinutos: 45 };
 let claseActual = clase(true);
+let misClases = [];
 let enviado = null;
 
 // ---- Navegador y servidor
@@ -77,10 +82,13 @@ async function nueva(w, h) {
     const ruta = u.pathname.replace(/^\/api/, '');
     if (ruta === '/curriculum/asignaturas') return r.fulfill({ json: asignaturas });
     if (ruta === '/curriculum/objetivos/o7/material') return r.fulfill({ json: materialOa });
+    if (ruta === '/curriculum/objetivos/o7/clase') return r.fulfill({ json: claseLista });
+    if (ruta === '/curriculum/clases-listas') return r.fulfill({ json: clasesListas });
     if (ruta === '/curriculum/objetivos') return r.fulfill({ json: objetivos });
     if (ruta === '/resources') return r.fulfill({ json: recursos });
     if (ruta === '/activities') return r.fulfill({ json: actividades });
-    if (ruta === '/planner' && r.request().method() === 'POST') { enviado = r.request().postDataJSON(); return r.fulfill({ status: 201, json: claseActual }); }
+    if (ruta === '/planner' && r.request().method() === 'POST') { enviado = r.request().postDataJSON(); misClases = [{ ...claseActual, fecha: enviado.fecha, titulo: enviado.titulo }]; return r.fulfill({ status: 201, json: claseActual }); }
+    if (ruta === '/planner') return r.fulfill({ json: misClases });
     if (ruta === '/planner/c1') return r.fulfill({ json: claseActual });
     return r.fulfill({ json: [] });
   });
@@ -108,7 +116,7 @@ try {
   await p.getByRole('button', { name: 'Ver material' }).first().click();
   await p.getByRole('dialog').getByText('Preguntas para el curso').waitFor();
   chk(await p.getByRole('dialog').getByText(fr.diapositivas[1].texto ?? fr.diapositivas[1].puntos[0]).isVisible(), 'diapositivas en vista previa');
-  chk(await p.getByRole('dialog').getByText(fr.actividad.titulo, { exact: false }).isVisible(), 'actividad en vista previa');
+  chk(await p.getByRole('dialog').getByText(fr.actividades[0].titulo, { exact: false }).isVisible(), 'actividad en vista previa');
   chk((await p.getByRole('dialog').locator('img').count()) === 2, 'miniaturas de videos');
   await p.waitForTimeout(300);
   await p.screenshot({ path: `${OUT}/02_vista_previa_material.png` });
@@ -127,7 +135,7 @@ try {
   await p.getByRole('button', { name: 'Crear clase' }).click();
   await p.waitForURL('**/planificador');
   chk(enviado?.objetivoId === 'o7' && enviado.usarMaterial === true, 'envía usarMaterial');
-  chk(JSON.stringify(enviado?.recursoIds) === '["rv1","rv2"]' && JSON.stringify(enviado?.actividadIds) === '["as"]', 'envía videos y actividad ' + JSON.stringify(enviado));
+  chk(JSON.stringify(enviado?.recursoIds) === '["rv1","rv2"]' && JSON.stringify(enviado?.actividadIds) === '["as1","as2"]', 'envía videos y actividades ' + JSON.stringify(enviado));
 
   // ---- 3. Formulario: OA sin material y botón «Usar material sugerido»
   await p.goto('http://localhost:4174/planificador/nueva');
@@ -146,18 +154,67 @@ try {
   chk(enviado?.usarMaterial === false, 'desmarcar diapositivas');
   await p.context().close();
 
-  // ---- 4. Modo presentación con material
+  // ---- 3b. Planificador: pestaña «Clases listas»
+  misClases = [];
+  p = await nueva(1280, 860);
+  await p.goto('http://localhost:4174/planificador');
+  await p.getByText(fr.tema, { exact: true }).waitFor();
+  chk((await p.getByRole('tab', { name: /Clases listas/ }).getAttribute('aria-selected')) === 'true', 'sin clases abre «Clases listas»');
+  chk(await p.getByText('2 clases listas').isVisible(), 'contador de clases listas');
+  chk(await p.getByText(`Preparar: ${fr.preparacion}`, { exact: false }).first().isVisible(), 'preparación visible');
+  await p.waitForTimeout(300);
+  await p.screenshot({ path: `${OUT}/15_clases_listas.png` });
+  await p.getByLabel('Asignatura').selectOption('Lenguaje y Comunicación');
+  chk((await p.getByRole('link', { name: 'Presentar ahora' }).count()) === 1, 'filtro por asignatura');
+  await p.getByLabel('Asignatura').selectOption('');
+  await p.getByRole('button', { name: `Ver la clase ${fr.tema}` }).click();
+  await p.getByRole('dialog').getByText('Práctica guiada').waitFor();
+  chk(await p.getByRole('dialog').getByText('Ticket de salida').isVisible(), 'detalle con ticket de salida');
+  chk(await p.getByRole('dialog').getByText(`Actividad 2: ${fr.actividades[1].titulo}`).isVisible(), 'detalle con 2 actividades');
+  await p.waitForTimeout(300);
+  await p.screenshot({ path: `${OUT}/16_clase_lista_detalle.png` });
+  await p.getByRole('dialog').getByRole('button', { name: 'Agregar a mis clases' }).click();
+  await p.getByLabel('Fecha de la clase').fill('2026-10-30');
+  await p.screenshot({ path: `${OUT}/17_agregar_clase_lista.png` });
+  await p.getByRole('button', { name: 'Agregar clase' }).click();
+  await p.getByText(`Se agregó «${fr.tema}» a tus clases.`).waitFor();
+  chk(enviado?.fecha === '2026-10-30' && enviado.objetivoId === 'o7' && enviado.usarMaterial === true, 'agregar envía fecha y OA');
+  chk(JSON.stringify(enviado?.actividadIds) === '["as1","as2"]' && enviado.notas.startsWith('Preparar:'), 'agregar copia actividades y preparación');
+  chk((await p.getByRole('tab', { name: /Mis clases/ }).getAttribute('aria-selected')) === 'true', 'vuelve a «Mis clases»');
+  chk(await p.getByText('11 diapositivas de contenido').isVisible() || await p.getByText(`${fr.diapositivas.length} diapositivas de contenido`).isVisible(), 'tarjeta con diapositivas');
+  await p.screenshot({ path: `${OUT}/18_mis_clases_agregada.png` });
+  // Presentar ahora (sin guardar)
+  await p.getByRole('tab', { name: /Clases listas/ }).click();
+  await p.locator('li', { hasText: fr.tema }).getByRole('link', { name: 'Presentar ahora' }).click();
+  await p.waitForURL('**/clases-listas/o7/presentar');
+  await p.getByText('¡Hoy vamos a descubrir!').waitFor();
+  chk(await p.getByText('unos 45 min de clase').isVisible(), 'presentar ahora: 45 min');
+  await p.getByRole('button', { name: 'Cerrar presentación' }).click();
+  await p.waitForURL('**/planificador?vista=listas');
+  chk(true, 'cerrar vuelve a clases listas');
+  await p.context().close();
+
+  // ---- 4. Modo presentación con la clase completa
+  const total = 1 + fr.diapositivas.length + fr.videos.length + fr.actividades.length + 1;
   p = await nueva(1280, 720);
   await p.goto('http://localhost:4174/planificador/c1/presentar');
   await p.getByText('¡Hoy vamos a descubrir!').waitFor();
   chk(await p.getByText(`Aprendemos: ${fr.tema}`).isVisible(), 'agenda explicación');
-  chk(await p.getByText('¡A pensar! 2 preguntas').isVisible(), 'agenda preguntas');
-  // portada + 2 explicación + 2 videos + 2 preguntas + 1 actividad + cierre = 9
-  chk((await p.getByText('1 / 9').count()) === 1, 'total de diapositivas');
+  chk(await p.getByText('¡A practicar y a pensar!').isVisible(), 'agenda práctica y preguntas');
+  chk(await p.getByText('Ticket de salida').isVisible(), 'agenda ticket');
+  chk((await p.getByText(`1 / ${total}`).count()) === 1, `total de diapositivas (${total})`);
+  await p.waitForTimeout(400);
+  const caja = await p.getByText('Ticket de salida').boundingBox();
+  chk(caja && caja.y + caja.height < 720 - 80, 'agenda completa visible en 720 px ' + JSON.stringify(caja));
+  await p.waitForTimeout(400);
   await p.screenshot({ path: `${OUT}/05_portada_con_material.png` });
   await p.keyboard.press('ArrowRight');
-  await p.getByRole('heading', { name: fr.diapositivas[0].titulo }).waitFor();
-  chk(await p.getByText('Aprendemos · 1 de 2').isVisible(), 'etiqueta explicación');
+  await p.getByText('Para empezar').waitFor();
+  chk(await p.getByRole('heading', { name: fr.diapositivas[0].titulo }).isVisible(), 'diapositiva de inicio');
+  await p.waitForTimeout(300);
+  await p.screenshot({ path: `${OUT}/06a_diapositiva_inicio.png` });
+  await p.keyboard.press('ArrowRight');
+  await p.getByText('Aprendemos · 1 de 2').waitFor();
   await p.waitForTimeout(300);
   await p.screenshot({ path: `${OUT}/06_diapositiva_explicacion.png` });
   await p.keyboard.press('ArrowRight');
@@ -171,6 +228,13 @@ try {
   await p.screenshot({ path: `${OUT}/08_video_material.png` });
   await p.keyboard.press('ArrowRight');
   await p.keyboard.press('ArrowRight');
+  await p.getByRole('button', { name: 'Ver soluciones' }).waitFor();
+  const prac = fr.diapositivas.find((d) => d.tipo === 'practica');
+  await p.getByRole('button', { name: 'Ver soluciones' }).click();
+  chk((await p.getByRole('status').textContent())?.includes(prac.respuesta), 'soluciones de la práctica');
+  await p.waitForTimeout(200);
+  await p.screenshot({ path: `${OUT}/08b_practica.png` });
+  await p.keyboard.press('ArrowRight');
   await p.getByText('¡A pensar! · Pregunta 1 de 2').waitFor();
   const preg = fr.diapositivas.find((d) => d.tipo === 'pregunta');
   await p.getByRole('button', { name: new RegExp(preg.puntos[1].replace('/', '\\/')) }).click();
@@ -182,8 +246,18 @@ try {
   await p.screenshot({ path: `${OUT}/10_pregunta_respuesta.png` });
   await p.keyboard.press('ArrowRight');
   await p.keyboard.press('ArrowRight');
-  await p.getByRole('heading', { name: fr.actividad.titulo }).waitFor();
-  chk(true, 'actividad después de las preguntas');
+  await p.getByRole('heading', { name: fr.actividades[0].titulo }).waitFor();
+  await p.keyboard.press('ArrowRight');
+  await p.getByRole('heading', { name: fr.actividades[1].titulo }).waitFor();
+  chk(true, 'dos actividades después de las preguntas');
+  await p.keyboard.press('ArrowRight');
+  await p.getByRole('heading', { name: 'Ticket de salida' }).waitFor();
+  chk(await p.getByText(fr.diapositivas.at(-1).puntos[0]).isVisible(), 'ticket de salida');
+  await p.waitForTimeout(300);
+  await p.screenshot({ path: `${OUT}/10b_ticket_salida.png` });
+  await p.keyboard.press('ArrowRight');
+  await p.getByRole('heading', { name: '¡Lo logramos!' }).waitFor();
+  chk(true, 'cierre al final');
   await p.context().close();
 
   // ---- 5. Celular y pantalla interactiva
@@ -193,7 +267,7 @@ try {
   await p.keyboard.press('ArrowRight');
   await p.waitForTimeout(400);
   await p.screenshot({ path: `${OUT}/11_celular_explicacion.png` });
-  await p.keyboard.press('End'); await p.keyboard.press('ArrowLeft'); await p.keyboard.press('ArrowLeft'); await p.keyboard.press('ArrowLeft');
+  await p.keyboard.press('End'); for (let i = 0; i < 5; i++) await p.keyboard.press('ArrowLeft');
   await p.getByText('¡A pensar! · Pregunta 1 de 2').waitFor();
   await p.waitForTimeout(400);
   await p.screenshot({ path: `${OUT}/12_celular_pregunta.png` });
@@ -216,7 +290,7 @@ try {
   p = await nueva(1280, 720);
   await p.goto('http://localhost:4174/planificador/c1/presentar');
   await p.getByText('¡Hoy vamos a descubrir!').waitFor();
-  chk((await p.getByText('1 / 5').count()) === 1, 'sin material: 5 diapositivas');
+  chk((await p.getByText('1 / 6').count()) === 1, 'sin material: 6 diapositivas');
   chk((await p.getByText(/Aprendemos:/).count()) === 0, 'sin material: sin explicación en agenda');
   await p.keyboard.press('ArrowRight');
   await p.locator('iframe').waitFor();

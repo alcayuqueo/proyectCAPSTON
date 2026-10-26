@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { EntradaMaterial, idVideoYoutube, leerMaterial, validarEntrada } from './material';
+import { EntradaMaterial, idVideoYoutube, leerMaterial, MINUTOS_CONTENIDO, validarEntrada } from './material';
 
 const DATA = path.join(__dirname, '..', '..', 'prisma', 'data');
 const leer = <T>(archivo: string): T => JSON.parse(fs.readFileSync(path.join(DATA, archivo), 'utf-8'));
@@ -39,9 +39,28 @@ describe('Material listo para usar (prisma/data/material-*.json)', () => {
     expect(new Set(videos).size).toBe(videos.length);
   });
 
-  it('cada OA tiene al menos una pregunta con respuesta para el curso', () => {
-    const sinPregunta = entradas.filter((e) => !e.diapositivas.some((d) => d.tipo === 'pregunta'));
-    expect(sinPregunta).toEqual([]);
+  it('cada OA es una clase completa: inicio, explicación, práctica, preguntas y ticket de salida', () => {
+    const incompletas = entradas
+      .filter((e) => {
+        const tipos = e.diapositivas.map((d) => d.tipo);
+        return !(
+          tipos[0] === 'inicio' &&
+          tipos.includes('concepto') &&
+          tipos.includes('practica') &&
+          tipos.includes('pregunta') &&
+          tipos[tipos.length - 1] === 'cierre'
+        );
+      })
+      .map((e) => `${e.asignatura} ${e.nivel} ${e.codigo}`);
+    expect(incompletas).toEqual([]);
+  });
+
+  it('cada clase dura 45 minutos (20 de contenido + 25 de actividades) y trae preparación', () => {
+    const fuera = entradas
+      .filter((e) => MINUTOS_CONTENIDO + e.actividades.reduce((t, a) => t + a.duracionMinutos, 0) !== 45 || !e.preparacion)
+      .map((e) => `${e.asignatura} ${e.nivel} ${e.codigo}`);
+    expect(fuera).toEqual([]);
+    expect(entradas.every((e) => e.actividades.length === 2)).toBe(true);
   });
 });
 

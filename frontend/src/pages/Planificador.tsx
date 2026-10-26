@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   CalendarDays,
   CheckCircle2,
@@ -19,6 +19,7 @@ import { hoyISO, partesFecha } from '../lib/fechas';
 import type { Clase } from '../lib/tipos';
 import ConfirmDialog from '../components/ConfirmDialog';
 import ChipAsignatura from '../components/ChipAsignatura';
+import ClasesListas from '../components/ClasesListas';
 import { temaDe } from '../lib/temas';
 
 export default function Planificador() {
@@ -34,6 +35,12 @@ export default function Planificador() {
   const [porEliminar, setPorEliminar] = useState<Clase | null>(null);
   const [eliminando, setEliminando] = useState(false);
   const [duplicandoId, setDuplicandoId] = useState<string | null>(null);
+  // Pestañas: «Mis clases» o «Clases listas» (?vista=listas). Sin clases propias, se abre en «Clases listas».
+  const [parametros, setParametros] = useSearchParams();
+  const vistaUrl = parametros.get('vista');
+  const vista: 'mias' | 'listas' =
+    vistaUrl === 'listas' || vistaUrl === 'mias' ? vistaUrl : !cargando && clases.length === 0 && !error ? 'listas' : 'mias';
+  const cambiarVista = (v: 'mias' | 'listas') => setParametros(v === 'mias' ? { vista: 'mias' } : { vista: 'listas' }, { replace: true });
 
   const cargar = useCallback(() => {
     return api
@@ -212,7 +219,7 @@ export default function Planificador() {
             Planificador
           </h1>
           <p className="mt-1 text-[15px] text-ink-500">
-            Combina objetivos, recursos y actividades en tu clase.
+            Tus clases y clases listas para proyectar en la sala.
           </p>
         </div>
         <Link
@@ -224,6 +231,31 @@ export default function Planificador() {
         </Link>
       </header>
 
+      <div role="tablist" aria-label="Clases" className="flex w-full gap-1 rounded-full border-2 border-ink-900 bg-white p-1 shadow-sticker-sm sm:w-fit">
+        {(
+          [
+            ['mias', 'Mis clases'],
+            ['listas', 'Clases listas'],
+          ] as const
+        ).map(([v, texto]) => (
+          <button
+            key={v}
+            type="button"
+            role="tab"
+            aria-selected={vista === v}
+            onClick={() => cambiarVista(v)}
+            className={[
+              'flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-2 text-sm font-bold transition-colors sm:flex-none',
+              vista === v ? 'bg-sol text-ink-900' : 'text-ink-500 hover:text-ink-900',
+            ].join(' ')}
+          >
+            {v === 'listas' && <Sparkles size={15} />}
+            {texto}
+            {v === 'mias' && !cargando && <span className="text-xs font-semibold opacity-70">({clases.length})</span>}
+          </button>
+        ))}
+      </div>
+
       {aviso && (
         <p
           role="status"
@@ -234,29 +266,46 @@ export default function Planificador() {
         </p>
       )}
 
-      {error && (
+      {vista === 'listas' && (
+        <ClasesListas
+          onAgregada={(titulo) => {
+            cargar();
+            cambiarVista('mias');
+            setAviso(`Se agregó «${titulo}» a tus clases.`);
+          }}
+        />
+      )}
+
+      {vista === 'mias' && error && (
         <p role="alert" className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
           {error}
         </p>
       )}
 
-      {cargando && (
+      {vista === 'mias' && cargando && (
         <p className="flex items-center gap-2 text-sm text-ink-500">
           <Loader2 size={16} className="animate-spin" />
           Cargando tus clases…
         </p>
       )}
 
-      {!error && !cargando && clases.length === 0 && (
+      {vista === 'mias' && !error && !cargando && clases.length === 0 && (
         <div className="rounded-card border-2 border-dashed border-ink-300 bg-white px-6 py-12 text-center">
           <p className="font-medium text-ink-900">Aún no tienes clases planificadas.</p>
           <p className="mt-1 text-sm text-ink-500">
-            Usa «Nueva clase» para armar tu primera planificación.
+            Elige una clase lista para empezar, o usa «Nueva clase» para armar la tuya.
           </p>
+          <button
+            type="button"
+            onClick={() => cambiarVista('listas')}
+            className="mx-auto mt-4 flex items-center gap-1.5 rounded-full border-[2.5px] border-ink-900 bg-sol px-4 py-2 text-sm font-bold text-ink-900 shadow-sticker-sm"
+          >
+            <Sparkles size={15} /> Ver clases listas
+          </button>
         </div>
       )}
 
-      {proximas.length > 0 && (
+      {vista === 'mias' && proximas.length > 0 && (
         <section>
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-500">
             Próximas clases
@@ -265,7 +314,7 @@ export default function Planificador() {
         </section>
       )}
 
-      {anteriores.length > 0 && (
+      {vista === 'mias' && anteriores.length > 0 && (
         <section>
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-500">
             Clases anteriores
