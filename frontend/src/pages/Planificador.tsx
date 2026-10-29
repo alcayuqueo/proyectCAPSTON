@@ -109,14 +109,13 @@ export default function Planificador() {
         key={c.id}
         className={[
           'group flex gap-4 rounded-card border-2 border-ink-900 bg-white shadow-sticker-sm p-4 transition-shadow hover:-translate-y-0.5',
-          pasada ? 'opacity-75' : '',
         ].join(' ')}
       >
         {/* Fecha */}
         <div
           className={[
             'flex w-16 shrink-0 flex-col items-center justify-center rounded-2xl border-2 py-2',
-            pasada ? 'border-ink-300 bg-surface-muted text-ink-500' : 'border-ink-900',
+            pasada ? 'border-ink-900 bg-surface-muted text-ink-700' : 'border-ink-900',
           ].join(' ')}
           style={pasada ? undefined : { background: temaDe(c.asignatura.nombre).suave, color: temaDe(c.asignatura.nombre).oscuro }}
           aria-label={c.fecha}

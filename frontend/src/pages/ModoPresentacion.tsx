@@ -431,7 +431,8 @@ function Decoracion({ letras = false }: { letras?: boolean }) {
           <text x="6" y="520" fontSize="58" fill="var(--tema-fuerte)" transform="rotate(-10 6 520)">A</text>
           <text x="1236" y="560" fontSize="50" fill="#FFC93C" transform="rotate(-10 1236 560)">b</text>
           <text x="150" y="712" fontSize="52" fill="var(--tema-medio)" transform="rotate(-14 150 712)">c</text>
-          <text x="690" y="58" fontSize="48" fill="var(--tema-medio)" transform="rotate(8 690 58)">ñ</text>
+          {/* En pantallas angostas quedaría sobre los botones de la barra superior */}
+          <text x="690" y="58" fontSize="48" fill="var(--tema-medio)" transform="rotate(8 690 58)" className="max-sm:hidden">ñ</text>
         </g>
       )}
     </svg>
