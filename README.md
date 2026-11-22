@@ -86,7 +86,7 @@ flowchart LR
 | App Android | Empaquetado del frontend con Capacitor (APK de 4,0 MB) | Instalación en el dispositivo | Implementado |
 | MinIO | Almacenamiento de archivos de recursos | — | Planificado |
 
-**Comunicación:** el frontend llama a la API por HTTPS usando la URL definida en `VITE_API_URL`. Las rutas protegidas exigen el token JWT en el encabezado `Authorization: Bearer`. El backend y la base de datos están en la misma región (Virginia, EE. UU.) para reducir la latencia entre ambos.
+**Comunicación:** la versión web llama a la API en su mismo dominio (`/api`): en Vercel, `vercel.json` redirige esas solicitudes al backend en Render, lo que evita problemas de certificados en los navegadores antiguos de algunas pantallas interactivas. La app Android llama directamente a Render con la URL de `VITE_API_URL` (`.env.android`). Las rutas protegidas exigen el token JWT en el encabezado `Authorization: Bearer`. El backend y la base de datos están en la misma región (Virginia, EE. UU.) para reducir la latencia entre ambos.
 
 El detalle completo (diagramas UML, modelo de datos y decisiones técnicas) está en el documento de diseño dentro de las carpetas de evidencias.
 
@@ -195,7 +195,7 @@ Aplicación disponible en `http://localhost:5173`. En local, Vite redirige `/api
 
 | Variable | Descripción |
 |---|---|
-| `VITE_API_URL` | URL base de la API. Vacía en local; en Vercel, `https://software-educativo-api.onrender.com/api` |
+| `VITE_API_URL` | URL base de la API, solo para la app Android (`.env.android`). La versión web siempre usa `/api`: no hace falta definirla en local ni en Vercel |
 
 > Los archivos `.env` contienen credenciales y **no se suben al repositorio** (están en `.gitignore`). Solo se versionan las plantillas `.env.example`.
 
@@ -214,7 +214,7 @@ Aplicación disponible en `http://localhost:5173`. En local, Vite redirige `/api
 |---|---|---|
 | Base de datos | **Supabase** (plan gratuito, región East US) | Tablas creadas con `prisma migrate deploy`. Row Level Security activado en todas las tablas: solo el backend accede a los datos |
 | Backend | **Render** (Web Service, Node, plan gratuito, región Virginia) | Root directory `backend`. Build: `npm install && npx prisma generate && npm run build`. Start: `npx prisma migrate deploy && node dist/main`. Variables: `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET` |
-| Frontend | **Vercel** (plan Hobby) | Root directory `frontend`, preset Vite. Variable: `VITE_API_URL`. `vercel.json` redirige todas las rutas a `index.html` |
+| Frontend | **Vercel** (plan Hobby) | Root directory `frontend`, preset Vite. Sin variables de entorno. `vercel.json` redirige `/api/*` al backend en Render y el resto de las rutas a `index.html` |
 
 Render y Vercel están conectados al repositorio de GitHub: **cada `git push` a `main` vuelve a publicar automáticamente** el backend y el frontend.
 

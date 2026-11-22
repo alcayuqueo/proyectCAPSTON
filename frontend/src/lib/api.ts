@@ -1,10 +1,18 @@
 import axios, { AxiosError } from 'axios';
 
-// En local se usa '/api' (proxy de Vite). En Vercel se define VITE_API_URL
-// con la URL del backend publicado en Render.
-export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
-});
+// En la web la API siempre se llama en el mismo dominio, en '/api':
+// - en local, Vite la redirige a localhost:3000;
+// - en Vercel, vercel.json la redirige al backend en Render.
+// Así los navegadores antiguos de algunas pantallas interactivas, que no
+// reconocen el certificado HTTPS de Render, solo hablan con Vercel.
+// Solo la app Android (vite build --mode android) usa VITE_API_URL, porque
+// no tiene el proxy de Vite ni el de Vercel.
+const baseURL =
+  import.meta.env.MODE === 'android' && import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL
+    : '/api';
+
+export const api = axios.create({ baseURL });
 
 export const TOKEN_KEY = 'token';
 export const SESION_EXPIRADA = 'sesion-expirada';
