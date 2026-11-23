@@ -1,6 +1,6 @@
-# Software Educativo
+# Educapp
 
-Plataforma web y móvil que ayuda a docentes de establecimientos chilenos a **planificar y preparar sus clases alineadas al currículum nacional del MINEDUC** (1° básico a 4° medio), aprovechando las pantallas interactivas que ya existen en las salas de clases.
+Plataforma web y móvil que ayuda a docentes de establecimientos chilenos a **planificar y preparar sus clases alineadas al currículum nacional del MINEDUC** (hoy, Matemática y Lenguaje y Comunicación de 1° a 6° básico), aprovechando las pantallas interactivas que ya existen en las salas de clases.
 
 > Proyecto APT – Asignatura CAPSTONE · Ingeniería en Informática · Duoc UC · 2026
 
@@ -313,7 +313,8 @@ El proyecto se gestiona con **Kanban**:
 ## Estado del proyecto
 
 🟢 **Fase 1 – Definición del proyecto:** completada y evaluada.
-🟡 **Fase 2 – Desarrollo:** en curso. Por indicación del docente, el alcance se amplió de un producto mínimo viable a un **producto completo**.
+🟢 **Fase 2 – Desarrollo:** completada. Por indicación del docente, el alcance se amplió de un producto mínimo viable a un **producto completo**.
+🟡 **Fase 3 – Presentación final:** en curso. Documentos y presentación en `Fase 3/`.
 
 | Funcionalidad | Estado |
 |---|---|

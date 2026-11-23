@@ -45,7 +45,7 @@ function LayoutPrincipal() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-ink-900 bg-sol text-ink-900">
             <GraduationCap size={18} />
           </div>
-          <p className="font-[Fredoka] text-[17px] font-semibold text-white">Software Educativo</p>
+          <p className="font-[Fredoka] text-[17px] font-semibold text-white">Educapp</p>
         </header>
         <main className="fondo-universo flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           <Outlet />

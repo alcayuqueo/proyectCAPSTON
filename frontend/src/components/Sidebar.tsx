@@ -79,7 +79,7 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
         </div>
         <div>
           <p className="font-[Fredoka] text-[17px] font-semibold leading-tight text-white">
-            Software Educativo
+            Educapp
           </p>
           <p className="text-xs leading-tight text-[#C9D0F2]">
             Apoyo docente · MINEDUC
