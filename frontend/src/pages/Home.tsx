@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, BookOpen, Layers, Puzzle, CalendarDays } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, CalendarDays } from 'lucide-react';
 
 // Cada módulo tiene el color de su sección en el menú.
 const modules = [
@@ -15,17 +15,9 @@ const modules = [
     to: '/recursos',
     icon: Layers,
     color: '#F6C2D6',
-    title: 'Recursos',
+    title: 'Recursos y actividades',
     description:
-      'Material interactivo (imágenes, videos, guías) organizado por unidad, pensado para pantallas táctiles.',
-  },
-  {
-    to: '/actividades',
-    icon: Puzzle,
-    color: '#FFE3A3',
-    title: 'Actividades',
-    description:
-      'Actividades listas para proyectar y realizar en clase junto a tus estudiantes, sin preparación técnica.',
+      'Videos, guías e imágenes para proyectar, y actividades para realizar en clase con tus estudiantes, sin preparación técnica.',
   },
   {
     to: '/planificador',
@@ -58,7 +50,7 @@ export default function Home() {
 
         <div className="relative">
           <span className="inline-block rounded-full bg-sol px-3 py-1 text-xs font-extrabold text-ink-900">
-            Fase 2 · Desarrollo
+            Fase 3 · Presentación final
           </span>
 
           <h1 className="mt-4 max-w-xl text-4xl font-bold leading-tight text-ink-900 sm:text-5xl">
@@ -94,7 +86,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-ink-900">Módulos principales</h2>
         <p className="mt-1 text-base text-ink-500">Todo lo que necesitas para preparar y conducir tu clase.</p>
 
-        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
           {modules.map(({ to, icon: Icon, color, title, description }) => (
             <button
               key={to}

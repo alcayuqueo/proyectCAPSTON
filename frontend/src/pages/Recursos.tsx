@@ -63,7 +63,12 @@ function validar(d: Datos): Errores {
   return e;
 }
 
-export default function Recursos() {
+interface Props {
+  /** Dentro de «Recursos y actividades»: sin título propio, ese lo pone la página que la contiene. */
+  embebido?: boolean;
+}
+
+export default function Recursos({ embebido = false }: Props) {
   const { usuario } = useAuth();
   const [recursos, setRecursos] = useState<Recurso[]>([]);
   const [asignaturas, setAsignaturas] = useState<Asignatura[]>([]);
@@ -201,20 +206,23 @@ export default function Recursos() {
   }
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="flex items-center gap-3 text-3xl font-bold text-ink-900">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#F6C2D6' }} aria-hidden="true">
-              <Layers size={22} />
-            </span>
-            Recursos
-          </h1>
-          <p className="mt-1 text-[15px] text-ink-500">
-            Material listo para proyectar: videos, guías e imágenes. Usa los del catálogo o agrega
-            los tuyos.
-          </p>
-        </div>
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+      {(!embebido || usuario) && (
+      <header className={['flex flex-col gap-4 sm:flex-row sm:items-start', embebido ? 'sm:justify-end' : 'sm:justify-between'].join(' ')}>
+        {!embebido && (
+          <div>
+            <h1 className="flex items-center gap-3 text-3xl font-bold text-ink-900">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#F6C2D6' }} aria-hidden="true">
+                <Layers size={22} />
+              </span>
+              Recursos
+            </h1>
+            <p className="mt-1 text-[15px] text-ink-500">
+              Material listo para proyectar: videos, guías e imágenes. Usa los del catálogo o agrega
+              los tuyos.
+            </p>
+          </div>
+        )}
         {usuario && (
           <button
             type="button"
@@ -226,6 +234,7 @@ export default function Recursos() {
           </button>
         )}
       </header>
+      )}
 
       {!usuario && (
         <p className="rounded-lg border border-ink-300/20 bg-white px-4 py-3 text-sm text-ink-700">

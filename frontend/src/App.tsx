@@ -5,8 +5,7 @@ import Sidebar from './components/Sidebar';
 import RutaProtegida from './components/RutaProtegida';
 import Home from './pages/Home';
 import ExploradorCurricular from './pages/ExploradorCurricular';
-import Recursos from './pages/Recursos';
-import Actividades from './pages/Actividades';
+import RecursosYActividades from './pages/RecursosYActividades';
 import Planificador from './pages/Planificador';
 import FormularioClase from './pages/FormularioClase';
 import ModoPresentacion from './pages/ModoPresentacion';
@@ -83,8 +82,8 @@ export default function App() {
       <Route element={<LayoutPrincipal />}>
         <Route path="/" element={<Home />} />
         <Route path="/curriculum" element={<ExploradorCurricular />} />
-        <Route path="/recursos" element={<Recursos />} />
-        <Route path="/actividades" element={<Actividades />} />
+        <Route path="/recursos" element={<RecursosYActividades />} />
+        <Route path="/actividades" element={<RecursosYActividades />} />
         <Route
           path="/planificador"
           element={

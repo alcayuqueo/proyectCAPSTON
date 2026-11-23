@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   LogIn,
   LogOut,
@@ -7,18 +7,17 @@ import {
   Home,
   BookOpen,
   Layers,
-  Puzzle,
   CalendarDays,
   X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 // Cada sección tiene su color, el mismo de su título y de su tarjeta en el inicio.
-const navItems = [
+const navItems: { to: string; label: string; icon: typeof Home; color: string; tambien?: string }[] = [
   { to: '/', label: 'Inicio', icon: Home, color: '#FFE3A3' },
   { to: '/curriculum', label: 'Explorador curricular', icon: BookOpen, color: '#C5D9FB' },
-  { to: '/recursos', label: 'Recursos', icon: Layers, color: '#F6C2D6' },
-  { to: '/actividades', label: 'Actividades', icon: Puzzle, color: '#FFE3A3' },
+  // Recursos y actividades comparten sección: /actividades también marca este botón.
+  { to: '/recursos', label: 'Recursos y actividades', icon: Layers, color: '#F6C2D6', tambien: '/actividades' },
   { to: '/planificador', label: 'Planificador', icon: CalendarDays, color: '#BFE6D0' },
 ];
 
@@ -44,6 +43,7 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
     };
   }, [abierto, onCerrar]);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const nombreVisible = usuario?.nombre || usuario?.email || '';
   const inicial = nombreVisible.charAt(0).toUpperCase();
 
@@ -97,19 +97,20 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
 
       {/* Navegación */}
       <nav className="flex flex-1 flex-col gap-1.5 px-3">
-        {navItems.map(({ to, label, icon: Icon, color }) => (
+        {navItems.map(({ to, label, icon: Icon, color, tambien }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
-            className={({ isActive }) =>
-              [
+            className={({ isActive }) => {
+              const activo = isActive || (!!tambien && pathname.startsWith(tambien));
+              return [
                 'flex items-center gap-3 rounded-2xl border-2 px-2.5 py-2 text-[15px] font-bold transition',
-                isActive
+                activo
                   ? 'border-ink-900 bg-white text-ink-900 shadow-[4px_4px_0_#7B6CF0]'
                   : 'border-transparent text-[#EEF1FF] hover:bg-white/10',
-              ].join(' ')
-            }
+              ].join(' ');
+            }}
           >
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-ink-900" style={{ background: color }}>
               <Icon size={17} />
@@ -156,7 +157,7 @@ export default function Sidebar({ abierto, onCerrar }: Props) {
       <div className="border-t border-white/15 px-5 py-4">
         <div className="flex items-center gap-2 text-xs text-[#C9D0F2]">
           <span className="h-2 w-2 rounded-full bg-amber-500" />
-          Fase 2 · Desarrollo del proyecto
+          Fase 3 · Presentación final
         </div>
       </div>
     </aside>
