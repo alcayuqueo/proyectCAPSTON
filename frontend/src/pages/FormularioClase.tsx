@@ -72,8 +72,13 @@ export default function FormularioClase() {
   const [titulo, setTitulo] = useState('');
   const [fecha, setFecha] = useState(fechaInicial);
   // Si se llegó desde el calendario (?volver=calendario), al guardar o cancelar se vuelve a él.
-  const desdeCalendario = parametros.get('volver') === 'calendario';
-  const rutaVolver = desdeCalendario ? `/calendario?dia=${fecha}` : '/planificador';
+  const volverParametro = parametros.get('volver');
+  const desdeCalendario = volverParametro === 'calendario';
+  const rutaVolver = desdeCalendario
+    ? `/calendario?dia=${fecha}`
+    : volverParametro === 'curriculum'
+      ? '/planificador?vista=curriculum'
+      : '/planificador';
   const [asignaturaId, setAsignaturaId] = useState('');
   const [objetivoId, setObjetivoId] = useState('');
   const [recursoIds, setRecursoIds] = useState<string[]>([]);
@@ -240,7 +245,7 @@ export default function FormularioClase() {
       className="flex w-fit items-center gap-1 text-sm text-ink-500 hover:text-ink-900"
     >
       <ArrowLeft size={15} />
-      {desdeCalendario ? 'Volver al calendario' : 'Volver al planificador'}
+      {desdeCalendario ? 'Volver al planificador' : volverParametro === 'curriculum' ? 'Volver al currículum' : 'Volver a mis clases'}
     </Link>
   );
 

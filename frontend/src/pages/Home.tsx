@@ -4,12 +4,12 @@ import { ArrowRight, BookOpen, Layers, CalendarDays, CalendarRange } from 'lucid
 // Cada módulo tiene el color de su sección en el menú.
 const modules = [
   {
-    to: '/curriculum',
+    to: '/planificador?vista=curriculum',
     icon: BookOpen,
     color: '#C5D9FB',
-    title: 'Explorador curricular',
+    title: 'Currículum MINEDUC',
     description:
-      'Busca objetivos de aprendizaje (OA) del MINEDUC por asignatura y nivel, listos para usar en tu planificación.',
+      'Busca los objetivos de aprendizaje (OA) por asignatura, nivel, eje o palabra clave y crea o edita tus clases de cada OA. Está en Mis clases.',
   },
   {
     to: '/recursos',
@@ -23,7 +23,7 @@ const modules = [
     to: '/planificador',
     icon: CalendarDays,
     color: '#BFE6D0',
-    title: 'Planificador',
+    title: 'Mis clases',
     description:
       'Arma tu clase combinando objetivos, recursos y actividades, y preséntala en la pantalla interactiva.',
   },
@@ -31,9 +31,9 @@ const modules = [
     to: '/calendario',
     icon: CalendarRange,
     color: '#D9D2FF',
-    title: 'Calendario',
+    title: 'Planificador',
     description:
-      'Organiza tus clases del año día a día: varias clases por día, copiando temas ya creados o agregando clases listas.',
+      'Planifica el año en un calendario: varias clases por día, copiando temas ya creados o agregando clases listas.',
   },
 ];
 
@@ -73,7 +73,7 @@ export default function Home() {
 
           <div className="mt-6 flex flex-wrap gap-3">
             <button
-              onClick={() => navigate('/curriculum')}
+              onClick={() => navigate('/planificador?vista=curriculum')}
               className="flex items-center gap-2 rounded-full border-[2.5px] border-ink-900 bg-sol px-5 py-2.5 text-sm font-bold text-ink-900 shadow-sticker-sm transition hover:bg-[#FFD35A] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
             >
               Explorar currículum

@@ -137,7 +137,7 @@ export default function Calendario() {
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#D9D2FF' }} aria-hidden="true">
             <CalendarRange size={22} />
           </span>
-          Calendario
+          Planificador
         </h1>
         <p className="mt-1 text-[15px] text-ink-500">
           Planifica tus clases durante el año. Cada día muestra los temas de tus clases; toca un día para ver sus
@@ -252,7 +252,7 @@ export default function Calendario() {
               type="button"
               onClick={() => setModal('copiar')}
               disabled={clases.length === 0}
-              title={clases.length === 0 ? 'Primero crea una clase en el planificador' : undefined}
+              title={clases.length === 0 ? 'Primero crea una clase en Mis clases' : undefined}
               className="flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-white px-3.5 py-1.5 text-sm font-bold text-ink-900 hover:bg-surface-muted disabled:opacity-50"
             >
               <Copy size={15} /> Copiar una clase
@@ -286,6 +286,7 @@ export default function Calendario() {
                 <div className="flex shrink-0 gap-2">
                   <Link
                     to={`/planificador/${c.id}/presentar`}
+                    state={{ volver: `/calendario?dia=${seleccionado}` }}
                     className="flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-sol px-3 py-1.5 text-sm font-bold text-ink-900"
                   >
                     <Play size={14} /> Presentar

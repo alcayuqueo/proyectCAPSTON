@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
+  BookOpen,
   CalendarDays,
   CheckCircle2,
   Clock,
@@ -18,9 +19,12 @@ import { api, mensajeDeError } from '../lib/api';
 import { hoyISO, partesFecha } from '../lib/fechas';
 import type { Clase } from '../lib/tipos';
 import ConfirmDialog from '../components/ConfirmDialog';
+import ExploradorCurricular from './ExploradorCurricular';
 import ChipAsignatura from '../components/ChipAsignatura';
 import ClasesListas from '../components/ClasesListas';
 import { temaDe } from '../lib/temas';
+
+type Vista = 'mias' | 'listas' | 'curriculum';
 
 export default function Planificador() {
   const navigate = useNavigate();
@@ -38,9 +42,11 @@ export default function Planificador() {
   // Pestañas: «Mis clases» o «Clases listas» (?vista=listas). Sin clases propias, se abre en «Clases listas».
   const [parametros, setParametros] = useSearchParams();
   const vistaUrl = parametros.get('vista');
-  const vista: 'mias' | 'listas' =
-    vistaUrl === 'listas' || vistaUrl === 'mias' ? vistaUrl : !cargando && clases.length === 0 && !error ? 'listas' : 'mias';
-  const cambiarVista = (v: 'mias' | 'listas') => setParametros(v === 'mias' ? { vista: 'mias' } : { vista: 'listas' }, { replace: true });
+  const vista: Vista =
+    vistaUrl === 'listas' || vistaUrl === 'mias' || vistaUrl === 'curriculum'
+      ? vistaUrl
+      : !cargando && clases.length === 0 && !error ? 'listas' : 'mias';
+  const cambiarVista = (v: Vista) => setParametros({ vista: v }, { replace: true });
 
   const cargar = useCallback(() => {
     return api
@@ -215,10 +221,10 @@ export default function Planificador() {
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#BFE6D0' }} aria-hidden="true">
               <CalendarDays size={22} />
             </span>
-            Planificador
+            Mis clases
           </h1>
           <p className="mt-1 text-[15px] text-ink-500">
-            Tus clases y clases listas para proyectar en la sala.
+            Tus clases, clases listas y el currículum oficial del MINEDUC para preparar tus clases.
           </p>
         </div>
         <Link
@@ -235,6 +241,7 @@ export default function Planificador() {
           [
             ['mias', 'Mis clases'],
             ['listas', 'Clases listas'],
+            ['curriculum', 'Currículum'],
           ] as const
         ).map(([v, texto]) => (
           <button
@@ -244,11 +251,12 @@ export default function Planificador() {
             aria-selected={vista === v}
             onClick={() => cambiarVista(v)}
             className={[
-              'flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-2 text-sm font-bold transition-colors sm:flex-none',
+              'flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 py-2 text-[13px] font-bold transition-colors sm:flex-none sm:px-5 sm:text-sm',
               vista === v ? 'bg-sol text-ink-900' : 'text-ink-500 hover:text-ink-900',
             ].join(' ')}
           >
-            {v === 'listas' && <Sparkles size={15} />}
+            {v === 'listas' && <Sparkles size={15} className="hidden sm:block" />}
+            {v === 'curriculum' && <BookOpen size={15} className="hidden sm:block" />}
             {texto}
             {v === 'mias' && !cargando && <span className="text-xs font-semibold opacity-70">({clases.length})</span>}
           </button>
@@ -264,6 +272,8 @@ export default function Planificador() {
           {aviso}
         </p>
       )}
+
+      {vista === 'curriculum' && <ExploradorCurricular embebido clasesPropias={clases} />}
 
       {vista === 'listas' && (
         <ClasesListas

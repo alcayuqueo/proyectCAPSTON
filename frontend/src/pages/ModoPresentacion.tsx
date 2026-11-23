@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type TouchEvent } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   ChevronLeft,
   ChevronRight,
@@ -71,7 +71,15 @@ function formatoTiempo(ms: number) {
 export default function ModoPresentacion() {
   // Clase del docente (/planificador/:id/presentar) o clase lista de un OA (/clases-listas/:objetivoId/presentar).
   const { id, objetivoId } = useParams<{ id: string; objetivoId: string }>();
-  const volverA = objetivoId ? '/planificador?vista=listas' : '/planificador';
+  // Si se abrió desde el planificador (calendario), se vuelve al mismo día.
+  const { state } = useLocation() as { state: { volver?: string } | null };
+  const volverA =
+    state?.volver && (state.volver.startsWith('/calendario') || state.volver.startsWith('/planificador'))
+      ? state.volver
+      : objetivoId ? '/planificador?vista=listas' : '/planificador';
+  const textoVolver = volverA.startsWith('/calendario')
+    ? 'Volver al planificador'
+    : volverA.includes('vista=curriculum') ? 'Volver al currículum' : 'Volver a mis clases';
   const navigate = useNavigate();
   const [clase, setClase] = useState<Clase | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -262,7 +270,7 @@ export default function ModoPresentacion() {
           {error}
         </p>
         <Link to={volverA} className="mt-6 rounded-lg bg-brand-600 px-5 py-2.5 font-medium text-white hover:bg-brand-700">
-          Volver al planificador
+          {textoVolver}
         </Link>
       </PantallaMensaje>
     );
@@ -341,7 +349,7 @@ export default function ModoPresentacion() {
               onSumarMinuto={() => sumarMinuto(actual.actividad)}
             />
           )}
-          {actual.tipo === 'cierre' && <Cierre clase={clase} onSalir={salir} />}
+          {actual.tipo === 'cierre' && <Cierre clase={clase} onSalir={salir} textoVolver={textoVolver} />}
         </div>
       </main>
 
@@ -953,7 +961,7 @@ function DiapositivaActividad({
   );
 }
 
-function Cierre({ clase, onSalir }: { clase: Clase; onSalir: () => void }) {
+function Cierre({ clase, onSalir, textoVolver }: { clase: Clase; onSalir: () => void; textoVolver: string }) {
   return (
     <div className="relative flex flex-1 flex-col items-center justify-center gap-6 text-center">
       <svg aria-hidden="true" viewBox="0 0 300 96" className="h-16 w-auto sm:h-24">
@@ -983,7 +991,7 @@ function Cierre({ clase, onSalir }: { clase: Clase; onSalir: () => void }) {
         onClick={onSalir}
         className="h-14 rounded-full border-[3px] border-tinta bg-white px-7 font-infantil text-lg font-semibold"
       >
-        Volver al planificador
+        {textoVolver}
       </button>
     </div>
   );

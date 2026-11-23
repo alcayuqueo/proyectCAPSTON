@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Plus, Search, Sparkles, X } from 'lucide-react';
+import { BookOpen, Pencil, Play, Plus, Search, Sparkles, X } from 'lucide-react';
 import { api, mensajeDeError } from '../lib/api';
 import { urlBusquedaVideos } from '../lib/material';
-import type { Asignatura, Objetivo } from '../lib/tipos';
+import type { Asignatura, Clase, Objetivo } from '../lib/tipos';
+import { partesFecha } from '../lib/fechas';
 import ChipAsignatura from '../components/ChipAsignatura';
 import Modal from '../components/Modal';
 import VistaMaterial from '../components/VistaMaterial';
@@ -16,7 +17,14 @@ function numeroNivel(nivel: string) {
   return parseInt(nivel, 10) || 0;
 }
 
-export default function ExploradorCurricular() {
+interface Props {
+  /** Dentro de «Mis clases» (pestaña Currículum): sin título propio. */
+  embebido?: boolean;
+  /** Clases del docente: se muestran bajo cada OA para editarlas o presentarlas. */
+  clasesPropias?: Clase[];
+}
+
+export default function ExploradorCurricular({ embebido = false, clasesPropias }: Props) {
   const [asignaturas, setAsignaturas] = useState<Asignatura[]>([]);
   const [ejes, setEjes] = useState<string[]>([]);
   const [objetivos, setObjetivos] = useState<Objetivo[]>([]);
@@ -89,6 +97,13 @@ export default function ExploradorCurricular() {
     [asignaturas, asignatura],
   );
 
+  // Clases del docente agrupadas por OA.
+  const clasesPorOa = useMemo(() => {
+    const mapa = new Map<string, Clase[]>();
+    for (const c of clasesPropias ?? []) mapa.set(c.objetivo.id, [...(mapa.get(c.objetivo.id) ?? []), c]);
+    return mapa;
+  }, [clasesPropias]);
+
   const hayFiltros = Boolean(asignatura || nivel || eje || query || soloMaterial);
   const visibles = soloMaterial ? objetivos.filter((o) => o.tieneMaterial) : objetivos;
   const conMaterial = objetivos.filter((o) => o.tieneMaterial).length;
@@ -109,7 +124,8 @@ export default function ExploradorCurricular() {
   }
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+      {!embebido && (
       <header>
         <h1 className="flex items-center gap-3 text-3xl font-bold text-ink-900">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 shadow-sticker-sm" style={{ background: '#C5D9FB' }} aria-hidden="true">
@@ -122,6 +138,7 @@ export default function ExploradorCurricular() {
           asignatura, nivel y eje, o busca por palabra clave.
         </p>
       </header>
+      )}
 
       <div className="flex flex-col gap-3 rounded-card border-2 border-ink-900 bg-white shadow-sticker-sm p-4">
         <div className="relative">
@@ -243,14 +260,14 @@ export default function ExploradorCurricular() {
                   >
                     <Sparkles size={14} /> Ver material
                   </button>
-                  <Link
-                    to={`/planificador/nueva?objetivo=${o.id}`}
-                    className="flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-white px-3.5 py-1.5 font-bold text-ink-900"
-                  >
-                    <Plus size={14} /> Crear clase con este material
-                  </Link>
                 </>
               )}
+              <Link
+                to={`/planificador/nueva?objetivo=${o.id}${embebido ? '&volver=curriculum' : ''}`}
+                className="flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-white px-3.5 py-1.5 font-bold text-ink-900"
+              >
+                <Plus size={14} /> {o.tieneMaterial ? 'Crear clase con este material' : 'Crear clase con este OA'}
+              </Link>
               <a
                 href={urlBusquedaVideos(o)}
                 target="_blank"
@@ -260,6 +277,41 @@ export default function ExploradorCurricular() {
                 <Search size={14} /> {o.tieneMaterial ? 'Más videos' : 'Buscar videos para este OA'}
               </a>
             </div>
+            {(clasesPorOa.get(o.id)?.length ?? 0) > 0 && (
+              <div className="mt-3 rounded-xl bg-surface-muted p-3">
+                <p className="mb-2 text-xs font-extrabold uppercase tracking-wide text-ink-500">
+                  Tus clases con este OA ({clasesPorOa.get(o.id)!.length})
+                </p>
+                <ul className="flex flex-col gap-2">
+                  {clasesPorOa.get(o.id)!.map((c) => {
+                    const f = partesFecha(c.fecha);
+                    return (
+                      <li key={c.id} className="flex flex-wrap items-center gap-2 rounded-lg border-2 border-ink-900 bg-white px-3 py-2 text-sm">
+                        <span className="rounded-md bg-[#FFF6D6] px-2 py-0.5 text-xs font-bold text-ink-900">
+                          {f.diaSemana} {f.dia} {f.mes}
+                        </span>
+                        <span className="min-w-0 flex-1 truncate font-semibold text-ink-900">{c.titulo}</span>
+                        <Link
+                          to={`/planificador/${c.id}/editar?volver=curriculum`}
+                          aria-label={`Editar ${c.titulo}`}
+                          className="flex items-center gap-1 rounded-full border-2 border-ink-900 px-3 py-1 text-xs font-bold text-ink-900 hover:bg-surface-muted"
+                        >
+                          <Pencil size={13} /> Editar
+                        </Link>
+                        <Link
+                          to={`/planificador/${c.id}/presentar`}
+                          state={{ volver: '/planificador?vista=curriculum' }}
+                          aria-label={`Presentar ${c.titulo}`}
+                          className="flex items-center gap-1 rounded-full border-2 border-ink-900 bg-sol px-3 py-1 text-xs font-bold text-ink-900"
+                        >
+                          <Play size={13} /> Presentar
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </li>
         ))}
       </ul>

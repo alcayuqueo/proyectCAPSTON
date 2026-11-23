@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { GraduationCap, Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import RutaProtegida from './components/RutaProtegida';
 import Home from './pages/Home';
-import ExploradorCurricular from './pages/ExploradorCurricular';
 import RecursosYActividades from './pages/RecursosYActividades';
 import Planificador from './pages/Planificador';
 import Calendario from './pages/Calendario';
@@ -82,7 +81,8 @@ export default function App() {
 
       <Route element={<LayoutPrincipal />}>
         <Route path="/" element={<Home />} />
-        <Route path="/curriculum" element={<ExploradorCurricular />} />
+        {/* El explorador curricular ahora es la pestaña «Currículum» de Mis clases. */}
+        <Route path="/curriculum" element={<Navigate to="/planificador?vista=curriculum" replace />} />
         <Route path="/recursos" element={<RecursosYActividades />} />
         <Route path="/actividades" element={<RecursosYActividades />} />
         <Route

@@ -5,7 +5,6 @@ import {
   LogOut,
   GraduationCap,
   Home,
-  BookOpen,
   Layers,
   CalendarDays,
   CalendarRange,
@@ -16,11 +15,10 @@ import { useAuth } from '../context/AuthContext';
 // Cada sección tiene su color, el mismo de su título y de su tarjeta en el inicio.
 const navItems: { to: string; label: string; icon: typeof Home; color: string; tambien?: string }[] = [
   { to: '/', label: 'Inicio', icon: Home, color: '#FFE3A3' },
-  { to: '/curriculum', label: 'Explorador curricular', icon: BookOpen, color: '#C5D9FB' },
   // Recursos y actividades comparten sección: /actividades también marca este botón.
   { to: '/recursos', label: 'Recursos y actividades', icon: Layers, color: '#F6C2D6', tambien: '/actividades' },
-  { to: '/planificador', label: 'Planificador', icon: CalendarDays, color: '#BFE6D0' },
-  { to: '/calendario', label: 'Calendario', icon: CalendarRange, color: '#D9D2FF' },
+  { to: '/planificador', label: 'Mis clases', icon: CalendarDays, color: '#BFE6D0' },
+  { to: '/calendario', label: 'Planificador', icon: CalendarRange, color: '#D9D2FF' },
 ];
 
 interface Props {
