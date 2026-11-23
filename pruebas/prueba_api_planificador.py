@@ -52,6 +52,10 @@ ok('PLAN-09 editar: título, recursos en orden y quitar actividades', s==200 and
 s,b=req('PATCH','/planner/'+pid,{'fecha':'no-es-fecha'},t1); ok('PLAN-04 fecha inválida al editar: 400', s==400, (s,b))
 s,b=req('POST','/planner/'+pid+'/duplicar',token=t1); ok('PLAN-10 duplicar', s==201 and b['titulo']=='Fracciones (v2) (copia)' and len(b['recursos'])==2 and b['id']!=pid, (s,b))
 dup=b['id']
+s,b=req('POST','/planner/'+pid+'/duplicar',{'fecha':'2026-11-25'},t1)
+ok('PLAN-10b duplicar en otra fecha (calendario): mismo título, nueva fecha', s==201 and b['titulo']=='Fracciones (v2)' and b['fecha']=='2026-11-25' and len(b['recursos'])==2, (s,b))
+req('DELETE','/planner/'+b.get('id',''),token=t1)
+s,b=req('POST','/planner/'+pid+'/duplicar',{'fecha':'no-es-fecha'},t1); ok('PLAN-10c duplicar con fecha inválida: 400', s==400, (s,b))
 s,b=req('POST','/auth/register',{'nombre':'Otra Docente','email':f'otra{SUF}@x.cl','password':'secreto123'}); t2=b['accessToken']
 s,b=req('GET','/planner/'+pid,token=t2); ok('PLAN-11 otra docente no ve mi clase: 404', s==404, (s,b))
 s,b=req('DELETE','/planner/'+pid,token=t2); ok('PLAN-12 otra docente no puede eliminar mi clase: 404', s==404, (s,b))

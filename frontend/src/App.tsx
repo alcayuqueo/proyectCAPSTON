@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import ExploradorCurricular from './pages/ExploradorCurricular';
 import RecursosYActividades from './pages/RecursosYActividades';
 import Planificador from './pages/Planificador';
+import Calendario from './pages/Calendario';
 import FormularioClase from './pages/FormularioClase';
 import ModoPresentacion from './pages/ModoPresentacion';
 import Login from './pages/Login';
@@ -89,6 +90,14 @@ export default function App() {
           element={
             <RutaProtegida>
               <Planificador />
+            </RutaProtegida>
+          }
+        />
+        <Route
+          path="/calendario"
+          element={
+            <RutaProtegida>
+              <Calendario />
             </RutaProtegida>
           }
         />

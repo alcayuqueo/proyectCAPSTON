@@ -2,7 +2,7 @@
 
 | Archivo | Qué prueba | Casos |
 |---|---|---|
-| `prueba_api_planificador.py` | API: registro, login, perfil, validaciones en español y planificador (crear, listar, editar, duplicar, eliminar y aislamiento entre docentes) | 25 |
+| `prueba_api_planificador.py` | API: registro, login, perfil, validaciones en español y planificador (crear, listar, editar, duplicar —también en otra fecha, desde el calendario—, eliminar y aislamiento entre docentes) | 27 |
 | `prueba_api_recursos_actividades.py` | API: crear, editar y eliminar recursos y actividades; validaciones (enlaces seguros, duración); catálogo de solo lectura; aislamiento entre docentes; uso en el planificador | 22 |
 | `prueba_rendimiento.mjs` / `.py` | Carga de la API: 1, 10, 25 y 50 docentes simultáneos con consultas de lectura; tiempos p50/p95/p99 (se puede ejecutar contra producción). Misma prueba en Node.js (`node pruebas/prueba_rendimiento.mjs`) y en Python | 4 niveles |
 | `prueba_datos_curriculum.py` | Datos del currículum oficial: cantidad de OA por nivel según las Bases Curriculares, códigos sin saltos, ejes válidos y texto sin restos de la extracción del PDF | 35 |

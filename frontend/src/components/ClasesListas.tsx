@@ -209,6 +209,25 @@ export default function ClasesListas({ onAgregada }: { onAgregada: (titulo: stri
   );
 }
 
+/**
+ * Copia una clase lista a las clases del docente en la fecha indicada (con sus diapositivas,
+ * videos y actividades). Devuelve el título de la clase creada.
+ */
+export async function agregarClaseLista(objetivoId: string, fecha: string): Promise<string> {
+  const { data: lista } = await api.get<Clase>(`/curriculum/objetivos/${objetivoId}/clase`);
+  const datos: DatosClase = {
+    titulo: lista.titulo,
+    fecha,
+    objetivoId: lista.objetivo.id,
+    notas: lista.notas ? `Preparar: ${lista.notas}` : '',
+    usarMaterial: true,
+    recursoIds: lista.recursos.map((r) => r.id),
+    actividadIds: lista.actividades.map((a) => a.id),
+  };
+  await api.post('/planner', datos);
+  return lista.titulo;
+}
+
 /** Ventana para copiar una clase lista a las clases del docente, eligiendo la fecha. */
 function AgregarClase({
   clase,
@@ -240,18 +259,7 @@ function AgregarClase({
     setGuardando(true);
     setError(null);
     try {
-      const { data: lista } = await api.get<Clase>(`/curriculum/objetivos/${clase.objetivoId}/clase`);
-      const datos: DatosClase = {
-        titulo: lista.titulo,
-        fecha,
-        objetivoId: lista.objetivo.id,
-        notas: lista.notas ? `Preparar: ${lista.notas}` : '',
-        usarMaterial: true,
-        recursoIds: lista.recursos.map((r) => r.id),
-        actividadIds: lista.actividades.map((a) => a.id),
-      };
-      await api.post('/planner', datos);
-      onAgregada(lista.titulo);
+      onAgregada(await agregarClaseLista(clase.objetivoId, fecha));
     } catch (err) {
       setError(mensajeDeError(err, 'No se pudo agregar la clase. Inténtalo de nuevo.'));
     } finally {

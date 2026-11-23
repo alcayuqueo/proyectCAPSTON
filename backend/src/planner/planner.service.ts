@@ -167,12 +167,16 @@ export class PlannerService {
     return this.formatear(plan);
   }
 
-  async duplicar(docenteId: string, id: string) {
+  /**
+   * Copia una clase con sus recursos y actividades. Sin fecha, la copia queda el mismo día
+   * y se marca «(copia)»; con fecha (desde el calendario), conserva el título en el nuevo día.
+   */
+  async duplicar(docenteId: string, id: string, fecha?: string) {
     const original = await this.buscarPropia(docenteId, id);
     const copia = await this.prisma.plan.create({
       data: {
-        titulo: `${original.titulo} (copia)`.slice(0, 120),
-        fecha: original.fecha,
+        titulo: fecha ? original.titulo : `${original.titulo} (copia)`.slice(0, 120),
+        fecha: fecha ? new Date(fecha) : original.fecha,
         notas: original.notas,
         usarMaterial: original.usarMaterial,
         docenteId,

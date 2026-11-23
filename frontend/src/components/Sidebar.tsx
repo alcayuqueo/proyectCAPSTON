@@ -8,6 +8,7 @@ import {
   BookOpen,
   Layers,
   CalendarDays,
+  CalendarRange,
   X,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -19,6 +20,7 @@ const navItems: { to: string; label: string; icon: typeof Home; color: string; t
   // Recursos y actividades comparten sección: /actividades también marca este botón.
   { to: '/recursos', label: 'Recursos y actividades', icon: Layers, color: '#F6C2D6', tambien: '/actividades' },
   { to: '/planificador', label: 'Planificador', icon: CalendarDays, color: '#BFE6D0' },
+  { to: '/calendario', label: 'Calendario', icon: CalendarRange, color: '#D9D2FF' },
 ];
 
 interface Props {

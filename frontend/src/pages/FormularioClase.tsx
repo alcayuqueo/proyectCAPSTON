@@ -58,6 +58,9 @@ export default function FormularioClase() {
   // Desde el explorador curricular: /planificador/nueva?objetivo=ID abre la clase con el material del OA.
   const [parametros] = useSearchParams();
   const objetivoInicial = editando ? null : parametros.get('objetivo');
+  // Desde el calendario: /planificador/nueva?fecha=AAAA-MM-DD abre la clase en ese día.
+  const fechaParametro = editando ? null : parametros.get('fecha');
+  const fechaInicial = fechaParametro && /^\d{4}-\d{2}-\d{2}$/.test(fechaParametro) ? fechaParametro : hoyISO();
 
   // Catálogos
   const [asignaturas, setAsignaturas] = useState<Asignatura[]>([]);
@@ -67,7 +70,10 @@ export default function FormularioClase() {
 
   // Formulario
   const [titulo, setTitulo] = useState('');
-  const [fecha, setFecha] = useState(hoyISO());
+  const [fecha, setFecha] = useState(fechaInicial);
+  // Si se llegó desde el calendario (?volver=calendario), al guardar o cancelar se vuelve a él.
+  const desdeCalendario = parametros.get('volver') === 'calendario';
+  const rutaVolver = desdeCalendario ? `/calendario?dia=${fecha}` : '/planificador';
   const [asignaturaId, setAsignaturaId] = useState('');
   const [objetivoId, setObjetivoId] = useState('');
   const [recursoIds, setRecursoIds] = useState<string[]>([]);
@@ -219,7 +225,7 @@ export default function FormularioClase() {
       } else {
         await api.post('/planner', datos);
       }
-      navigate('/planificador', {
+      navigate(rutaVolver, {
         state: { mensaje: editando ? 'Cambios guardados.' : `Clase «${datos.titulo}» creada.` },
       });
     } catch (err) {
@@ -230,11 +236,11 @@ export default function FormularioClase() {
 
   const volver = (
     <Link
-      to="/planificador"
+      to={rutaVolver}
       className="flex w-fit items-center gap-1 text-sm text-ink-500 hover:text-ink-900"
     >
       <ArrowLeft size={15} />
-      Volver al planificador
+      {desdeCalendario ? 'Volver al calendario' : 'Volver al planificador'}
     </Link>
   );
 
@@ -609,7 +615,7 @@ export default function FormularioClase() {
       <div className="fixed inset-x-0 bottom-0 z-10 border-t border-ink-300/20 bg-white/95 backdrop-blur lg:left-64">
         <div className="mx-auto flex max-w-3xl items-center justify-end gap-3 px-4 py-3 sm:px-8">
           <Link
-            to="/planificador"
+            to={rutaVolver}
             className="rounded-lg border border-ink-300/40 px-4 py-2 text-sm font-medium text-ink-700 hover:bg-surface-muted"
           >
             Cancelar

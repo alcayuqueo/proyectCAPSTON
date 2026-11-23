@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, BookOpen, Layers, CalendarDays } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, CalendarDays, CalendarRange } from 'lucide-react';
 
 // Cada módulo tiene el color de su sección en el menú.
 const modules = [
@@ -26,6 +26,14 @@ const modules = [
     title: 'Planificador',
     description:
       'Arma tu clase combinando objetivos, recursos y actividades, y preséntala en la pantalla interactiva.',
+  },
+  {
+    to: '/calendario',
+    icon: CalendarRange,
+    color: '#D9D2FF',
+    title: 'Calendario',
+    description:
+      'Organiza tus clases del año día a día: varias clases por día, copiando temas ya creados o agregando clases listas.',
   },
 ];
 
@@ -86,7 +94,7 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-ink-900">Módulos principales</h2>
         <p className="mt-1 text-base text-ink-500">Todo lo que necesitas para preparar y conducir tu clase.</p>
 
-        <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {modules.map(({ to, icon: Icon, color, title, description }) => (
             <button
               key={to}

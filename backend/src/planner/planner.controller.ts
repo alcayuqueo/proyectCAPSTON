@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PlannerService } from './planner.service';
 import { CreatePlanDto } from './dto/create-plan.dto';
 import { UpdatePlanDto } from './dto/update-plan.dto';
+import { DuplicarPlanDto } from './dto/duplicar-plan.dto';
 
 /** Planificaciones de clase. Todas las rutas exigen sesión y operan solo sobre las clases del docente. */
 @Controller('planner')
@@ -41,8 +42,8 @@ export class PlannerController {
   }
 
   @Post(':id/duplicar')
-  duplicar(@Req() req: any, @Param('id') id: string) {
-    return this.plannerService.duplicar(req.user.userId, id);
+  duplicar(@Req() req: any, @Param('id') id: string, @Body() dto: DuplicarPlanDto) {
+    return this.plannerService.duplicar(req.user.userId, id, dto.fecha);
   }
 
   @Delete(':id')
