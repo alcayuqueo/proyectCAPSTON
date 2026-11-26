@@ -7,6 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Copy,
+  FileSpreadsheet,
+  LayoutGrid,
   Loader2,
   Pencil,
   Play,
@@ -21,6 +23,7 @@ import type { Clase, ClaseLista } from '../lib/tipos';
 import ChipAsignatura from '../components/ChipAsignatura';
 import Modal from '../components/Modal';
 import { agregarClaseLista } from '../components/ClasesListas';
+import { useAuth } from '../context/AuthContext';
 
 const DIAS_SEMANA = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 const ES_FECHA = /^\d{4}-\d{2}-\d{2}$/;
@@ -32,6 +35,17 @@ const claseCampo =
 function iso(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
+
+const MESES = Array.from({ length: 12 }, (_, i) => i);
+
+/** «Marzo» a partir del número de mes (0 = enero). */
+function nombreDelMes(anio: number, mes: number): string {
+  const n = new Date(anio, mes, 1, 12).toLocaleDateString('es-CL', { month: 'long' });
+  return `${n.charAt(0).toUpperCase()}${n.slice(1)}`;
+}
+
+/** AAAA-MM de un mes (0 = enero). */
+const claveMes = (anio: number, mes: number) => `${anio}-${String(mes + 1).padStart(2, '0')}`;
 
 /** Los días que muestra la cuadrícula del mes: de lunes a domingo, semanas completas. */
 function diasDelMes(anio: number, mes: number): Date[] {
@@ -52,6 +66,9 @@ const fechaTexto = (d: string) => fechaLarga(d).replace(',', '');
  * Calendario del docente: muestra sus clases en cada día del mes para planificar el año.
  * En un mismo día puede haber varias clases. Desde un día se puede crear una clase nueva,
  * copiar una clase ya creada (mismo tema en otra fecha) o agregar una clase lista.
+ *
+ * Vistas: sin ?dia se muestra el año (12 meses en tarjetas, ?anio=AAAA opcional);
+ * al tocar un mes se abre el mes completo (?dia=AAAA-MM-DD). «Ver año» vuelve a las tarjetas.
  */
 export default function Calendario() {
   const [parametros, setParametros] = useSearchParams();
@@ -59,16 +76,34 @@ export default function Calendario() {
   const navigate = useNavigate();
 
   const diaParametro = parametros.get('dia');
-  const diaInicial = diaParametro && ES_FECHA.test(diaParametro) ? diaParametro : hoyISO();
+  const diaValido = diaParametro && ES_FECHA.test(diaParametro) ? diaParametro : null;
+  const anioParametro = Number(parametros.get('anio'));
+  const anioValido = Number.isInteger(anioParametro) && anioParametro >= 2000 && anioParametro <= 2100 ? anioParametro : null;
+  const vista: 'anio' | 'mes' = diaValido ? 'mes' : 'anio';
+
+  const diaInicial = diaValido ?? hoyISO();
   const [seleccionado, setSeleccionado] = useState(diaInicial);
-  const [anio, setAnio] = useState(() => Number(diaInicial.slice(0, 4)));
+  const [anio, setAnio] = useState(() => (diaValido ? Number(diaInicial.slice(0, 4)) : anioValido ?? Number(diaInicial.slice(0, 4))));
   const [mes, setMes] = useState(() => Number(diaInicial.slice(5, 7)) - 1);
+
+  // Al usar atrás/adelante del navegador, la vista sigue a la dirección.
+  useEffect(() => {
+    if (diaValido) {
+      setSeleccionado(diaValido);
+      setAnio(Number(diaValido.slice(0, 4)));
+      setMes(Number(diaValido.slice(5, 7)) - 1);
+    } else if (anioValido) {
+      setAnio(anioValido);
+    }
+  }, [diaValido, anioValido]);
 
   const [clases, setClases] = useState<Clase[]>([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [aviso, setAviso] = useState<string | null>(state?.mensaje ?? null);
   const [modal, setModal] = useState<'copiar' | 'lista' | null>(null);
+  const [exportando, setExportando] = useState(false);
+  const { usuario } = useAuth();
 
   const cargar = useCallback(() => {
     return api
@@ -102,9 +137,9 @@ export default function Calendario() {
 
   const dias = useMemo(() => diasDelMes(anio, mes), [anio, mes]);
   const hoy = hoyISO();
-  const nombreMesSolo = new Date(anio, mes, 1, 12).toLocaleDateString('es-CL', { month: 'long' });
-  const nombreMes = `${nombreMesSolo.charAt(0).toUpperCase()}${nombreMesSolo.slice(1)} ${anio}`;
-  const clasesDelMes = clases.filter((c) => c.fecha.startsWith(`${anio}-${String(mes + 1).padStart(2, '0')}`)).length;
+  const nombreMes = `${nombreDelMes(anio, mes)} ${anio}`;
+  const clasesDelMes = clases.filter((c) => c.fecha.startsWith(claveMes(anio, mes))).length;
+  const clasesDelAnio = clases.filter((c) => c.fecha.startsWith(`${anio}-`)).length;
   const delDia = porDia.get(seleccionado) ?? [];
 
   function elegirDia(d: string) {
@@ -119,9 +154,42 @@ export default function Calendario() {
   }
 
   function irAHoy() {
-    setAnio(Number(hoy.slice(0, 4)));
-    setMes(Number(hoy.slice(5, 7)) - 1);
-    elegirDia(hoy);
+    abrirMes(Number(hoy.slice(0, 4)), Number(hoy.slice(5, 7)) - 1);
+  }
+
+  /** Abre el mes completo. Se elige hoy si cae en ese mes; si no, el primer día con clases o el día 1. */
+  function abrirMes(a: number, m: number) {
+    const prefijo = claveMes(a, m);
+    const conClases = clases.map((c) => c.fecha).filter((f) => f.startsWith(prefijo)).sort()[0];
+    const dia = hoy.startsWith(prefijo) ? hoy : conClases ?? `${prefijo}-01`;
+    setAnio(a);
+    setMes(m);
+    setSeleccionado(dia);
+    // Se agrega al historial para que «atrás» del navegador vuelva a la vista del año.
+    setParametros({ dia });
+  }
+
+  function verAnio() {
+    setParametros({ anio: String(anio) });
+  }
+
+  function moverAnio(delta: number) {
+    setAnio(anio + delta);
+    setParametros({ anio: String(anio + delta) }, { replace: true });
+  }
+
+  /** Descarga el año que se está viendo como carta Gantt en Excel. El generador se carga solo al usarlo. */
+  async function exportarExcel() {
+    setExportando(true);
+    try {
+      const { exportarPlanificadorExcel } = await import('../lib/exportarGantt');
+      const nombre = exportarPlanificadorExcel({ anio, clases, docente: usuario?.nombre });
+      setAviso(`Se descargó «${nombre}».`);
+    } catch {
+      setError('No se pudo crear el archivo Excel. Inténtalo de nuevo.');
+    } finally {
+      setExportando(false);
+    }
   }
 
   async function alAgregar(titulo: string) {
@@ -140,8 +208,9 @@ export default function Calendario() {
           Planificador
         </h1>
         <p className="mt-1 text-[15px] text-ink-500">
-          Planifica tus clases durante el año. Cada día muestra los temas de tus clases; toca un día para ver sus
-          clases o agregar más.
+          {vista === 'anio'
+            ? 'Planifica tus clases durante el año. Toca un mes para abrirlo completo.'
+            : 'Cada día muestra los temas de tus clases; toca un día para ver sus clases o agregar más.'}
         </p>
       </header>
 
@@ -153,9 +222,31 @@ export default function Calendario() {
       )}
       {error && <p role="alert" className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">{error}</p>}
 
+      {vista === 'anio' && (
+        <VistaAnio
+          anio={anio}
+          porDia={porDia}
+          hoy={hoy}
+          cargando={cargando}
+          totalAnio={clasesDelAnio}
+          onMoverAnio={moverAnio}
+          onAbrirMes={abrirMes}
+          onHoy={irAHoy}
+        />
+      )}
+
+      {vista === 'mes' && (
+      <>
       {/* Mes */}
       <section className="rounded-card border-2 border-ink-900 bg-white p-3 shadow-sticker-sm sm:p-5" aria-label="Calendario del mes">
         <div className="mb-4 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={verAnio}
+            className="flex items-center gap-1.5 rounded-full border-2 border-ink-900 bg-white px-3 py-1.5 text-sm font-bold text-ink-900 hover:bg-surface-muted"
+          >
+            <LayoutGrid size={15} /> Ver año {anio}
+          </button>
           <button type="button" onClick={() => moverMes(-1)} aria-label="Mes anterior" className="rounded-full border-2 border-ink-900 p-2 text-ink-900 hover:bg-surface-muted">
             <ChevronLeft size={18} />
           </button>
@@ -304,10 +395,98 @@ export default function Calendario() {
           </ul>
         )}
       </section>
+      </>
+      )}
+
+      {/* Exportar el año completo */}
+      <section className="flex flex-col items-start gap-3 rounded-card border-2 border-ink-900 bg-white p-4 shadow-sticker-sm sm:flex-row sm:items-center sm:justify-between sm:p-5" aria-label="Exportar">
+        <div>
+          <h2 className="font-[Fredoka] text-lg font-semibold text-ink-900">Exportar el año {anio}</h2>
+          <p className="text-sm text-ink-500">
+            {clasesDelAnio > 0
+              ? 'Descarga tu planificación completa en Excel como carta Gantt: cada clase en la semana que corresponde, por asignatura y nivel.'
+              : `Aún no hay clases en ${anio} para exportar.`}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={exportarExcel}
+          disabled={exportando || cargando || clasesDelAnio === 0}
+          className="flex shrink-0 items-center gap-2 rounded-full border-[2.5px] border-ink-900 bg-[#BFE6D0] px-4 py-2 text-sm font-bold text-ink-900 shadow-sticker-sm active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:opacity-50"
+        >
+          {exportando ? <Loader2 size={16} className="animate-spin" /> : <FileSpreadsheet size={16} />}
+          {exportando ? 'Creando Excel…' : 'Exportar a Excel (carta Gantt)'}
+        </button>
+      </section>
 
       <CopiarClase abierto={modal === 'copiar'} clases={clases} fecha={seleccionado} onCerrar={() => setModal(null)} onAgregada={alAgregar} />
       <ElegirClaseLista abierto={modal === 'lista'} fecha={seleccionado} onCerrar={() => setModal(null)} onAgregada={alAgregar} />
     </div>
+  );
+}
+
+interface PropsVistaAnio {
+  anio: number;
+  porDia: Map<string, Clase[]>;
+  hoy: string;
+  cargando: boolean;
+  totalAnio: number;
+  onMoverAnio: (delta: number) => void;
+  onAbrirMes: (anio: number, mes: number) => void;
+  onHoy: () => void;
+}
+
+/** Los 12 meses del año como botones con su nombre; al tocar uno se abre el mes completo. */
+function VistaAnio({ anio, porDia, hoy, cargando, totalAnio, onMoverAnio, onAbrirMes, onHoy }: PropsVistaAnio) {
+  return (
+    <section className="rounded-card border-2 border-ink-900 bg-white p-3 shadow-sticker-sm sm:p-5" aria-label={`Meses de ${anio}`}>
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <button type="button" onClick={() => onMoverAnio(-1)} aria-label="Año anterior" className="rounded-full border-2 border-ink-900 p-2 text-ink-900 hover:bg-surface-muted">
+          <ChevronLeft size={18} />
+        </button>
+        <h2 className="min-w-[5rem] text-center font-[Fredoka] text-xl font-semibold text-ink-900" aria-live="polite">
+          {anio}
+        </h2>
+        <button type="button" onClick={() => onMoverAnio(1)} aria-label="Año siguiente" className="rounded-full border-2 border-ink-900 p-2 text-ink-900 hover:bg-surface-muted">
+          <ChevronRight size={18} />
+        </button>
+        <button type="button" onClick={onHoy} className="rounded-full border-2 border-ink-900 bg-sol px-4 py-1.5 text-sm font-bold text-ink-900">
+          Hoy
+        </button>
+        <p className="ml-auto text-xs text-ink-500">
+          {cargando ? (
+            <span className="flex items-center gap-1.5"><Loader2 size={14} className="animate-spin" /> Cargando…</span>
+          ) : (
+            `${totalAnio} clase${totalAnio === 1 ? '' : 's'} este año`
+          )}
+        </p>
+      </div>
+
+      <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 lg:gap-8">
+        {MESES.map((m) => {
+          const prefijo = claveMes(anio, m);
+          let total = 0;
+          for (const [fecha, lista] of porDia) if (fecha.startsWith(prefijo)) total += lista.length;
+          const esMesActual = hoy.startsWith(prefijo);
+          const nombre = nombreDelMes(anio, m);
+          return (
+            <li key={m}>
+              <button
+                type="button"
+                onClick={() => onAbrirMes(anio, m)}
+                aria-label={`${nombre} ${anio}, ${total ? `${total} clase${total === 1 ? '' : 's'}` : 'sin clases'}`}
+                className={[
+                  'flex h-24 w-full items-center justify-center rounded-2xl border-[2.5px] border-ink-900 px-3 font-[Fredoka] text-xl font-semibold text-ink-900 shadow-sticker-sm transition hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#7B6CF0] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none sm:h-28 sm:text-2xl',
+                  esMesActual ? 'bg-sol' : 'bg-white',
+                ].join(' ')}
+              >
+                {nombre}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

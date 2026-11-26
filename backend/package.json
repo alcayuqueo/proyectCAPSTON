@@ -13,6 +13,7 @@
     "curriculum:cargar": "ts-node prisma/cargar-curriculum.ts",
     "material:cargar": "ts-node prisma/cargar-material.ts",
     "material:verificar": "ts-node prisma/verificar-videos.ts",
+    "demo:cargar": "ts-node prisma/cargar-demo.ts",
     "test": "jest",
     "test:cov": "jest --coverage"
   },
