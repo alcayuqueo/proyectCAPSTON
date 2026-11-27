@@ -14,6 +14,7 @@
     "material:cargar": "ts-node prisma/cargar-material.ts",
     "material:verificar": "ts-node prisma/verificar-videos.ts",
     "demo:cargar": "ts-node prisma/cargar-demo.ts",
+    "planificacion:cargar": "ts-node prisma/cargar-planificacion-cuenta.ts",
     "test": "jest",
     "test:cov": "jest --coverage"
   },

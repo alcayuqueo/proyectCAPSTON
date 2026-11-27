@@ -154,6 +154,7 @@ npx prisma db seed           # solo la primera vez
 npm run curriculum:cargar    # currículum oficial; se puede repetir sin duplicar datos
 npm run material:cargar      # material listo por OA; se puede repetir sin duplicar datos
 DEMO_PASSWORD="..." npm run demo:cargar   # opcional: cuenta demo con planificación anual de 3° básico
+CUENTA_EMAIL="tu-correo" npm run planificacion:cargar   # opcional: la misma planificación en una cuenta que ya existe
 ```
 
 El seed carga datos de ejemplo (recursos y actividades de Matemática y Ciencias Naturales, 5° básico). Ejecutarlo una sola vez para no duplicar datos.
@@ -163,6 +164,8 @@ El seed carga datos de ejemplo (recursos y actividades de Matemática y Ciencias
 `npm run material:cargar` carga **48 clases listas de 45 minutos** (una por cada eje y nivel de Matemática y Lenguaje, 1° a 6° básico). Cada clase trae: inicio (activación), explicación y ejemplo, uno o dos videos de YouTube, práctica guiada con soluciones, dos preguntas para el curso, dos actividades (15 y 10 min), ticket de salida y una nota de preparación para el docente (336 diapositivas, 63 videos y 96 actividades). En el **Planificador**, la pestaña **Clases listas** permite presentarlas de inmediato o agregarlas a las clases del docente eligiendo la fecha. El contenido está en `backend/prisma/data/material-matematica.json` y `material-lenguaje.json`; el script valida los archivos antes de cargar y solo modifica elementos del catálogo. Para revisar que los videos sigan disponibles e incrustables: `npm run material:verificar` (no necesita la base de datos). Para los OA sin material, la app ofrece un botón **Buscar videos** que abre una búsqueda en YouTube con las palabras clave del OA.
 
 **Cuenta demo con una planificación anual (opcional).** `DEMO_PASSWORD="una-clave" npm run demo:cargar` crea la cuenta docente `demo.3basico@educapp.cl` (se puede cambiar con `DEMO_EMAIL`) con **253 clases de 3° básico** (109 de Matemática y 144 de Lenguaje y Comunicación) para el año escolar 2026. La planificación sigue la *Visión global del año* de los Programas de Estudio de 3° básico del MINEDUC (4 unidades por asignatura, con sus OA y horas), las horas semanales del plan de estudio (Decreto 2960/2012: Lenguaje 8 y Matemática 6) y el calendario escolar 2026 de la Región Metropolitana (4 de marzo a 4 de diciembre con JEC, vacaciones de invierno del 22 de junio al 3 de julio, sin clases en feriados). Incluye evaluación diagnóstica, una evaluación al cierre de cada unidad y 8 clases listas. Los datos están en `backend/prisma/data/planificacion-demo-3basico.json` (generados con `generar_planificacion_demo.py`). Volver a ejecutarlo borra y recrea solo las clases de esa cuenta. Desde el **Planificador** de esa cuenta, **Exportar a Excel (carta Gantt)** descarga la planificación del año por unidad y OA.
+
+**La misma planificación en tu propia cuenta (opcional).** `CUENTA_EMAIL="tu-correo" npm run planificacion:cargar` agrega esas 253 clases de ejemplo a una cuenta docente que ya existe, sin cambiar su contraseña ni borrar sus clases. Si se ejecuta de nuevo, salta las clases que ya están (mismo OA y mismo día). Para quitarlas: `CUENTA_EMAIL="tu-correo" npm run planificacion:cargar -- --quitar`.
 
 ### 4. Levantar el backend
 
