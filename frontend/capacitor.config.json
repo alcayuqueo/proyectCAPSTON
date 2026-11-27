@@ -1,6 +1,6 @@
 {
   "appId": "cl.duocuc.softwareeducativo",
-  "appName": "Educapp",
+  "appName": "EducaApp",
   "webDir": "dist",
   "android": {
     "backgroundColor": "#0c6f59"

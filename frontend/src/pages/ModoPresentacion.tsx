@@ -105,7 +105,7 @@ export default function ModoPresentacion() {
   useEffect(() => {
     if (clase) document.title = `${clase.titulo} · Modo presentación`;
     return () => {
-      document.title = 'Educapp · Apoyo docente MINEDUC';
+      document.title = 'EducaApp · Apoyo docente MINEDUC';
     };
   }, [clase]);
 

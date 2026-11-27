@@ -1,5 +1,5 @@
 # Uso: python prisma/data/generar_planificacion_demo.py prisma/data/planificacion-demo-3basico.json
-# Genera la planificación anual de ejemplo (3° básico, Matemática y Lenguaje) para Educapp.
+# Genera la planificación anual de ejemplo (3° básico, Matemática y Lenguaje) para EducaApp.
 # Basada en: Programa de Estudio 3° básico MINEDUC (Visión global del año: unidades, OA y horas),
 # Plan de estudio Decreto 2960/2012 (Lenguaje 8 h, Matemática 6 h semanales) y
 # calendario escolar 2026 de la Región Metropolitana (4-mar a 4-dic con JEC; vacaciones 22-jun a 3-jul).
@@ -117,7 +117,7 @@ LEN_TRANSVERSALES = [
     ('OA16', 'Escribir con letra clara'),
     ('OA29', 'Usar vocabulario nuevo al hablar'),
 ]
-# OA que tienen «clase lista» en Educapp (material-*.json): la primera sesión de ese OA la usa.
+# OA que tienen «clase lista» en EducaApp (material-*.json): la primera sesión de ese OA la usa.
 CLASES_LISTAS = {('Matemática', 'OA11'), ('Matemática', 'OA12'), ('Matemática', 'OA18'), ('Matemática', 'OA21'),
                  ('Matemática', 'OA23'), ('Lenguaje y Comunicación', 'OA05'), ('Lenguaje y Comunicación', 'OA21'),
                  ('Lenguaje y Comunicación', 'OA24')}

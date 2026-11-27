@@ -1,4 +1,4 @@
-# Educapp
+# EducaApp
 
 Plataforma web y móvil que ayuda a docentes de establecimientos chilenos a **planificar y preparar sus clases alineadas al currículum nacional del MINEDUC** (hoy, Matemática y Lenguaje y Comunicación de 1° a 6° básico), aprovechando las pantallas interactivas que ya existen en las salas de clases.
 

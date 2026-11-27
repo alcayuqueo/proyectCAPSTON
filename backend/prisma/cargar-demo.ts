@@ -99,7 +99,7 @@ async function main() {
       listas++;
     }
     const notas = conMaterial
-      ? `${c.notas} Clase lista de Educapp.${objetivo.material?.preparacion ? ` Preparar: ${objetivo.material.preparacion}` : ''}`
+      ? `${c.notas} Clase lista de EducaApp.${objetivo.material?.preparacion ? ` Preparar: ${objetivo.material.preparacion}` : ''}`
       : c.notas;
     await prisma.plan.create({
       data: {

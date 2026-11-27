@@ -292,7 +292,7 @@ export function crearExcelPlanificador({ anio, clases, docente }: OpcionesExport
   g.poner(
     1,
     0,
-    `Educapp${docente ? ` · Docente: ${docente}` : ''} · ${delAnio.length} clase${delAnio.length === 1 ? '' : 's'} · Generado el ${dosDigitos(generado.getDate())}-${dosDigitos(generado.getMonth() + 1)}-${generado.getFullYear()}`,
+    `EducaApp${docente ? ` · Docente: ${docente}` : ''} · ${delAnio.length} clase${delAnio.length === 1 ? '' : 's'} · Generado el ${dosDigitos(generado.getDate())}-${dosDigitos(generado.getMonth() + 1)}-${generado.getFullYear()}`,
     sSub,
   );
 
@@ -485,7 +485,7 @@ export function crearExcelPlanificador({ anio, clases, docente }: OpcionesExport
 /** Genera el archivo y lo descarga en el navegador. */
 export function exportarPlanificadorExcel(opciones: OpcionesExportar): string {
   const bytes = crearExcelPlanificador(opciones);
-  const nombre = `Planificador_${opciones.anio}_Educapp.xlsx`;
+  const nombre = `Planificador_${opciones.anio}_EducaApp.xlsx`;
   const blob = new Blob([bytes as Uint8Array<ArrayBuffer>], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');

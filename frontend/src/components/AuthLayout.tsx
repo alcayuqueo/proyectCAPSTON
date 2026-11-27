@@ -33,7 +33,7 @@ export default function AuthLayout({ titulo, subtitulo, children }: Props) {
             <GraduationCap size={22} />
           </div>
           <div>
-            <p className="font-[Fredoka] text-[17px] font-semibold leading-tight">Educapp</p>
+            <p className="font-[Fredoka] text-[17px] font-semibold leading-tight">EducaApp</p>
             <p className="text-xs leading-tight text-white/80">Apoyo docente · MINEDUC</p>
           </div>
         </Link>
@@ -64,7 +64,7 @@ export default function AuthLayout({ titulo, subtitulo, children }: Props) {
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-[2.5px] border-ink-900 bg-sol text-ink-900">
               <GraduationCap size={22} />
             </div>
-            <p className="font-[Fredoka] text-[17px] font-semibold text-ink-900">Educapp</p>
+            <p className="font-[Fredoka] text-[17px] font-semibold text-ink-900">EducaApp</p>
           </Link>
           <h1 className="text-3xl font-bold text-ink-900">{titulo}</h1>
           <p className="mt-1 text-[15px] text-ink-500">{subtitulo}</p>

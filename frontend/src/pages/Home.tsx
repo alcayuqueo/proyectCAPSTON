@@ -66,7 +66,7 @@ export default function Home() {
           </h1>
 
           <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-500">
-            Educapp reúne el currículum del MINEDUC, recursos y actividades en un solo
+            EducaApp reúne el currículum del MINEDUC, recursos y actividades en un solo
             lugar, pensado para pantallas interactivas de uso docente. Menos pasos técnicos, más
             tiempo para enseñar.
           </p>
